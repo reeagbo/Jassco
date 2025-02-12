@@ -12,15 +12,15 @@ Let me summarize what it's currently capable of:
   - assignments (=, +=, -=, *=, /=, %=, &=, |=, ^=, <<=, >>=)
   - binary expressions ("==", "!=", "<", ">", "<=", ">=", "+", "-", "*", "/", "%")
   - functions: declaration and call, passing parameters (only numbers tested).
-  - system calls: generally, not supported, but some specific cases are.
+  - methods: generally, not supported, but some specific cases are.
     - console.log to print messages.
-    - some canvas methods (moveTo, lineTo) to be able to draw in the screen.
+    - math.random produces a 16 bit pseudo-random number.
+    - some canvas methods (ctx.moveTo, ctx.lineTo) to be able to draw in the screen.
     
-
 Limitations are huge at the moment. Actually, I´m at that stage that the number of doors I´m opening is bigger than the ones I´m closing. I will list the main ones here:
 - limited recursion, due to lille testing.
-- vary limited string support, but getting better.
-- 
+- very limited string support, but getting better.
+- no object methods supported, with the exceptions listed above.
 
 Usage
 The python folder contains all the python files needed to produce the z80 assembly output. A this point there are two ways to use it:
