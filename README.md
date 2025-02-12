@@ -5,7 +5,8 @@ Jassco is a project, written in python, that enables Z80 machines to run JavaScr
 Let me summarize what it's currently capable of:
 - JavaScript ES2 taken as reference.
 - Very simple type: 16-bit integers and strings.
-- Variables, Arrays, 2D matrices and dictionaries supported.
+  - Integers: variables, Arrays, 2D matrices and dictionaries supported.
+  - Strings: assignment, comparison and printing (very limited support).
 - Variables and constant declaration.
 - all basic coding supported:
   - structures: if-then-else, for-break, while-do, do-while, switch-case).
