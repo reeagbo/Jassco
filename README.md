@@ -21,8 +21,3 @@ Limitations are huge at the moment. Actually, I´m at that stage that the number
 - limited recursion, due to lille testing.
 - very limited string support, but getting better.
 - no object methods supported, with the exceptions listed above.
-
-Usage
-The python folder contains all the python files needed to produce the z80 assembly output. A this point there are two ways to use it:
-- if you are into Eclipse, you can set up a python environment, the output is produced to a file or to the console. From there you can take the code to your ZX Spectrum compiler/emulator of choice.
-- if not, you can still work with it. A batch file runs the python compliler, compiles the z80 assembly output and runs the image in Fuse (i have not tested this method lately, but I will).
