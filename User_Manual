@@ -1,0 +1,20 @@
+It's all under construction...
+
+Usage
+The python folder contains all the python files needed to produce the z80 assembly output. A this point there are two ways to use it:
+- if you are into Eclipse, you can set up a python environment, the output is produced to a file or to the console. From there you can take the code to your ZX Spectrum compiler/emulator of choice.
+- if not, you can still work with it. A batch file runs the python compliler, compiles the z80 assembly output and runs the image in Fuse (i have not tested this method lately, but I will).
+
+Files
+(note that .asc stands for assemply libraries that can be included in the general code)
+
+config.py      general configuration files, mostly stuffed with global variables
+graph.asc      assembly library for ZX Spectrum graphics
+input.js       input file with source javaScript code
+io.asc         assembly library for ZX Spectrum I/O
+main.py        >>> main python program. the one you need to run
+math.asc       assembly library for math
+output.asm     output file containing result of compilation
+testplan.js    test plan with main features, used for non-regression tests
+translator.py  >>> here is the meat. all the translation process is done here.
+utils.py       other routines used by main.py and translator.py
