@@ -1,9 +1,108 @@
 It's all under construction...
 
-Usage
-The python folder contains all the python files needed to produce the z80 assembly output. A this point there are two ways to use it:
-- if you are into Eclipse, you can set up a python environment, the output is produced to a file or to the console. From there you can take the code to your ZX Spectrum compiler/emulator of choice.
-- if not, you can still work with it. A batch file runs the python compliler, compiles the z80 assembly output and runs the image in Fuse (i have not tested this method lately, but I will).
+Description
+The python folder contains all the Python files needed to produce the z80 assembly output. The idea is to keep things as simple as possible. Note that JASSCO only produces the assembly code. If you want to produce any sort of of image, you need to take the assembly code to a compiler and produce it separately.
+
+A this point, I´ve tried two different ways to use it:
+    - if you are into Eclipse, you can set up a python environment, the output is produced to a file or to the console. From there you can take the code to your ZX Spectrum compiler/emulator of choice.
+    - if not, you can still work with it. A batch file runs the python compliler, compiles the z80 assembly output and runs the image in Fuse (i have not tested this method lately, but I will).
+
+I´ll use the "hello, world!" example to go through all the steps.
+
+
+Working with Eclipse
+
+    Preparation (only need to do it once): The first thing you need to do is installing Eclipse and configuring the environment. There is a zillion places where this is explained. 
+    I was a newbie myself and used this one:
+    https://www.rose-hulman.edu/class/csse/resources/Eclipse/eclipse-python-configuration.htm
+    The main task is to make sure that Eclipse will find Python. If you are familiar with Eclipse and Python this is probably done.
+    
+    - Open (at least) 'input.js' and 'main.py' in Eclipse.
+    - Place your JavaScript code in the 'input.js' file. In our case, that would be:
+
+        include ("io.asc")
+        console.log ("hello, world")
+
+        Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
+    - Select 'main.py' tab and click Play to run the code. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
+    The output code should look like:
+
+        ; Generated with ASsembly COmpiler, JASSCO v0. Boria Labs 2025.
+        ; Directives -------------------------------------------------
+        str_max equ 32          ; maximum string length
+        org 25000               ; initial code address
+
+        sta_cod jp mai_cod              ; jumps to main code
+
+        ; Variable declarations --------------------------------------
+        sta_ck2 defw 24500      ; auxiliary stack address
+        stn_000 defb 12, 0, "hello, world"        ; (Literal) string
+        (...and it goes on...)
+
+    - If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
+    (to be improved) Error check is kind of weak, so it may still compile and not run properly.
+    - (to be improved) From here, you are free to do whatever you like with the code. In the future, I´ll probably add steps to run it automatically. 
+    Any compiler like Pasmo shall do. In my case, I´ve worked so long with ZXspin, that I'll copy/paste the code to the editor and run it from there.
+    - As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
+        RANDOMIZE USR 25000
+    - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
+
+
+Working with Notepad++* and Command Line (*where it reads Notepad++, it could be any text editor)
+
+    Concepts are identical as with Eclipse, but steps are executed differently.
+    - Preparation (only need to do it once): 
+        - You'll need a dedicated folder for JASSCO, anywhere (let's call it .\jassco).
+        - Python: make sure Python is installed and runs from any directory.
+        - Pasmo: create a folder under .\jassco. Let's call it .\jassco\pasmo. Install Pasmo there.
+        - Fuse: install Fuse in your PC.
+    We sohuld be set.
+    - With the editor, place your JavaScript code in the 'input.js' file and save it. Somthing like:
+
+        include ("io.asc")
+        console.log ("hello, world")
+
+        Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
+    - Now, you need to:
+        - run python and provide the arguments so that 'main.py' is executed. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
+        If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
+        (to be improved) Error check is kind of weak, so it may compile and not run properly.
+        - compile the 'output.asm' file and produce some image that an emulator can run (i.e. .tap).
+        - run the image produced in the emulator.
+
+        I´m using this simple batch file to run all the steps above (you can find it in the root directory in github):
+
+            cd python
+            python main.py ..\%1 ..\output.asm
+            cd ..
+            .\pasmo\pasmo.exe --tap output.asm %2
+            "c:\Program Files (x86)\Fuse\fuse.exe" %2
+
+        - The output code should look like:
+
+            ; Generated with ASsembly COmpiler, JASSCO v0. Boria Labs 2025.
+            ; Directives -------------------------------------------------
+            str_max equ 32          ; maximum string length
+            org 25000               ; initial code address
+    
+            sta_cod jp mai_cod              ; jumps to main code
+    
+            ; Variable declarations --------------------------------------
+            sta_ck2 defw 24500      ; auxiliary stack address
+            stn_000 defb 12, 0, "hello, world"        ; (Literal) string
+            (...and it goes on...)
+
+        - As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
+            RANDOMIZE USR 25000
+        - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
+
+        It can´t be simpler.
+
+
+Other plaforms
+
+    I have no idea how to make this work in Linux or Mac, but I believe the steps would be the same.
+
 
 Files
 (note that .asc stands for assemply libraries that can be included in the general code)
