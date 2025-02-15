@@ -63,10 +63,11 @@ Working with Notepad++* and Command Line (*where it reads Notepad++, it could be
         console.log ("hello, world")
 
         Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
+
     - Now, you need to:
-        - run python and provide the arguments so that 'main.py' is executed. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
+        - run python and provide the arguments so that 'main.py' is executed. Python will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
         If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
-        (to be improved) Error check is kind of weak, so it may compile and not run properly.
+        (to be improved) Error check is kind of weak, so it may still generate the assembly and not run properly.
         - compile the 'output.asm' file and produce some image that an emulator can run (i.e. .tap).
         - run the image produced in the emulator.
 
