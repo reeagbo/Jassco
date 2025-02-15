@@ -92,7 +92,7 @@ Working with Notepad++* and Command Line (*where it reads Notepad++, it could be
             stn_000 defb 12, 0, "hello, world"        ; (Literal) string
             (...and it goes on...)
 
-        - As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
+        - As you can see in the output code, assembly is loaded starting at address 25000, therefore, in order to run your code, you need to type in the emulator:
             RANDOMIZE USR 25000
         - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
