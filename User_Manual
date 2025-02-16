@@ -51,33 +51,44 @@ Working with Eclipse
 Working with Notepad++* and Command Line (*where it reads Notepad++, it could be any text editor)
 
     Concepts are identical as with Eclipse, but steps are executed differently.
-    - Preparation (only need to do it once): 
-        - You'll need a dedicated folder for JASSCO, anywhere (let's call it .\jassco).
-        - Python: make sure Python is installed and runs from any directory.
-        - Pasmo: create a folder under .\jassco. Let's call it .\jassco\pasmo. Install Pasmo there.
-        - Fuse: install Fuse in your PC.
-    We sohuld be set.
-    - With the editor, place your JavaScript code in the 'input.js' file and save it. Somthing like:
+    - Preparation (only need to do it once):
+        - You'll need a dedicated folder for JASSCO, anywhere. For the example, I´ll use C:\Users\Alex\Documents\jassco.
+        - Python: 
+            - make sure Python is installed and runs from any directory.
+            - create a folder under jassco where all the jassco code will be living. In our example: C:\Users\Alex\Documents\jassco\python
+        - Pasmo: create a folder under jassco. Let's call it C:\Users\Alex\Documents\jassco\pasmo. Install Pasmo there.
+        - Fuse: install Fuse in your PC. For the example, let's use the default path (c:\Program Files (x86)\Fuse\fuse.exe). 
+    With this, we should be set to go.
+
+    - With the editor, place your JavaScript code in 'input.js' (folder C:\Users\Alex\Documents\jassco). For the "hello, world" example:
 
         include ("io.asc")
         console.log ("hello, world")
 
         Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
 
-    - Now, you need to:
+    - The steps needed to run your image are:
         - run python and provide the arguments so that 'main.py' is executed. Python will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
-        If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
+        If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output.
         (to be improved) Error check is kind of weak, so it may still generate the assembly and not run properly.
         - compile the 'output.asm' file and produce some image that an emulator can run (i.e. .tap).
         - run the image produced in the emulator.
 
-        I´m using this simple batch file to run all the steps above (you can find it in the root directory in github):
+        To complete all these steps, I´m using a simple batch file to run all the steps above (you can find it in the root directory in github). 
+        In order to run it, you need to open the commnad prompt. be in the jassco folder (folder C:\Users\Alex\Documents\jassco).
 
             cd python
-            python main.py ..\%1 ..\output.asm
+            python main.py ..\%1 ..\%2
             cd ..
-            .\pasmo\pasmo.exe --tap output.asm %2
-            "c:\Program Files (x86)\Fuse\fuse.exe" %2
+            .\pasmo\pasmo.exe --tap %2 output.tap
+            "c:\Program Files (x86)\Fuse\fuse.exe" output.tap
+
+    - Steps to compile and run the code:
+        - Open the Command prompt in Windows.
+        - Move to the jassco folder:
+            cd C:\Users\Alex\Documents\jassco
+        - run the batch file with the required parameters. The syntax is: jassco.bat input_file output_file. Both files could be anything, but for our example we hound use:
+            jassco input.js output.asm
 
         - The output code should look like:
 
@@ -86,7 +97,7 @@ Working with Notepad++* and Command Line (*where it reads Notepad++, it could be
             str_max equ 32          ; maximum string length
             org 25000               ; initial code address
     
-            sta_cod jp mai_cod              ; jumps to main code
+            sta_cod jp mai_cod      ; jumps to main code
     
             ; Variable declarations --------------------------------------
             sta_ck2 defw 24500      ; auxiliary stack address
@@ -97,10 +108,7 @@ Working with Notepad++* and Command Line (*where it reads Notepad++, it could be
             RANDOMIZE USR 25000
         - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
-        It can´t be simpler.
-
-
-Other plaforms
+Other platforms
 
     I have no idea how to make this work in Linux or Mac, but I believe the steps would be the same.
 
