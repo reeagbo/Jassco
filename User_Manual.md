@@ -50,17 +50,16 @@ I´ll use the "hello, world!" example to go through all the steps.
 ## 2) Regular editor and compiler
 
 We´ll be working with Notepad++ and Command Line (where it reads Notepad++, it could be any text editor). Concepts are identical as with Eclipse, but steps are executed differently.
-    - Preparation (only need to do it once):
-        - Folder: You'll need a dedicated folder for JASSCO, anywhere. For the example, I´ll use \\MyDocuments\jassco. 
-        From here and on \\MyDocuments is whatever that forder is named in your computer, followed by \jassco. In my case: C:\Users\myself\Document.
-        - Python: 
-            - make sure Python is installed in your computer and runs from any directory.
-            - create a folder under jassco where all the jassco code will be living. In our example: \\MyDocuments\jassco\python
-            - get the files in the latest python folder in github and place them in \\MyDocuments\jassco folder. Until a naming convention is defined, latest date is the latest version.
-        - Pasmo: 
-            - create a folder under \\MyDocuments\jassco. In this example: \\MyDocuments\jassco\pasmo. 
-            - install Pasmo in this folder.
-        - Fuse: install Fuse in your PC. Let's use the default path (c:\Program Files (x86)\Fuse\fuse.exe).
+- Preparation (only need to do it once):
+  - Folder: You'll need a dedicated folder for JASSCO, anywhere. For the example, I´ll use \\MyDocuments\jassco. From here and on \\MyDocuments is whatever that forder is named in your computer, followed by \jassco. In my case: C:\Users\myself\Document.
+  - Python: 
+    - make sure Python is installed in your computer and runs from any directory.
+    - create a folder under jassco where all the jassco code will be living. In our example: \\MyDocuments\jassco\python
+    - get the files in the latest python folder in github and place them in \\MyDocuments\jassco folder. Until a naming convention is defined, latest date is the latest version.
+  - Pasmo: 
+    - create a folder under \\MyDocuments\jassco. In this example: \\MyDocuments\jassco\pasmo. 
+    - install Pasmo in this folder.
+    - Fuse: install Fuse in your PC. Let's use the default path (c:\Program Files (x86)\Fuse\fuse.exe).
 
     With this, we should be set to go.
 
