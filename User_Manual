@@ -1,6 +1,6 @@
 It's all under construction...
 
-Description
+#Description
 The python folder contains all the python code needed to produce the z80 assembly output. The idea is to keep things as simple as possible. Note that JASSCO only produces the assembly code. If you want to produce any sort of image, you need to take the assembly code to a compiler and produce it separately.
 
 A this point, two different compilation method are supported:
@@ -9,7 +9,7 @@ A this point, two different compilation method are supported:
 
 I´ll use the "hello, world!" example to go through all the steps.
 
-1) Eclipse environment
+##1) Eclipse environment
 
     Preparation (only need to do it once): The first thing you need to do is installing Eclipse and configuring the environment. There is a zillion places where this is explained. 
     I was a newbie myself and used this one:
@@ -47,7 +47,7 @@ I´ll use the "hello, world!" example to go through all the steps.
     - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
 
-2) Regular editor and compiler
+##2) Regular editor and compiler
 
 We´ll be working with Notepad++ and Command Line (where it reads Notepad++, it could be any text editor). Concepts are identical as with Eclipse, but steps are executed differently.
     - Preparation (only need to do it once):
@@ -114,12 +114,12 @@ We´ll be working with Notepad++ and Command Line (where it reads Notepad++, it 
             RANDOMIZE USR 25000
         - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
-Other platforms
+##Other platforms
 
     I have no idea how to make this work in Linux or Mac, but I believe the steps would be the same.
 
 
-Files
+#Files
 (note that .asc stands for assemply libraries that can be included in the general code)
 
 config.py      general configuration files, mostly stuffed with global variables
