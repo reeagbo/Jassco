@@ -122,13 +122,13 @@ We´ll be working with Notepad++ and Command Line (where it reads Notepad++, it 
 # Files
 (note that .asc stands for assemply libraries that can be included in the general code)
 
-config.py      general configuration files, mostly stuffed with global variables
-graph.asc      assembly library for ZX Spectrum graphics
-input.js       input file with source javaScript code
-io.asc         assembly library for ZX Spectrum I/O
-main.py        >>> main python program. the one you need to run
-math.asc       assembly library for math
-output.asm     output file containing result of compilation
-testplan.js    test plan with main features, used for non-regression tests
-translator.py  >>> here is the meat. all the translation process is done here.
-utils.py       other routines used by main.py and translator.py
+* config.py      general configuration files, mostly stuffed with global variables
+* graph.asc      assembly library for ZX Spectrum graphics
+* input.js       input file with source javaScript code
+* io.asc         assembly library for ZX Spectrum I/O
+* main.py        >>> main python program. the one you need to run
+* math.asc       assembly library for math
+* output.asm     output file containing result of compilation
+* testplan.js    test plan with main features, used for non-regression tests
+* translator.py  >>> here is the meat. all the translation process is done here.
+* utils.py       other routines used by main.py and translator.py
