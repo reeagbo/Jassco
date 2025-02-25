@@ -247,21 +247,21 @@ There are specific non-JS calls supported by the system:
 - Calls to console have limited support:
   - "console.log" is supported.
   - some other non-JS methods have been added to simplify logging different varable types in the screen:
-    - "console.logstring":
-      Example: console.logstring("hello"), similar to console.log, but without line feed.
-    - "console.lognumber":
-      Example: console.lognumber(55), will log "55" in the screen.
-    - "console.logchar":
-      Example: console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.
-    Note: all of these method support variables, and numeric ones support expressions.
+    - "console.logstring":  
+      Example: console.logstring("hello"), similar to console.log, but without line feed.  
+    - "console.lognumber":  
+      Example: console.lognumber(55), will log "55" in the screen.  
+    - "console.logchar":  
+      Example: console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
+    Note: all of these method support variables, and numeric ones support expressions.  
 
 # Restrictions
-This section is mostly a list of disclaimers that will improve with time.
-- No support for decimal numbers.
-- There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers. The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.
-- All variables are global, regardless where they are declared.
-- Strings restrictions:
-  - no support for string expressions and operations, except those described above.
-  - no support for any data structure (arrays, matrices...) with strings.
+This section is mostly a list of disclaimers that will improve with time.  
+- No support for decimal numbers.  
+- There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers.  The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
+- All variables are global, regardless where they are declared.  
+- Strings restrictions:  
+  - no support for string expressions and operations, except those described above.  
+  - no support for any data structure (arrays, matrices...) with strings.  
 
  
