@@ -20,6 +20,6 @@ Let me summarize what it's currently capable of:
 ## Limitations
 Limitations are huge at the moment. Actually, I´m at that stage that the number of doors I´m opening is bigger than the ones I´m closing. I will list the main ones here:
   - very limited string support, but getting better.
-  - functions and variables need to be declared before being called. The reason for this is that JS does a first pass to identofy all these elements and create the properyl, before actually interpreting the code. At the moment, JASSCO is doing all in one pass.
+  - functions and variables need to be declared before being called. The reason for this is that JS does a first pass to identofy all these elements and create the properly, before actually interpreting the code. At the moment, JASSCO is doing all in one pass.
   - all variables and object are global. no 'function' contexts implemented yet.
   - no object methods supported, with the exceptions listed above.
