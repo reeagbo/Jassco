@@ -1,6 +1,4 @@
-It's all under construction...
-
-# Description
+# Overview
 The python folder contains all the python code needed to produce the z80 assembly output. The idea is to keep things as simple as possible. Note that JASSCO only produces the assembly code. If you want to produce any sort of image, you need to take the assembly code to a compiler and produce it separately.
 
 A this point, two different compilation method are supported:
