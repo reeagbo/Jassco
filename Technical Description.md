@@ -213,36 +213,36 @@ console.log ("The number is (16): ", num1++)*
 
 ### Assignments
 All the unary expressions below are supported:  
-**Integers**
+**Integers**  
 equal "=", increment by "+=", decrement by "-=", multiply by "*=", divide by "/=", remainder by "%="  
-and with "&=", or with "|=", not with "^="
-shift left "<<=", shift right ">>="
+and with "&=", or with "|=", not with "^="  
+shift left "<<=", shift right ">>="  
 
-**Strings**
-equal "="
+**Strings**  
+equal "="  
 
-### Expressions
-No content in this section.
+### Expressions  
+No content.
 
 # Non-JS capabilities
 
 ## Include
-"include" allows adding z80 assembly libraries to the code:
-Example: 
-*include ("io.asc")*, will include in the produced assembly the code included in the io.asc file.
+"include" allows adding z80 assembly libraries to the code:  
+Example:  
+*include ("io.asc")*, will include in the produced assembly the code included in the io.asc file.  
 
 ## Assembly
-"assembly" allows to include raw assembly blocks in the JS code. This allows low level instructions like interrupts, port access or others directly without the need of additional libraries. Any text within the curly braces is inserted in the output code without modifications or analysis.
-Example: 
-*include {
-    ld a, 1
-    or a
-    }*
+"assembly" allows to include raw assembly blocks in the JS code. This allows low level instructions like interrupts, port access or others directly without the need of additional libraries. Any text within the curly braces is inserted in the output code without modifications or analysis.  
+Example:  
+*include {  
+    ld a, 1  
+    or a  
+    }*  
     
 ## System calls
-There are specific non-JS calls supported by the system:
-- "read" allows reading keyboard and saving its contents to a variable:
-  Example: read (string1), will read a string from the keyboard and store it string1 variable.
+There are specific non-JS calls supported by the system:  
+- "read" allows reading keyboard and saving its contents to a variable:  
+  Example: read (string1), will read a string from the keyboard and store it string1 variable.  
 
 - Calls to console have limited support:
   - "console.log" is supported.
