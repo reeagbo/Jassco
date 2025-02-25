@@ -57,94 +57,94 @@ No content.
 ### Break
 Break instruction in order to break out of Switch and If statements is supported.  
 Example:  
-*for (i = 0; i < 10; i++)
-{
-	if (i == 3) { break; }
-  num1 =  i;
-} 
+*for (i = 0; i < 10; i++)  
+{  
+	if (i == 3) { break; }  
+  num1 =  i;  
+}   
 console.log ("Stop at (3): ", i)*
 
 ### Continue
-Continue instruction in order to skip iterations in For loops is supported.
-Example:
-*for (i = 0; i < 10; i++)
-{
-	if (i == 3) { continue; }
-  console.log ("Skip (3): ", i)
+Continue instruction in order to skip iterations in For loops is supported.  
+Example:  
+*for (i = 0; i < 10; i++)  
+{  
+	if (i == 3) { continue; }  
+  console.log ("Skip (3): ", i)  
 }*
 
 ### Do-While / While-Do statements
-Do-While and While-Do code structures are supported.
-Example:
-*count = 0;
-do {
-  count = count+1;
-	console.log ("Number (stop at 5): ", count)
-}
+Do-While and While-Do code structures are supported.  
+Example:  
+*count = 0;  
+do {  
+  count = count+1;  
+	console.log ("Number (stop at 5): ", count)  
+}  
 while (count < 5);*
 
 ### For statement
-For code structures are supported.
-Example:
-*for (num1=1; num1<=5; num1=num1+1) {
-	console.log ("Number (stop at 5):", num1)
-}*
+For code structures are supported.  
+Example:  
+*for (num1=1; num1<=5; num1=num1+1) {  
+	console.log ("Number (stop at 5):", num1)  
+}*  
 
 ### Functions
-Standard function calls including parameters are supported. Using intergers as parameters is fully supported. String support has gone through limited testing.
-*num1=5
-num2=6
-function sum(num3, num4) {
-    num3= num3+num4
-        return num3;
-};
-num1= sum(num1, num2)
+Standard function calls including parameters are supported. Using intergers as parameters is fully supported. String support has gone through limited testing.  
+*num1=5  
+num2=6  
+function sum(num3, num4) {  
+    num3= num3+num4  
+        return num3;  
+};  
+num1= sum(num1, num2)  
 console.log ("6 + 5 (11) = ", num1)*
 
 ### If statement
-If-Else statements are supported.
-Example:
-*num1=5
-if (num1 < 10) {
-  tex = "Good morning";
-} else if (num1 < 20) {
-  tex = "Good day";
-} else {
-  tex = "Good evening";
-}
+If-Else statements are supported.  
+Example:  
+*num1=5  
+if (num1 < 10) {  
+  tex = "Good morning";  
+} else if (num1 < 20) {  
+  tex = "Good day";  
+} else {  
+  tex = "Good evening";  
+}  
 console.log ("Time: ", num1, ", Greeting: ", tex)*
 
 ### Return
-Return statement in functions is supported. See Functions section.
+Return statement in functions is supported. See Functions section.  
 
 ### Switch statement
-Switch-Break statements are supported.
-Example:
-*num1=2
-tex=""
-switch (num1) {
-	case 1:
-    	tex = "Monday";
-    	break;
-  	case 2:
-	  	tex = "Tuesday";
-	  	break;
-	case 3:
-		tex = "Wednesday";
-		break;
+Switch-Break statements are supported.  
+Example:  
+*num1=2  
+tex=""  
+switch (num1) {  
+	case 1:  
+    	tex = "Monday";  
+    	break;  
+  	case 2:  
+	  	tex = "Tuesday";  
+	  	break;  
+	case 3:  
+		tex = "Wednesday";  
+		break;  
 }
 console.log ("(Tuesday):", tex)*
 
 ## Expressions
-This section describes all the different expressions supported by the compiler.
+This section describes all the different expressions supported by the compiler.  
 
 ### Binary expressions
-Comparison expressions:
-"==" | "!=" | "<" | ">" |"<=" | ">="
-Arithmetical expressions:
-"+" | "-" | "*" | "/" | "%"
-Logical expressions:
-"&" | "|" | "^":
+Comparison expressions:  
+"==" | "!=" | "<" | ">" |"<=" | ">="  
+Arithmetical expressions:  
+"+" | "-" | "*" | "/" | "%"  
+Logical expressions:  
+"&" | "|" | "^":  
 
 ### Member expressions
 ### Unary expressions
