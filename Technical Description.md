@@ -93,7 +93,9 @@ Example:
 }*  
 
 ## Functions
-Standard function calls including parameters are supported. Using intergers as parameters is fully supported. String support has gone through limited testing.  
+Standard function calls including parameters are supported. Using intergers as parameters is fully supported.  
+- String support has gone through limited testing.
+- Recursion is supported.
 *num1=5  
 num2=6  
 function sum(num3, num4) {  
@@ -191,7 +193,7 @@ console.log ("Before dic1[5])(99): ", dic1[5])*
 There is a big variety of pre-defined objects in JS with associated methods. Only a few basic ones are supported.  
 
 **String object**  
-Supported methods: fromCharCode, length  
+Supported methods: fromCharCode (only one character in the call supported), length  
 
 **Math object**  
 Supported methods: Random. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.  
@@ -247,24 +249,59 @@ There are specific non-JS calls supported by the system:
 - Calls to console have limited support:
   - "console.log" is supported.
   - some other non-JS methods have been added to simplify logging different varable types in the screen:
-    - "console.logstring":  
+    - **console.logstring**:  
       Example:
       console.logstring("hello"), similar to console.log, but without line feed.  
-    - "console.lognumber":  
+    - **console.lognumber**:  
       Example:  
       console.lognumber(55), will log "55" in the screen.  
-    - "console.logchar":  
+    - **console.logchar**:  
       Example:
       console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
-    Note: all of these method support variables, and numeric ones support expressions.  
+    Note: all of these method support variables, and numeric ones support expressions.
+
+- **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.
+Example:
+*function use_inp(key) {  
+    if (key == "a") {  
+		document.removeEventListener("keydown", use_inp);  
+		console.log("keydown inactive!");  
+        return;  
+    } else {  
+        console.log("keydown active!");  
+    }  
+}
+console.log("press key or -a- to deactivate event");
+document.addEventListener("keydown", use_inp);*  
+
+**canvas** object allows drawing lines in the screen. Only a few methods are supported:  
+	- **moveTo**: moves the cursor position to a screen coordinates.  
+	- **lineTo**: draws a line from the cursor position to the indicated coordinates.
+ 	- **clearRect**: clears the screen
+Example: 
+*num1=0  
+var canvas = document.getElementById("myCanvas");  
+var ctx = canvas.getContext("2d");  
+for (num1=0; num1<=50; num1+=5) {  
+	ctx.moveTo(128-num1, 96-num1)  
+	ctx.lineTo(128-num1, 96+num1)  
+	ctx.lineTo(128+num1, 96+num1)  
+	ctx.lineTo(128+num1, 96-num1)  
+	ctx.lineTo(128-num1, 96-num1)  
+}*
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
 - No support for decimal numbers.  
 - There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers.  The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
-- All variables are global, regardless where they are declared.  
-- Strings restrictions:  
+- Variables:  
+	- all variables are global, regardless where they are declared.  
+  - matrices and arrays type is always integer.  
+  - all parameters in function declarations are considered integers.  
+  - declarations with non-literal values not supported. Needed for type identification.  
+- Strings:  
   - no support for string expressions and operations, except those described above.  
   - no support for any data structure (arrays, matrices...) with strings.  
+- "eval" is reserved for internal use (it's rarely used in JS anyway).  
 
  
