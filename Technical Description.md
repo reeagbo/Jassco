@@ -11,16 +11,16 @@ Jassco:
 - support for daya types is limited: 16-bit signed integers, boolean and very limited string operations.
 - supports all basic code flows allowed by JavaScript ES2.
 
-## Data Management
+# Data Management
 This section describes all data capabilities supported by the compiler, including different data types, variable types and data structures.
 
-### Literals
+## Literals
 Jassco supports three types of literal atoms:
 - Integers: all numbers are 16-bit signed integers.
 - Booleans: supported and internally handled as 0s and 1s.
 - Strings: supported with very limited capabilities.
 
-### Variable declararions
+## Variable declararions
 Diffferent types of decalrations are allowed:
 - Constants
 - Variables
@@ -31,10 +31,10 @@ An empty array can be created as:
 var string1=String(5)
 This will create an empty 5-character string. Note: String has capital S, as it is a JS pre-defined object.
 
-### Identifiers
+## Identifiers
 No content.
 
-### Arrays
+## Arrays
 Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty strings, empty arrays and dictionaries can be created:
 
 An empty array can be created as:
@@ -44,27 +44,27 @@ This will create an empty 5-number array. Note: Array has capital A, as it is a 
 var matrix1=Array(5,4)
 This will create an empty 5x4 numbers array. Note: Array has capital A, as it is a JS pre-defined object.
 
-### Objects
+## Objects
 Very limited (almost non-existing) support for objects. However, specific object methods cases are supported:
 - "charAt", "charCodeAt" methods are supported for string variables.
 
-## Code flows
+# Code flows
 This section describes all the code flows supported by the compiler.
 
-### Blocks
+## Blocks
 No content.
 
-### Break
+## Break
 Break instruction in order to break out of Switch and If statements is supported.  
 Example:  
-`for (i = 0; i < 10; i++)  
+*for (i = 0; i < 10; i++)  
 {  
 	if (i == 3) { break; }  
   num1 =  i;  
 }   
-console.log ("Stop at (3): ", i)`
+console.log ("Stop at (3): ", i)*
 
-### Continue
+## Continue
 Continue instruction in order to skip iterations in For loops is supported.  
 Example:  
 *for (i = 0; i < 10; i++)  
@@ -73,7 +73,7 @@ Example:
   console.log ("Skip (3): ", i)  
 }*
 
-### Do-While / While-Do statements
+## Do-While / While-Do statements
 Do-While and While-Do code structures are supported.  
 Example:  
 *count = 0;  
@@ -83,14 +83,14 @@ do {
 }  
 while (count < 5);*
 
-### For statement
+## For statement
 For code structures are supported.  
 Example:  
 *for (num1=1; num1<=5; num1=num1+1) {  
 	console.log ("Number (stop at 5):", num1)  
 }*  
 
-### Functions
+## Functions
 Standard function calls including parameters are supported. Using intergers as parameters is fully supported. String support has gone through limited testing.  
 *num1=5  
 num2=6  
@@ -101,7 +101,7 @@ function sum(num3, num4) {
 num1= sum(num1, num2)  
 console.log ("6 + 5 (11) = ", num1)*
 
-### If statement
+## If statement
 If-Else statements are supported.  
 Example:  
 *num1=5  
@@ -114,10 +114,10 @@ if (num1 < 10) {
 }  
 console.log ("Time: ", num1, ", Greeting: ", tex)*
 
-### Return
+## Return
 Return statement in functions is supported. See Functions section.  
 
-### Switch statement
+## Switch statement
 Switch-Break statements are supported.  
 Example:  
 *num1=2  
@@ -135,22 +135,92 @@ switch (num1) {
 }
 console.log ("(Tuesday):", tex)*
 
-## Expressions
+# Expressions
 This section describes all the different expressions supported by the compiler.  
 
-### Binary expressions
-Comparison expressions:  
-"==" | "!=" | "<" | ">" |"<=" | ">="  
-Arithmetical expressions:  
-"+" | "-" | "*" | "/" | "%"  
-Logical expressions:  
-"&" | "|" | "^":  
+## Binary expressions
+All the expressions used to build binary expressions below are supported.
+Integers
+- Comparison expressions:  
+	equal "==", not equal "!=", less "<", more ">", less or equal "<=", more or equal ">="  
+- Arithmetical expressions:  
+	sum "+", subtraction "-", multiplication "*", division "/", remainder "%"  
+- Logical expressions:
+ 	and "&", or "|", xor "^"
 
-### Member expressions
+Example:  
+*if (1!=1) {console.log("1!=1")}*
+
+Strings
+Very limited support.
+- Comparison expressions:  
+	equal "=="
+- Arithmetical expressions:  
+	sum "+"
+
+Example:  
+*if ("hello"=="hello") {console.log("same!")}*  
+
+## Member expressions
+This section covers a number of different items.  
+
+### Data structures:  
+
+- Array access:  
+*var arr1= [1,2,3,4]  
+console.log ("Before: arr1[2](3): ", arr1[2])  
+arr1[2]=10  
+console.log ("After: arr1[2](10): ", arr1[2])*
+
+- 2D matrices can be accessed: 
+Example:
+*var mat2= [[1,2,3],[4,5,6],[7,8,9]]  
+console.log("Before, mat1[1][2](6): ", mat2[1][2])  
+mat2[1][2]=10  
+console.log ("After, mat1[1][2](10): ", mat2[1][2])*
+
+- Dictionaries can be accessed:
+*var dic1 = {3:6, 5:10, 4:8}  
+console.log("Before dic1[5])(10): ", dic1[5])  
+dic1[5]=99  
+console.log ("Before dic1[5])(99): ", dic1[5])*
+
+### Pre-defined object methods
+There is a big variety of pre-defined objects in JS with associated methods. Only a few basic ones are supported.
+
+**String object**
+Supported methods: fromCharCode, length 
+
+**Math object**
+Supported methods: Random. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.
+
 ### Unary expressions
+All the unary expressions below are supported:  
+negate "~", negative "-"  
+  
+Example:  
+*num1 = ~15  
+console.log ("The number is (65520): ", num1)*
+
 ### Update expressions
+All the unary expressions below are supported:  
+increment "++", decrement "--"  
+
+*num1 = 15  
+console.log ("The number is (16): ", num1++)*
+
 ### Assignments
+All the unary expressions below are supported:  
+**Integers**
+equal "=", increment by "+=", decrement by "-=", multiply by "*=", divide by "/=", remainder by "%="  
+and with "&=", or with "|=", not with "^="
+shift left "<<=", shift right ">>="
+
+**Strings**
+equal "="
+
 ### Expressions
+No content in this section.
 
 # Non-JS capabilities
 
