@@ -55,7 +55,7 @@ This section describes all the code flows supported by the compiler.
 No content.
 
 ### Break
-Break instruction in order to break out of Switch and If statements is supported.
+Break instruction in order to break out of Switch and If statements is supported. 
 Example:
 *for (i = 0; i < 10; i++)
 {
