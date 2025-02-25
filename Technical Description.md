@@ -37,10 +37,10 @@ No content.
 Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty strings, empty arrays and dictionaries can be created:
 
 An empty array can be created as:  
-*var array1=Array(5)*
+*var array1=Array(5)*  
 This will create an empty 5-number array. Note: Array has capital A, as it is a JS pre-defined object.  
 
-*var matrix1=Array(5,4)* 
+*var matrix1=Array(5,4)*  
 This will create an empty 5x4 numbers array. Note: Array has capital A, as it is a JS pre-defined object.  
 
 ## Objects
