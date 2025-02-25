@@ -153,8 +153,8 @@ Integers
 Example:  
 *if (1!=1) {console.log("1!=1")}*
 
-Strings
-Very limited support.
+Strings  
+Very limited support.  
 - Comparison expressions:  
 	equal "=="
 - Arithmetical expressions:  
