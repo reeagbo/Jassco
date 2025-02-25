@@ -40,8 +40,11 @@ An empty array can be created as:
 *var array1=Array(5)*  
 This will create an empty 5-number array. Note: Array has capital A, as it is a JS pre-defined object.  
 
-*var matrix1=Array(5,4)*  
-This will create an empty 5x4 numbers array. Note: Array has capital A, as it is a JS pre-defined object.  
+*var matrix1=Array(5,2)*  
+This will create an empty 5x4 numbers matrix. Note: Array has capital A, as it is a JS pre-defined object.  
+
+*var dict1=Map(5,4)*  
+This will create an empty 5 entries, 2 fields dictionary. Note: Map has capital M, as it is a JS pre-defined object.  
 
 ## Objects
 Very limited (almost non-existing) support for objects. However, specific object methods cases are supported:
