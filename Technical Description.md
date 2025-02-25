@@ -57,12 +57,12 @@ No content.
 ### Break
 Break instruction in order to break out of Switch and If statements is supported.  
 Example:  
-*for (i = 0; i < 10; i++)  
+`for (i = 0; i < 10; i++)  
 {  
 	if (i == 3) { break; }  
   num1 =  i;  
 }   
-console.log ("Stop at (3): ", i)*
+console.log ("Stop at (3): ", i)`
 
 ### Continue
 Continue instruction in order to skip iterations in For loops is supported.  
