@@ -248,11 +248,14 @@ There are specific non-JS calls supported by the system:
   - "console.log" is supported.
   - some other non-JS methods have been added to simplify logging different varable types in the screen:
     - "console.logstring":  
-      Example: console.logstring("hello"), similar to console.log, but without line feed.  
+      Example:
+      console.logstring("hello"), similar to console.log, but without line feed.  
     - "console.lognumber":  
-      Example: console.lognumber(55), will log "55" in the screen.  
+      Example:  
+      console.lognumber(55), will log "55" in the screen.  
     - "console.logchar":  
-      Example: console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
+      Example:
+      console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
     Note: all of these method support variables, and numeric ones support expressions.  
 
 # Restrictions
