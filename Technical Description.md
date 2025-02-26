@@ -163,14 +163,14 @@ console.log ("Before: arr1[2](3): ", arr1[2])
 arr1[2]=10  
 console.log ("After: arr1[2](10): ", arr1[2])*
 
-- 2D matrices can be accessed: 
+- 2D matrices can be accessed:  
 Example:
 *var mat2= [[1,2,3],[4,5,6],[7,8,9]]  
 console.log("Before, mat1[1][2](6): ", mat2[1][2])  
 mat2[1][2]=10  
 console.log ("After, mat1[1][2](10): ", mat2[1][2])*
 
-- Dictionaries can be accessed:
+- Dictionaries can be accessed:  
 *var dic1 = {3:6, 5:10, 4:8}  
 console.log("Before dic1[5])(10): ", dic1[5])  
 dic1[5]=99  
