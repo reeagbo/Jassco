@@ -24,27 +24,13 @@ Jassco supports three types of literal atoms:
 Diffferent types of declarations are allowed:
 - Constants
 - Variables  
-All of them can be of any of the types described above. Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created. The reason for this is that it is not practical to have variables of dynamic sizes, as this would require mechanisms to move those structures in the computer menory. As an alternative, empty arrays, strings and dictionaries can be acreated.
-
-An empty array can be created as:  
-*var string1=String(5)*  
-This will create an empty 5-character string. Note: String has capital S, as it is a JS pre-defined object.
+All of them can be of any of the types described above. Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created (see **non-JS capabilities** section).  
 
 ## Identifiers
-No content.
+No content.  
 
 ## Arrays
-Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty strings, empty arrays and dictionaries can be created:
-
-An empty array can be created as:  
-*var array1=Array(5)*  
-This will create an empty 5-number array. Note: Array has capital A, as it is a JS pre-defined object.  
-
-*var matrix1=Array(5,2)*  
-This will create an empty 5x4 numbers matrix. Note: Array has capital A, as it is a JS pre-defined object.  
-
-*var dict1=Map(5,4)*  
-This will create an empty 5 entries, 2 fields dictionary. Note: Map has capital M, as it is a JS pre-defined object.  
+Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty strings, empty arrays and dictionaries can be created (see **non-JS capabilities** section).   
 
 ## Objects
 Very limited (almost non-existing) support for objects. However, specific object methods cases are supported:
@@ -227,6 +213,25 @@ equal "="
 No content.
 
 # Non-JS capabilities
+
+## Empty data structures creation
+Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created. The reason for this is that it is not practical to have variables of dynamic sizes, as this would require mechanisms to move those structures in the computer menory. As an alternative, empty arrays, strings and dictionaries can be created.
+
+An empty array can be created as:  
+*var string1=String(5)*  
+This will create an empty 5-character string. Note: String has capital S, as it is a JS pre-defined object.  
+
+An empty array can be created as:  
+*var array1=Array(5)*  
+This will create an empty 5-number array. Note: Array has capital A, as it is a JS pre-defined object.  
+
+An empty matrix can be created as:  
+*var matrix1=Array(5,2)*  
+This will create an empty 5x4 numbers matrix. Note: Array has capital A, as it is a JS pre-defined object.  
+
+An empty dictionary can be created as:  
+*var dict1=Map(5,4)*  
+This will create an empty 5 entries, 2 fields dictionary. Note: Map has capital M, as it is a JS pre-defined object.  
 
 ## Include
 "include" allows adding z80 assembly libraries to the code:  
