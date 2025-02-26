@@ -269,8 +269,8 @@ There are specific non-JS calls supported by the system:
       console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
     Note: all of these method support variables, and numeric ones support expressions.
 
-- **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.
-Example:
+- **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.  
+Example:  
 *function use_inp(key) {  
     if (key == "a") {  
 		document.removeEventListener("keydown", use_inp);  
@@ -283,11 +283,11 @@ Example:
 console.log("press key or -a- to deactivate event");
 document.addEventListener("keydown", use_inp);*  
 
-**canvas** object allows drawing lines in the screen. Only a few methods are supported:  
+**canvas** object allows drawing lines in the screen. Only a few methods are supported:    
 	- **moveTo**: moves the cursor position to a screen coordinates.  
-	- **lineTo**: draws a line from the cursor position to the indicated coordinates.
- 	- **clearRect**: clears the screen
-Example: 
+	- **lineTo**: draws a line from the cursor position to the indicated coordinates.  
+ 	- **clearRect**: clears the screen  
+Example:  
 *num1=0  
 var canvas = document.getElementById("myCanvas");  
 var ctx = canvas.getContext("2d");  
@@ -297,7 +297,7 @@ for (num1=0; num1<=50; num1+=5) {
 	ctx.lineTo(128+num1, 96+num1)  
 	ctx.lineTo(128+num1, 96-num1)  
 	ctx.lineTo(128-num1, 96-num1)  
-}*
+}*  
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
