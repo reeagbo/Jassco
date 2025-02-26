@@ -23,7 +23,7 @@ Jassco supports three types of literal atoms:
 ## Variable declarations
 Diffferent types of declarations are allowed:
 - Constants
-- Variables
+- Variables  
 All of them can be of any of the types described above. Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created. The reason for this is that it is not practical to have variables of dynamic sizes, as this would require mechanisms to move those structures in the computer menory. As an alternative, empty arrays, strings and dictionaries can be acreated.
 
 An empty array can be created as:  
