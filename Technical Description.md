@@ -80,8 +80,8 @@ Example:
 
 ## Functions
 Standard function calls including parameters are supported. Using intergers as parameters is fully supported.  
-- String support has gone through limited testing.
-- Recursion is supported.
+- String support has gone through limited testing.  
+- Recursion is supported.  
 *num1=5  
 num2=6  
 function sum(num3, num4) {  
