@@ -180,10 +180,13 @@ console.log ("Before dic1[5])(99): ", dic1[5])*
 There is a big variety of pre-defined objects in JS with associated methods. Only a few basic ones are supported.  
 
 **String object**  
-Supported methods: fromCharCode (only one character in the call supported), length  
+Supported methods:  
+- **.fromCharCode** (only one character in the call supported)
+- **.length**  
 
 **Math object**  
-Supported methods: Random. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.  
+Supported methods: 
+- **.random**. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.  
 
 ### Unary expressions
 All the unary expressions below are supported:  
