@@ -7,7 +7,7 @@ The document includes:
 # Technical description
 Jassco:
 - is written in Python and it makes extensive use of the esprima library, a well known JavaScript parser.
-- is mostly based on JavaScript ES2. However, it is not fully supported and it also has some add-ons that allow specific capabilities needed for z80 based computers. Both will be describes later.
+- is mostly based on JavaScript ES2. However, it is not fully supported and it also has some add-ons that allow specific capabilities needed for z80 based computers. Both will be described later.
 - support for daya types is limited: 16-bit signed integers, boolean and very limited string operations.
 - supports all basic code flows allowed by JavaScript ES2.
 
