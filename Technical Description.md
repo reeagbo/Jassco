@@ -302,12 +302,13 @@ for (num1=0; num1<=50; num1+=5) {
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
 - No support for decimal numbers.  
-- There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers.  The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
+- There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers. The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
 - Variables:  
 	- all variables are global, regardless where they are declared.  
   - matrices and arrays type is always integer.  
   - all parameters in function declarations are considered integers.  
   - declarations with non-literal values not supported. Needed for type identification.  
+  - declarations without assignment (i.e. var num1) not allowed. Needed for type identification.  
 - Strings:  
   - no support for string expressions and operations, except those described above.  
   - no support for any data structure (arrays, matrices...) with strings.  
