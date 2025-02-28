@@ -20,11 +20,15 @@ Jassco supports three types of literal atoms:
 - Booleans: supported and internally handled as 0s and 1s.
 - Strings: supported with very limited capabilities.
 
-## Variable declarations
-Diffferent types of declarations are allowed:
+## Variable and constact declarations
+Diffferent types of declarations are allowed.
 - Constants
-- Variables  
-All of them can be of any of the types described above. Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created (see **non-JS capabilities** section).  
+- Variables
+
+Notes:
+- All of them can be of any of the types described above.
+- Declarations cannot be without assignemnt. This is needed to identify the variable type.
+- Variables are declared in JavaScript standard way. However, several non-JS possibilities have been created (see **non-JS capabilities** section).  
 
 ## Identifiers
 No content.  
