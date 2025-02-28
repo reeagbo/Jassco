@@ -311,6 +311,7 @@ This section is mostly a list of disclaimers that will improve with time.
 - Strings:  
   - no support for string expressions and operations, except those described above.  
   - no support for any data structure (arrays, matrices...) with strings.  
+- Recursion: non-basic scenarios may not work. Specially those where the same function is called several times. This is related to the fact that all variables are global. Therefore, if a first call to a function alters the variables, as there is no local context to the function, the second and subsequent calls will not find the expected original values.  
 - "eval" is reserved for internal use (it's rarely used in JS anyway).  
 
  
