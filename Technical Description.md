@@ -2,7 +2,7 @@
 The aim of this document is to describe the technical capabilities os the Jassco compiler. Jassco is a cross-compilar, able to generate Z80 assembly code from a JavaScript piece of code. 
 The document includes:
 - Features and capailities supported by the compiler.
-- Restrictions and knwon issues.
+- Restrictions and known issues.
 
 # Technical description
 Jassco:
