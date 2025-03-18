@@ -84,7 +84,8 @@ Example:
 
 ## Functions
 Standard function calls including parameters are supported. Using intergers as parameters is fully supported.  
-- String support has gone through limited testing.  
+- A function using *Return* must be part of an expression, and a function without *Return* must not.
+- String support has gone through limited testing.
 - Recursion is supported.
 - Example:  
 *num1=5  
@@ -95,6 +96,13 @@ function sum(num3, num4) {
 };  
 num1= sum(num1, num2)  
 console.log ("6 + 5 (11) = ", num1)*
+
+Known issues: recursion with more than one call to the recursive function will not work.
+Example:
+*function fibonacci(n) {
+    if (n < 2) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}*
 
 ## If statement
 If-Else statements are supported.  
@@ -167,14 +175,14 @@ console.log ("Before: arr1[2](3): ", arr1[2])
 arr1[2]=10  
 console.log ("After: arr1[2](10): ", arr1[2])*
 
-- 2D matrices can be accessed:  
+- 2D matrices access:  
 Example:
 *var mat2= [[1,2,3],[4,5,6],[7,8,9]]  
 console.log("Before, mat1[1][2](6): ", mat2[1][2])  
 mat2[1][2]=10  
 console.log ("After, mat1[1][2](10): ", mat2[1][2])*
 
-- Dictionaries can be accessed:  
+- Dictionaries access:  
 *var dic1 = {3:6, 5:10, 4:8}  
 console.log("Before dic1[5])(10): ", dic1[5])  
 dic1[5]=99  
@@ -190,7 +198,29 @@ Supported methods:
 
 **Math object**  
 Supported methods: 
-- **.random**. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.  
+- **.random**. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.
+
+**Memory object**  
+It requires "memory.asc" module.
+Supported methods: 
+- **.read**: reads a memory position.
+Syntax: memory.read (address, value)  
+- **.write**. reads a memory position.
+Syntax: memory.write (address, value)  
+Example:
+*include ("io.asc")
+include ("memory.asc")
+
+console.log(memory.read(0xa000))
+memory.write(0xa000,0xff)
+console.log(memory.read(0xa000))*  
+- **.move**. copies a memory block.
+Syntax: Memory.copy (origin, destination, size)   
+Example:
+*include ("memory.asc")
+memory.copy(0xa000, 0xb000, 0xff)
+*   
+
 
 ### Unary expressions
 All the unary expressions below are supported:  
