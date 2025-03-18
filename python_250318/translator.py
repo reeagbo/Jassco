@@ -649,7 +649,7 @@ def translate_to_assembly(js_code):
                                     nodes_code.append(f"        call mem_wri            ; ({node.type}) print string")
                                     nodes_code.append ("")   
                             
-                            case "move":
+                            case "copy":
                                 if node.arguments:
                                     for argument in node.arguments: # for every parameter in the call
                                         process_node(argument)
