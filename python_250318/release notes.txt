@@ -1,9 +1,9 @@
 Release notes
 
 25/03/18
-- Known objects and methods are not case sensitive anymore.
-- New "memory" object with methods to read, write memory positions and copy blocks (see technical description).
-- Recursion improved. Known restriction: function with several recursive calls within the function will not work.
+- known objects, primitives and methods are not case sensitive anymore (console, read, memory, include, addeventlistener...).
+- new "memory" object with methods to read, write memory positions and copy blocks (see technical description).
+- recursion improved. Known restriction: function with several recursive calls within the function will not work.
 
 25/02/28
 - Math.Random function improved. It used to produce ascending numbers.
