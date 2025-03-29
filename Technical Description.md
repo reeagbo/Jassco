@@ -34,11 +34,11 @@ Notes:
 No content.  
 
 ## Arrays
-Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty strings, empty arrays and dictionaries can be created (see **non-JS capabilities** section).   
+Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty s, empty arrays and dictionaries can be created (see **non-JS capabilities** section).   
 
 ## Objects
 Very limited (almost non-existing) support for objects. However, specific object methods cases are supported:
-- "charAt", "charCodeAt" methods are supported for string variables.
+- "charAt", "charCodeAt" methods are supported for  variables.
 
 # Code flows
 This section describes all the code flows supported by the compiler.
@@ -54,7 +54,8 @@ Example:
 	if (i == 3) { break; }  
   num1 =  i;  
 }   
-console.log ("Stop at (3): ", i)*
+console.log ("Stop at (3): ", i)*  
+
 
 ## Continue
 Continue instruction in order to skip iterations in For loops is supported.  
@@ -85,7 +86,7 @@ Example:
 ## Functions
 Standard function calls including parameters are supported. Using intergers as parameters is fully supported.  
 - A function using *Return* must be part of an expression, and a function without *Return* must not.
-- String support has gone through limited testing.
+-  support has gone through limited testing.
 - Recursion is supported.
 - Example:  
 *num1=5  
@@ -149,16 +150,6 @@ Integers
 Example:  
 *if (1!=1) {console.log("1!=1")}*
 
-Strings  
-Very limited support.  
-- Comparison expressions:  
-	equal "=="
-- Arithmetical expressions:  
-	sum "+"
-
-Example:  
-*if ("hello"=="hello") {console.log("same!")}*  
-
 ## Member expressions
 This section covers a number of different items.  
 
@@ -216,14 +207,16 @@ Example:
 memory.copy(0xa000, 0xb000, 0xff)
 *   
 
+## Operations
+### Bitwise operations
+Standard JavaScript bitwise operations (&&, ||, !) are supported.  
+Example:  
+*if (i && 3) { break; }*
 
 ### Unary expressions
-All the unary expressions below are supported:  
-negate "~", negative "-"  
-  
+Standard JavaScript unary expressions are supported: negate "~", negative "-".
 Example:  
 *num1 = ~15  
-console.log ("The number is (65520): ", num1)*
 
 ### Update expressions
 All the unary expressions below are supported:  
@@ -231,6 +224,15 @@ increment "++", decrement "--"
 
 *num1 = 15  
 console.log ("The number is (16): ", num1++)*
+
+### String operations  
+Very limited support.  
+- Comparison expressions:  
+	equal "=="  
+- Arithmetical expressions:  
+	sum "+"  
+Example:  
+*if ("hello"=="hello") {console.log("same!")}*  
 
 ### Assignments
 All the unary expressions below are supported:  
@@ -272,7 +274,7 @@ Example:
 *include ("io.asc")*, will include in the produced assembly the code included in the io.asc file.  
 
 ## Assembly
-"assembly" allows to include raw assembly blocks in the JS code. This allows low level instructions like interrupts, port access or others directly without the need of additional libraries. Any text within the curly braces is inserted in the output code without modifications or analysis.  
+This primitive allows inclusion of raw assembly blocks in the JS code. This allows low level instructions like interrupts, port access or others directly without the need of additional libraries. Any text within the curly braces is inserted in the output code without modifications or analysis.  
 Example:  
 *include {  
     ld a, 1  
@@ -280,25 +282,27 @@ Example:
     }*  
     
 ## System calls
-There are specific non-JS calls supported by the system:  
-- "read" allows reading keyboard and saving its contents to a variable:  
+There are specific non-JS calls supported by the system. Note that, against JS standard, these methods are not case sensitive.  
+
+**read** allows reading keyboard and saving its contents to a variable:  
   Example: read (string1), will read a string from the keyboard and store it string1 variable.  
 
-- Calls to console have limited support:
-  - "console.log" is supported.
-  - some other non-JS methods have been added to simplify logging different varable types in the screen:
-    - **console.logstring**:  
-      Example:
-      console.logstring("hello"), similar to console.log, but without line feed.  
-    - **console.lognumber**:  
-      Example:  
-      console.lognumber(55), will log "55" in the screen.  
-    - **console.logchar**:  
-      Example:
-      console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
+**console**. Calls to console have limited support:
+	  - "console.log" is supported.
+	  - some other non-JS methods have been added to simplify logging different varable types in the screen:
+		    - **.logstring**:  
+      			Example:
+      			console.logstring("hello"), similar to console.log, but without line feed.  
+    	            - **.lognumber**:  
+      			Example:  
+      			console.lognumber(55), will log "55" in the screen.  
+    		    - **.logchar**:  
+      			Example:
+      			console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
+	 	    - **.clear** clears the screen including attributes, using the ROM routine.
     Note: all of these method support variables, and numeric ones support expressions.
 
-- **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.  
+**keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.  
 Example:  
 *function use_inp(key) {  
     if (key == "a") {  
@@ -313,20 +317,40 @@ console.log("press key or -a- to deactivate event");
 document.addEventListener("keydown", use_inp);*  
 
 **canvas** object allows drawing lines in the screen. Only a few methods are supported:    
-	- **moveTo**: moves the cursor position to a screen coordinates.  
-	- **lineTo**: draws a line from the cursor position to the indicated coordinates.  
- 	- **clearRect**: clears the screen  
-Example:  
-*num1=0  
-var canvas = document.getElementById("myCanvas");  
-var ctx = canvas.getContext("2d");  
-for (num1=0; num1<=50; num1+=5) {  
-	ctx.moveTo(128-num1, 96-num1)  
-	ctx.lineTo(128-num1, 96+num1)  
-	ctx.lineTo(128+num1, 96+num1)  
-	ctx.lineTo(128+num1, 96-num1)  
-	ctx.lineTo(128-num1, 96-num1)  
-}*  
+	- **.moveTo** moves the cursor position to a screen coordinates.  
+	- **.lineTo** draws a line from the cursor position to the indicated coordinates.  
+ 	- **.clearScreen** clears the screen  
+	Example:  
+	*num1=0  
+	var canvas = document.getElementById("myCanvas");  
+	var ctx = canvas.getContext("2d");  
+	for (num1=0; num1<=50; num1+=5) {  
+		ctx.moveTo(128-num1, 96-num1)  
+		ctx.lineTo(128-num1, 96+num1)  
+		ctx.lineTo(128+num1, 96+num1)  
+		ctx.lineTo(128+num1, 96-num1)  
+		ctx.lineTo(128-num1, 96-num1)  
+	}*  
+
+**math** object. Limited support:  
+	- **.random** generates a 16-bit pseudo-random number.  
+
+**string** object. Limited support:   
+	- **.fromCharCode** retruns a char corresponding to an 8-bit ASCII value.  
+ 	Example: 
+  	*let char = String.fromCharCode(65);*  
+
+**memory** object. Created to deal with low level memory operations, typically not supported by JS.   
+	- **read** reads a memory position. Syntax: memory.read (address)  
+ 	- **write** writes a memory position. Syntax: memory.write (address, value)  
+  	- **copy** reads a memory position. Syntax: memory.copy (source, target, block size)  
+ 	Example:  
+  	*value= memory.read (0xA000)  
+	console.log(value)  
+ 	memory.write(0xA0000, value+1)  
+  	console.log(value)*  
+   	Example:
+    	*memory.copy(0xA000, 0xB000, 256)*
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
