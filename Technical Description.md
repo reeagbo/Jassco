@@ -204,17 +204,16 @@ console.log(memory.read(0xa000))*
 Syntax: Memory.copy (origin, destination, size)   
 Example:
 *include ("memory.asc")
-memory.copy(0xa000, 0xb000, 0xff)
-*   
+memory.copy(0xa000, 0xb000, 0xff)*     
 
 ## Operations
 ### Bitwise operations
 Standard JavaScript bitwise operations (&&, ||, !) are supported.  
 Example:  
-*if (i && 3) { break; }*
+*if (i && 3) { break; }*  
 
 ### Unary expressions
-Standard JavaScript unary expressions are supported: negate "~", negative "-".
+Standard JavaScript unary expressions are supported: negate "~", negative "-".  
 Example:  
 *num1 = ~15  
 
