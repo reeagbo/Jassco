@@ -174,38 +174,6 @@ console.log("Before dic1[5])(10): ", dic1[5])
 dic1[5]=99  
 console.log ("Before dic1[5])(99): ", dic1[5])*
 
-### Pre-defined object methods
-There is a big variety of pre-defined objects in JS with associated methods. Only a few basic ones are supported.  
-
-**String object**  
-Supported methods:  
-- **.fromCharCode** (only one character in the call supported)
-- **.length**  
-
-**Math object**  
-Supported methods: 
-- **.random**. It does not work as in JS. Instead of an integer between 0 and 1, it generates a pseudo-random 16-bit signed integer.
-
-**Memory object**  
-It requires "memory.asc" module.
-Supported methods: 
-- **.read**: reads a memory position.
-Syntax: memory.read (address, value)  
-- **.write**. reads a memory position.
-Syntax: memory.write (address, value)  
-Example:
-*include ("io.asc")
-include ("memory.asc")
-
-console.log(memory.read(0xa000))
-memory.write(0xa000,0xff)
-console.log(memory.read(0xa000))*  
-- **.move**. copies a memory block.
-Syntax: Memory.copy (origin, destination, size)   
-Example:
-*include ("memory.asc")
-memory.copy(0xa000, 0xb000, 0xff)*     
-
 ## Operations
 ### Bitwise operations
 Standard JavaScript bitwise operations (&&, ||, !) are supported.  
@@ -246,7 +214,9 @@ equal "="
 ### Expressions  
 No content.
 
-# Non-JS capabilities
+# Objec support and Non-JS capabilities
+
+It looks like a messed-up title for a section. The reason for this is that, at the moment, the compliler supports a few standard object methods and a few "made-up" object methods and other facilities. The more systematic way to classify them was to have them together.
 
 ## Empty data structures creation
 Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created. The reason for this is that it is not practical to have variables of dynamic sizes, as this would require mechanisms to move those structures in the computer menory. As an alternative, empty arrays, strings and dictionaries can be created.
@@ -268,7 +238,7 @@ An empty dictionary can be created as:
 This will create an empty 5 entries, 2 fields dictionary. Note: Map has capital M, as it is a JS pre-defined object.  
 
 ## Include
-"include" allows adding z80 assembly libraries to the code:  
+**include** allows adding z80 assembly libraries to the code:  
 Example:  
 *include ("io.asc")*, will include in the produced assembly the code included in the io.asc file.  
 
@@ -286,7 +256,7 @@ There are specific non-JS calls supported by the system. Note that, against JS s
 **read** allows reading keyboard and saving its contents to a variable:  
   Example: read (string1), will read a string from the keyboard and store it string1 variable.  
 
-**console**. Calls to console have limited support:
+**console** calls to console have limited support:
 	  - "console.log" is supported.
 	  - some other non-JS methods have been added to simplify logging different varable types in the screen:
 		    - **.logstring**:  
@@ -335,9 +305,12 @@ document.addEventListener("keydown", use_inp);*
 	- **.random** generates a 16-bit pseudo-random number.  
 
 **string** object. Limited support:   
-	- **.fromCharCode** retruns a char corresponding to an 8-bit ASCII value.  
+	- **.fromCharCode** returns a char corresponding to an 8-bit ASCII value.  
  	Example: 
   	*let char = String.fromCharCode(65);*  
+   	- **.length** retruns the string length.  
+ 	Example: 
+  	*let char = String.length("hola");*  
 
 **memory** object. Created to deal with low level memory operations, typically not supported by JS.   
 	- **read** reads a memory position. Syntax: memory.read (address)  
