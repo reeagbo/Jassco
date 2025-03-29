@@ -8,6 +8,8 @@ Features
 - improved array/matrix declaration, using "defs" to book space in memory.
 Fixes
 - if/while/dowhile/for not releasing stack resources in some cases.
+Documentation
+- Technical desription updated accordingly.
 
 25/03/18
 - known objects and methods are not case sensitive anymore.
