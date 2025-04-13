@@ -5,6 +5,7 @@ Features
 - Added a "set_env" routine to the io.asc file to allow for screen system initialization.
 - "EmptyStatemnt" expression handler added. It deals mostly with misplaced semicolons in JS.
 Fixes
+- all breaks (for/while/dowhile) reworked. It would not work properly any many nested structures.
 - "<" operation assembly simplified.
 - console.log fixed for 1-char strings.
 
