@@ -23,11 +23,19 @@ Jassco supports three types of literal atoms:
 ## Variable and constact declarations
 Diffferent types of declarations are allowed.
 - Constants
-- Variables
+Example:
+*const wP = 0x05*
+- Variables:
+Example:
+*var rank=0*
+*var text="hello"*
+
+Single-line declaration is allowed.
+*var num1=0, num2=0*
 
 Notes:
 - All of them can be of any of the types described above.
-- Declarations cannot be without assignemnt. This is needed to identify the variable type.
+- Declarations cannot be without assignment . This is needed to identify the variable type (Example: var number).
 - Variables are declared in JavaScript standard way. However, several non-JS possibilities have been created (see **non-JS capabilities** section).  
 
 ## Identifiers
@@ -37,8 +45,7 @@ No content.
 Only arrays of integers and 2D matrices are supported. Standard JS creation for both is available. Also, similarly to empty s, empty arrays and dictionaries can be created (see **non-JS capabilities** section).   
 
 ## Objects
-Very limited (almost non-existing) support for objects. However, specific object methods cases are supported:
-- "charAt", "charCodeAt" methods are supported for  variables.
+Very limited (almost non-existing) support for objects. However, specific object methods cases are supported. See **Object support and Non-JS capabilities** section.
 
 # Code flows
 This section describes all the code flows supported by the compiler.
@@ -86,7 +93,6 @@ Example:
 ## Functions
 Standard function calls including parameters are supported. Using intergers as parameters is fully supported.  
 - A function using *Return* must be part of an expression, and a function without *Return* must not.
--  support has gone through limited testing.
 - Recursion is supported.
 - Example:  
 *num1=5  
@@ -181,13 +187,13 @@ Example:
 *if (i && 3) { break; }*  
 
 ### Unary expressions
-Standard JavaScript unary expressions are supported: negate "~", negative "-".  
+Standard JavaScript unary expressions are supported: Negate "~", Negative "-".  
 Example:  
-*num1 = ~15  
+*num1 = -15*  
 
 ### Update expressions
 All the unary expressions below are supported:  
-increment "++", decrement "--"  
+Increment "++", Decrement "--"  
 
 *num1 = 15  
 console.log ("The number is (16): ", num1++)*
@@ -195,26 +201,26 @@ console.log ("The number is (16): ", num1++)*
 ### String operations  
 Very limited support.  
 - Comparison expressions:  
-	equal "=="  
+	Equal "=="  
 - Arithmetical expressions:  
-	sum "+"  
+  	Sum "+"  
 Example:  
 *if ("hello"=="hello") {console.log("same!")}*  
 
 ### Assignments
 All the unary expressions below are supported:  
 **Integers**  
-equal "=", increment by "+=", decrement by "-=", multiply by "*=", divide by "/=", remainder by "%="  
-and with "&=", or with "|=", not with "^="  
+Equal "=", Increment by "+=", Decrement by "-=", Multiply by "*=", Divide by "/=", Remainder by "%="  
+AND with "&=", OR with "|=", NOT with "^="  
 shift left "<<=", shift right ">>="  
 
 **Strings**  
-equal "="  
+Equal "="  
 
 ### Expressions  
 No content.
 
-# Objec support and Non-JS capabilities
+# Object support and Non-JS capabilities
 
 It looks like a messed-up title for a section. The reason for this is that, at the moment, the compliler supports a few standard object methods and a few "made-up" object methods and other facilities. The more systematic way to classify them was to have them together.
 
@@ -326,19 +332,19 @@ document.addEventListener("keydown", use_inp);*
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
-- No support for decimal numbers.  
+- No support for decimal/float numbers.  
 - There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers. The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
 - Variables:  
-	- all variables are global, regardless where they are declared.  
-  - matrices and arrays type is always integer.  
+  - all variables are global, regardless where they are declared.  
+  - type of matrices and arrays is always integer.  
   - all parameters in function declarations are considered integers.  
   - declarations with non-literal values not supported. Needed for type identification.  
   - declarations without assignment (i.e. var num1) not allowed. Needed for type identification.  
 - Strings:  
   - no support for string expressions and operations, except those described above.  
-  - no support for any data structure (arrays, matrices...) with strings.  
+  - no support for any data structure (arrays, matrices...) using strings.  
 - Function recursion: non-basic scenarios may not work.
-  - recursion with more than one call to the recursive function will not work.
+  - recursion with more than one call to the recursive function at the same recursion level will not work.
 Example:
 *function fibonacci(n) {  
     if (n < 2) return n;  
