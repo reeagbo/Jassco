@@ -17,3 +17,8 @@ Let me summarize what it's currently capable of:
   - functions: declaration and call, passing parameters and recursion (only numbers tested).
   - methods: generally, not supported, but some specific cases are.
 
+## Files and Folders
+- Releases: release folders are numbered as YY.WW. The latest should be the right one for you, unless indicated otherwise.
+- Technical Description: document describing the JavaScript capabilities supported by the compiler.
+- User Manual: basic guide explaining how to install the compiler and produce a "Hello, world!".
+- Examples: Working JavaScript code for the compiler.
