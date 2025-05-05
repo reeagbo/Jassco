@@ -351,7 +351,7 @@ Basic timer is implemented via standard JavaScript methods: **setInterval** and 
 		}  
 	}  
 	// main code  
-	setInterval(clock, 1000);**  
+	setInterval(clock, 1000);*  
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
