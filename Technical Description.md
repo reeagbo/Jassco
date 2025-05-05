@@ -266,16 +266,16 @@ There are specific non-JS calls supported by the system. Note that, against JS s
 	  - "console.log()" is supported.
 	  - some other non-JS methods have been added to simplify logging different varable types in the screen:
 		    - **.logstring()**:  
-      			Example:
+      			Example:  
       			console.logstring("hello"), similar to console.log, but without line feed.  
     	            - **.lognumber()**:  
       			Example:  
       			console.lognumber(55), will log "55" in the screen.  
     		    - **.logchar()**:  
-      			Example:
+      			Example:  
       			console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
-	 	    - **.clear()** clears the screen including attributes, using the ROM routine.
-    Note: all of these method support variables, and numeric ones support expressions.
+	 	    - **.clear()** clears the screen including attributes, using the ROM routine.  
+    Note: all of these method support variables, and numeric ones support expressions.  
 
 **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.  
 Example:  
