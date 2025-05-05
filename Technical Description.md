@@ -328,7 +328,30 @@ document.addEventListener("keydown", use_inp);*
  	memory.write(0xA0000, value+1)  
   	console.log(value)*  
    	Example:
-    	*memory.copy(0xA000, 0xB000, 256)*
+    	*memory.copy(0xA000, 0xB000, 256)*  
+
+## Timing
+Basic timer is implemented via standard JavaScript methods: **setInterval** and **ClearInterval**. The common assembly code needed to implement these methods is included in **time.asc**. Usage is slightly different from native JavaScript:  
+- **setInterval**: used to configure and activate the timer. Non-standard aspects:  
+  - not applied to any object. It works standalone. The reason is that there is only one timer available, so no specific identification is required.  
+  - timer needs to be a multiple of 50ms, which is the minimum interrupt produced by the ZX Spectrum. Actually, the time.asc file produces one call to the timer function every second.  
+  - timer function name is hardcoded to **timer_function**.
+- **clearInterval**: used to deactivalte the timer. Non-standard aspects:
+  - not applied to any object. It works standalone.
+  - parameter can be anything as the timer function is hardcoded. It will not be read.
+  Example:
+	*var hours=0; var minutes=0; var seconds=0 
+	function timer_function()
+	{
+		console.clear()
+		console.log(hours,":",minutes,":",seconds)
+		seconds++
+		if (seconds==10) {
+			clearInterval(clock)
+		}
+	}
+	// main code
+	setInterval(clock, 1000);**
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
