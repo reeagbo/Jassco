@@ -340,18 +340,18 @@ Basic timer is implemented via standard JavaScript methods: **setInterval** and 
   - not applied to any object. It works standalone.
   - parameter can be anything as the timer function is hardcoded. It will not be read.
   Example:
-	*var hours=0; var minutes=0; var seconds=0 
-	function timer_function()
-	{
-		console.clear()
-		console.log(hours,":",minutes,":",seconds)
-		seconds++
-		if (seconds==10) {
-			clearInterval(clock)
-		}
-	}
-	// main code
-	setInterval(clock, 1000);**
+	*var hours=0; var minutes=0; var seconds=0   
+	function timer_function()  
+	{  
+		console.clear()  
+		console.log(hours,":",minutes,":",seconds)  
+		seconds++  
+		if (seconds==10) {  
+			clearInterval(clock)  
+		}  
+	}  
+	// main code  
+	setInterval(clock, 1000);**  
 
 # Restrictions
 This section is mostly a list of disclaimers that will improve with time.  
