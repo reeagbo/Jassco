@@ -1,0 +1,63 @@
+Release notes
+
+25.19 (v1.0, 05/05/25)
+Features
+- Basic timer handling via setInterval/clearInterval methods (see technical description for details).
+Fixed
+- RAM usage improved by 10%-11% via optimization of literals translation to assembly (Identifiers, literal numbers, charCodeAt, Unary expressions, bitwise operations, arithmetical operations, logical opearations, math.random)
+Other
+- charAt method removed.
+Documentation
+- setInterval/clearInterval documented.
+- minor enhancements in User Guide.
+
+25.17 (23/04/25)
+Features
+- Additional debugging help in assembly code.
+Fixes
+- Continue instruction failing with While and DoWhile.
+- Code clean-up.
+Documentation
+- Technical desription updated accordingly.
+- Examples folder added in github. 
+
+25.15 (13/04/25)
+Features
+- Added a "set_env" routine to the io.asc file to allow for screen system initialization.
+- "EmptyStatemnt" expression handler added. It deals mostly with misplaced semicolons in JS.
+Fixes
+- all breaks (for/while/dowhile) reworked. It would not work properly any many nested structures.
+- "<" operation assembly simplified.
+- console.log fixed for 1-char strings.
+Documentation
+-
+
+25.13 (29/03/25)
+Features
+- Logical operations (&&, ||, !) implemented.
+- Constant handling improved: now they can't be altered, loaded in memory on every pass.
+- new "console.clear" method to clear screen. Different from canvas.clearScreen as it clears attributes too.
+- improved array/matrix declaration, using "defs" to book space in memory.
+Fixes
+- if/while/dowhile/for not releasing stack resources in some cases.
+Documentation
+- Technical desription updated accordingly.
+
+25/03/18
+- known objects and methods are not case sensitive anymore.
+- kew "memory" object with methods to read, write memory positions and copy blocks (see technical description).
+- recursion improved. Known restriction: function with several recursive calls within the function will not work.
+
+25/02/28
+- Math.Random function improved. It used to produce ascending numbers.
+- multiple declarations in one line. Example:
+	var num1=0, num2=0
+- final solution for nested loops. In previous versions, some cases would not work.
+
+25/02/23
+- new methods for console to print strings and numbers in screen (console.logstring, ,console.lognumber, console.logchar)
+- characters are now supported in dictionaries.
+- nested loops have been improved.
+- empty strings can be created.
+- keydown event listener is now supported.
+- ChatAt and CharCodeAt methods for String are now supported.
