@@ -259,22 +259,22 @@ Example:
 ## System calls
 There are specific non-JS calls supported by the system. Note that, against JS standard, these methods are not case sensitive.  
 
-**read** allows reading keyboard and saving its contents to a variable:  
+**read()** allows reading keyboard and saving its contents to a variable:  
   Example: read (string1), will read a string from the keyboard and store it string1 variable.  
 
 **console** calls to console have limited support:
-	  - "console.log" is supported.
+	  - "console.log()" is supported.
 	  - some other non-JS methods have been added to simplify logging different varable types in the screen:
-		    - **.logstring**:  
+		    - **.logstring()**:  
       			Example:
       			console.logstring("hello"), similar to console.log, but without line feed.  
-    	            - **.lognumber**:  
+    	            - **.lognumber()**:  
       			Example:  
       			console.lognumber(55), will log "55" in the screen.  
-    		    - **.logchar**:  
+    		    - **.logchar()**:  
       			Example:
       			console.logchar("h"), will log "h" in the screen. This method may seem redundant, but it comes very handy as it allows us to print values stored as bytes.  
-	 	    - **.clear** clears the screen including attributes, using the ROM routine.
+	 	    - **.clear()** clears the screen including attributes, using the ROM routine.
     Note: all of these method support variables, and numeric ones support expressions.
 
 **keydown** event (to read keys from keyboard) is supported. Note that running this event keeps the program wating until a key is pressed.  
@@ -292,9 +292,9 @@ console.log("press key or -a- to deactivate event");
 document.addEventListener("keydown", use_inp);*  
 
 **canvas** object allows drawing lines in the screen. Only a few methods are supported:    
-	- **.moveTo** moves the cursor position to a screen coordinates.  
-	- **.lineTo** draws a line from the cursor position to the indicated coordinates.  
- 	- **.clearScreen** clears the screen  
+	- **.moveTo()** moves the cursor position to a screen coordinates.  
+	- **.lineTo()** draws a line from the cursor position to the indicated coordinates.  
+ 	- **.clearScreen()** clears the screen  
 	Example:  
 	*num1=0  
 	var canvas = document.getElementById("myCanvas");  
@@ -308,20 +308,20 @@ document.addEventListener("keydown", use_inp);*
 	}*  
 
 **math** object. Limited support:  
-	- **.random** generates a 16-bit pseudo-random number.  
+	- **.random()** generates a 16-bit pseudo-random number.  
 
 **string** object. Limited support:   
-	- **.fromCharCode** returns a char corresponding to an 8-bit ASCII value.  
+	- **.fromCharCode()** returns a char corresponding to an 8-bit ASCII value.  
  	Example: 
   	*let char = String.fromCharCode(65);*  
-   	- **.length** retruns the string length.  
+   	- **.length()** retruns the string length.  
  	Example: 
   	*let char = String.length("hola");*  
 
 **memory** object. Created to deal with low level memory operations, typically not supported by JS.   
-	- **read** reads a memory position. Syntax: memory.read (address)  
- 	- **write** writes a memory position. Syntax: memory.write (address, value)  
-  	- **copy** reads a memory position. Syntax: memory.copy (source, target, block size)  
+	- **read()** reads a memory position. Syntax: memory.read (address)  
+ 	- **write()** writes a memory position. Syntax: memory.write (address, value)  
+  	- **copy()** reads a memory position. Syntax: memory.copy (source, target, block size)  
  	Example:  
   	*value= memory.read (0xA000)  
 	console.log(value)  
@@ -332,11 +332,11 @@ document.addEventListener("keydown", use_inp);*
 
 ## Timing
 Basic timer is implemented via standard JavaScript methods: **setInterval** and **ClearInterval**. The common assembly code needed to implement these methods is included in **time.asc**. Usage is slightly different from native JavaScript:  
-- **setInterval**: used to configure and activate the timer. Non-standard aspects:  
+- **setInterval()**: used to configure and activate the timer. Non-standard aspects:  
   - not applied to any object. It works standalone. The reason is that there is only one timer available, so no specific identification is required.  
   - timer needs to be a multiple of 50ms, which is the minimum interrupt produced by the ZX Spectrum. Actually, the time.asc file produces one call to the timer function every second.  
   - timer function name is hardcoded to **timer_function**.
-- **clearInterval**: used to deactivalte the timer. Non-standard aspects:
+- **clearInterval()**: used to deactivalte the timer. Non-standard aspects:
   - not applied to any object. It works standalone.
   - parameter can be anything as the timer function is hardcoded. It will not be read.
   Example:
