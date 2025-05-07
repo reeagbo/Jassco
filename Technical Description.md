@@ -227,7 +227,7 @@ It looks like a messed-up title for a section. The reason for this is that, at t
 ## Empty data structures creation
 Variables are declared in JavaScript standard way. However, Several non-JS possibilities have been created. The reason for this is that it is not practical to have variables of dynamic sizes, as this would require mechanisms to move those structures in the computer menory. As an alternative, empty arrays, strings and dictionaries can be created.
 
-An empty array can be created as:  
+An empty string can be created as:  
 *var string1=String(5)*  
 This will create an empty 5-character string. Note: String has capital S, as it is a JS pre-defined object.  
 
