@@ -36,10 +36,10 @@ The main task is to make sure that Eclipse will find Python. If you are familiar
         (...and it goes on...)
 
 - If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
-    (to be improved) Error check is kind of weak, so it may still compile and not run properly.
+    (to be improved) Error check is kind of weak, so in some cases it may still compile and not run properly.
 - (to be improved) From here, you are free to do whatever you like with the code. In the future, I´ll probably add steps to run it automatically. 
     Any compiler like Pasmo shall do. In my case, I´ve worked so long with ZXspin, that I'll copy/paste the code to the editor and run it from there.
-- As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
+- As you can see in the output code, assembly is loaded starting at address 25000. Therefore, in order to run your code, you need to type in the emulator:
         RANDOMIZE USR 25000
 - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
