@@ -13,14 +13,14 @@ Preparation (only need to do it once): The first thing you need to do is install
 https://www.rose-hulman.edu/class/csse/resources/Eclipse/eclipse-python-configuration.htm
 The main task is to make sure that Eclipse will find Python. If you are familiar with Eclipse and Python this is probably done.
     
-    - Open (at least) 'input.js' and 'main.py' in Eclipse.
-    - Place your JavaScript code in the 'input.js' file. In our case, that would be:
+- Open (at least) 'input.js' and 'main.py' in Eclipse.
+- Place your JavaScript code in the 'input.js' file. In our case, that would be:
 
         include ("io.asc")
         console.log ("hello, world")
 
-    Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
-    - Select 'main.py' tab and click Play to run the code. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
+  Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
+- Select 'main.py' tab and click Play to run the code. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
     The output code should look like:
 
         ; Generated with ASsembly COmpiler, JASSCO v0. Boria Labs 2025.
