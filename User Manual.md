@@ -9,10 +9,9 @@ I´ll use the "hello, world!" example to go through all the steps.
 
 ## 1) Eclipse environment
 
-    Preparation (only need to do it once): The first thing you need to do is installing Eclipse and configuring the environment. There is a zillion places where this is explained. 
-    I was a newbie myself and used this one:
-    https://www.rose-hulman.edu/class/csse/resources/Eclipse/eclipse-python-configuration.htm
-    The main task is to make sure that Eclipse will find Python. If you are familiar with Eclipse and Python this is probably done.
+Preparation (only need to do it once): The first thing you need to do is installing Eclipse and configuring the environment. There is a zillion places where this is explained. I was a newbie myself and used this one:
+https://www.rose-hulman.edu/class/csse/resources/Eclipse/eclipse-python-configuration.htm
+The main task is to make sure that Eclipse will find Python. If you are familiar with Eclipse and Python this is probably done.
     
     - Open (at least) 'input.js' and 'main.py' in Eclipse.
     - Place your JavaScript code in the 'input.js' file. In our case, that would be:
@@ -20,7 +19,7 @@ I´ll use the "hello, world!" example to go through all the steps.
         include ("io.asc")
         console.log ("hello, world")
 
-        Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
+    Note: the reason to have 'include ("io.asc")' is to add basic I/O support. Otherwise, console.log call will fail.
     - Select 'main.py' tab and click Play to run the code. This will look into the 'input.js' file, generate the assembly code and (1) print it in the console, (2) save it to 'output.asm'.
     The output code should look like:
 
@@ -36,13 +35,13 @@ I´ll use the "hello, world!" example to go through all the steps.
         stn_000 defb 12, 0, "hello, world"        ; (Literal) string
         (...and it goes on...)
 
-    - If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
+- If something goes wrong (variables not declared, unknown instructions or syntax, etc...), an error will be produced at the beginning of the compilation output. 
     (to be improved) Error check is kind of weak, so it may still compile and not run properly.
-    - (to be improved) From here, you are free to do whatever you like with the code. In the future, I´ll probably add steps to run it automatically. 
+- (to be improved) From here, you are free to do whatever you like with the code. In the future, I´ll probably add steps to run it automatically. 
     Any compiler like Pasmo shall do. In my case, I´ve worked so long with ZXspin, that I'll copy/paste the code to the editor and run it from there.
-    - As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
+- As you can see in the output code, assembly is loaded starting at address 25000, therefore, inorder to run your code, you need to type in the emulator:
         RANDOMIZE USR 25000
-    - If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
+- If everything is right, you´ll see the "hello, world!" message in the screen. You are set to start writing your JavaScript for ZX Spectrum!!!
 
 
 ## 2) Regular editor and compiler
