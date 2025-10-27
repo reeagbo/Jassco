@@ -358,15 +358,22 @@ This section is mostly a list of disclaimers that will improve with time.
 - No support for decimal/float numbers.  
 - There are no memory management facilities embedded in the compiler. It would make the code too heavy for the tiny z80 computers. The programmer needs to make sure that the code will read from and write in the right places and also that the code will not overwrite other code sections.  
 - Variables:  
-  - all variables are global, regardless where they are declared.  
-  - type of matrices and arrays is always integer.  
+  - all variables are global, regardless where they are declared.
+  - declarations without assignment (i.e. var num1) not allowed. Needed for type identification.
+  - type of matrices and arrays is always integer.
+  - arrays need to ve decalred as variables. Constants will not work.
   - all parameters in function declarations are considered integers.  
   - declarations with non-literal values not supported. Needed for type identification.  
-  - declarations without assignment (i.e. var num1) not allowed. Needed for type identification.  
 - Strings:  
   - no support for string expressions and operations, except those described above.  
   - no support for any data structure (arrays, matrices...) using strings.  
-- Function recursion: non-basic scenarios may not work.
+- Functions:
+  - complex expressions as function call parameters will not work.
+Example:
+*receive_bit(input_bits[input_bits_pointer])
+  Only supported as:
+  send_bit= input_bits[input_bits_pointer]
+  receive_bit(send_bit)*
   - recursion with more than one call to the recursive function at the same recursion level will not work.
 Example:
 *function fibonacci(n) {  
