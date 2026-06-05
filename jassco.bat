@@ -1,18 +1,25 @@
 @echo off
-cd python
+setlocal
 
-REM Set default values if no parameters are provided
-set INPUT_FILE=%1
-set OUTPUT_FILE=%2
+set "SCRIPT_DIR=%~dp0"
+cd /d "%SCRIPT_DIR%"
 
-if "%1"=="" set INPUT_FILE=input.js
-if "%2"=="" set OUTPUT_FILE=output.asm
+if not exist "main.py" (
+    echo This launcher is intended to be used inside an extracted JASSCO release ZIP.
+    echo Download and extract the latest package from the Software folder or GitHub Releases.
+    exit /b 1
+)
 
-python main.py ..\%INPUT_FILE% ..\%OUTPUT_FILE%
-cd ..
+set "INPUT_FILE=%~1"
+set "OUTPUT_FILE=%~2"
 
-.\pasmo\pasmo.exe --tap %OUTPUT_FILE% output.tap
-"c:\Program Files (x86)\Fuse\fuse.exe" output.tap
+if "%INPUT_FILE%"=="" set "INPUT_FILE=input.js"
+if "%OUTPUT_FILE%"=="" set "OUTPUT_FILE=output.asm"
 
+where py >nul 2>nul
+if not errorlevel 1 (
+    py -3 "main.py" "%INPUT_FILE%" "%OUTPUT_FILE%"
+    exit /b %errorlevel%
+)
 
-
+python "main.py" "%INPUT_FILE%" "%OUTPUT_FILE%"

@@ -1,24 +1,84 @@
 # JASSCO (JAvaSCript to ASSembly COmpiler)
 
-Jassco is a project, written in python, that enables Z80 machines to run JavaScript code. Jassco is a cross-compiler that reads a file containing JavaScript and produces code that reproduces its behavior in a Z80 environment. At the moment, I´m focused on ZX Spectrum, but the way I´m building it, with separate libraries for specific tasks, should allow ports to other Z80 machines without much effort. Anyway that's still far beyond the horizon.
+JASSCO is a Python-based cross-compiler that reads a small JavaScript-like
+program and generates Z80 assembly code. The current target is ZX Spectrum, but
+the compiler is built around separate assembly support libraries so other Z80
+machines can be explored later.
 
-Note: all technical details and restrictions can be read in detail in the **Technical Description**.
+The project is intentionally packaged by version. Each release ZIP is meant to
+be self-contained: download it, extract it, edit `input.js`, run the compiler,
+and use the generated `output.asm` with your preferred Z80 assembler/emulator.
 
-## Capabilities
-Let me summarize what it's currently capable of:
-- JavaScript ES2 taken as reference.
-- Very simple types: 16-bit integers, boolens and strings.
-- Data structures:
-  - Variables and constants.
-- all basic code flows supported:
-  - structures: if-then-else, for-break, while-do, do-while, switch-case).
-  - assignments.
-  - binary expressions.
-  - functions: declaration and call, passing parameters and recursion (only numbers tested).
-  - methods: generally, not supported, but some specific cases are.
+## Quick Start
 
-## Files and Folders
-- Releases: release folders are numbered as YY.WW. The latest should be the right one for you, unless indicated otherwise.
-- Technical Description: document describing the JavaScript capabilities supported by the compiler.
-- User Manual: basic guide explaining how to install the compiler and produce a "Hello, world!".
-- Examples: Working JavaScript code for the compiler.
+1. Download the latest ZIP from `Software/` or from the GitHub release page.
+2. Extract it into a local folder.
+3. Install Python and the required parser:
+
+```powershell
+pip install -r requirements.txt
+```
+
+4. Edit `input.js`.
+5. Run:
+
+```powershell
+run_jassco.cmd
+```
+
+or:
+
+```powershell
+jassco.bat input.js output.asm
+```
+
+The compiler writes the generated Z80 assembly to `output.asm`.
+
+## Current Scope
+
+JASSCO uses JavaScript ES2 as a reference, with a deliberately small supported
+subset:
+
+- 16-bit integers, booleans, and limited strings.
+- Variables and constants.
+- Basic control flow: `if`, `for`, `while`, `do while`, `switch`, `break`, and
+  `continue`.
+- Assignments and binary expressions.
+- Function declarations and calls, including numeric recursion in supported
+  cases.
+- A small set of explicit non-JS helpers for Z80-oriented work.
+
+This is not a browser JavaScript runtime. It is a practical compiler for small
+programs that can run on constrained Z80 machines.
+
+## Examples and Outputs
+
+The `examples/` folder contains working JavaScript inputs.
+
+The `outputs/` folder contains pairs of:
+
+- `input.js`
+- `output.asm`
+
+These are included so users can see how the compiler translates each example.
+
+## Documentation
+
+- `User Manual.md`: basic setup and first compilation walkthrough.
+- `Technical Description.md`: supported JavaScript subset and implementation
+  notes.
+- `docs/RESTRICTIONS.md`: known compiler restrictions.
+- `docs/FIXES.md`: fixes applied during the current cleanup pass.
+- `docs/IMPROVEMENTS.md`: possible improvements to review later.
+- `docs/RELEASE_NOTES_26.22.md`: notes for the 26.22 release.
+
+## Releases
+
+Release numbers use `YY.WW` format. For example, `26.22` means year 2026, week
+22.
+
+The newest release ZIP should normally be the best starting point.
+
+## License
+
+JASSCO is free software. See `LICENSE`.

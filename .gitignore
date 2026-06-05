@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*.pyo
+
+output.asm
+output.tap
+
+.venv/
+venv/
