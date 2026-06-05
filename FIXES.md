@@ -1,0 +1,77 @@
+# Fixes
+
+## 25.44 working copy
+
+- Reset compiler state before each compilation so consecutive runs in the same Python process do not leak labels, declarations, includes, type tables, loop labels, or temporary memory pointers.
+- Resolve assembly includes relative to the input file and compiler directory instead of depending only on the current working directory.
+- Fix `mai_cod` placement so the first function-end marker no longer clears the last generated code line by indexing `nodes_code[-1]`.
+- Make missing assembly routine detection return actionable results and fail compilation when unresolved `call` targets remain.
+- Ignore comments when scanning assembly `call` targets so comment text is not mistaken for missing routines.
+- Scan multiline include content correctly when checking for missing routines.
+- Track serious translator diagnostics as compiler errors instead of printing warnings and continuing to produce `output.asm`.
+- Fix temporary garbage-zone allocation to check `garbage_address_current + space_needed` instead of the local return value initialized to zero.
+- Escape raw `assembly { ... }` lines wrapped as fake `eval("...")` calls so quotes and backslashes do not break JavaScript parsing.
+- Wrap assembly text found on the same line as `assembly {` as `eval(...)` instead of leaving it as raw parser input.
+- Process each line in `assembly { ... }` blocks exactly once, including one-line open/close blocks.
+- Infer boolean literals as integer-compatible values for console output and other type-dependent code paths.
+- Infer array and matrix member expression types from `array_type_list` and `matrix_type_list` instead of checking `variable_type_list` first.
+- Make `run_jassco.cmd` switch to its own directory before running `main.py`, so default `input.js` and relative outputs work from any caller directory.
+- Remove stale local reset variables in `main.py`; compiler state now resets through `config`.
+- Remove stale copied config imports from `utils.py`; utility functions now read and update shared state through `config`.
+- Make `translator.py` explicitly import `string_max_length` instead of receiving it accidentally through `utils import *`.
+- Make `CallExpression` handling use safe local callee/object/property lookups instead of assuming every call is both a function and a method.
+- Make `MemberExpression` handling use safe object/property lookups for arrays, matrices, dictionaries, and string properties.
+- Fix lower-case canvas `lineto` dispatch while preserving existing `lineTo` behavior.
+- Avoid reading `.value` directly from non-literal `console.log` arguments when choosing string/char output.
+- Make `AssignmentExpression` target analysis use safe left/object/nested-object lookups.
+- Avoid assuming every assignment right-hand side has `.elements` when detecting array literal assignments.
+- Make `BinaryExpression` type inference use safe left/right name and member-object lookups.
+- Treat boolean literals and unary boolean operands as integer-compatible values in binary expressions.
+- Clean `VariableDeclarator` by using local aliases for initializer type, elements, arguments, callee, and properties.
+- Make `VariableDeclarator` call/object/dictionary handling avoid direct chained initializer attribute access.
+- Convert remaining real translator diagnostics such as duplicated parameters, unsupported switch discriminants, and variables inside declarations to compiler errors.
+- Keep repeated variable declarations as compatibility warnings because current `testplan.js` relies on them being tolerated.
+- Let `ForStatement` tolerate missing init sections instead of assuming `node.init` is always present.
+- Report `continue` outside loops and `break` outside loops/switches as compiler errors instead of crashing on empty label stacks.
+- Report unsupported non-variable `switch` discriminants clearly.
+- Handle `default` switch cases without trying to process a missing test expression.
+- Remove unused function return-tracking dictionary.
+- Report unnamed function declarations and unnamed parameters as unsupported instead of assuming `.id.name` and `.name` always exist.
+- Guard `ArrayExpression` processing against empty arrays in contexts where at least one element is required.
+- Use `string_max_length` when reserving string-array record padding instead of a hard-coded `32`.
+- Report non-literal dictionary keys/values clearly instead of assuming every object property has `.key.value` and `.value.value`.
+- Make array assignment handling use a local `right_elements` alias instead of repeatedly assuming the right-hand side has `.elements`.
+- Make binary literal/unary type inference tolerate operands without direct `.value` fields.
+- Report missing arguments for known calls such as `include()`, `read()`, `setInterval()`, `Array.fill()`, `addEventListener()`, and `removeEventListener()`.
+- Report unsupported unary operators instead of emitting code that uses an undefined `DE` register value.
+- Make unary expression handling tolerate missing/non-literal argument fields.
+- Report missing or non-literal constructor sizes for `String()`, `Array()`, and `Map()`.
+- Compute string literal lengths after ASCII normalization so declared lengths match emitted string bytes.
+- Report missing arguments for supported `memory.read()`, `memory.write()`, and `memory.copy()` calls.
+- Report unsupported `Math.*` methods instead of silently doing nothing.
+- Report unsupported logical operators instead of processing operands and emitting no result.
+- Report identifiers without names instead of generating labels from missing names.
+- Report malformed update expressions and stop after unsupported update operators.
+- Report non-literal `eval()` assembly payloads and non-literal `include()` filenames.
+- Report `read()` calls whose destination is not a named variable.
+- Report event listener calls whose event name is not literal or callback is not a named function.
+- Report non-literal `setInterval()` periods.
+- Report non-literal `Array.fill()` values for the current literal-only implementation.
+- Report unsupported unary elements in array declarations instead of assuming every unary has `.argument.value`.
+- Report constant array declarations as unsupported instead of attempting to compile them.
+- Log complex function call arguments as warnings, matching the known assembler-side restriction without breaking current working examples.
+- Convert tolerated redeclarations and empty statements from raw `print()` messages into compiler warnings.
+- Add compiler warnings for tolerated unsupported cases that should not be fatal yet.
+- Convert silent `pass` branches for literal methods and long dictionary string values into warnings.
+
+## Verification
+
+- Golden ASM tests pass for all current GitHub examples:
+  - `simple_clock_jassco.js`
+  - `squares_jassco.js`
+  - `sierpinski_jassco.js`
+  - `neural v2.0 hidden layer.js`
+  - `G-Shock DCF77 decoder.js`
+  - `chesskelet_jassco.js`
+  - `testplan.js`
+- Consecutive in-process compilation smoke test passes against golden output.
