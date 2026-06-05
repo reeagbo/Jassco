@@ -1,6 +1,6 @@
 # Fixes
 
-## 25.44 working copy
+## Cleanup for 26.22
 
 - Reset compiler state before each compilation so consecutive runs in the same Python process do not leak labels, declarations, includes, type tables, loop labels, or temporary memory pointers.
 - Resolve assembly includes relative to the input file and compiler directory instead of depending only on the current working directory.
