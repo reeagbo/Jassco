@@ -28,7 +28,7 @@
 
 - `src/` or compiler source directory
 - `examples/`
-- `outputs/` with JS/ASM pairs for user inspection
+- `examples/outputs/` with JS/ASM pairs for user inspection
 - `golden/`
 - `tests/`
 - `docs/`

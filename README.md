@@ -11,7 +11,7 @@ and use the generated `output.asm` with your preferred Z80 assembler/emulator.
 
 ## Quick Start
 
-1. Download the latest ZIP from `Software/` or from the GitHub release page.
+1. Download the latest ZIP from `software/` or from the GitHub release page.
 2. Extract it into a local folder.
 3. Install Python and the required parser:
 
@@ -55,12 +55,13 @@ programs that can run on constrained Z80 machines.
 
 The `examples/` folder contains working JavaScript inputs.
 
-The `outputs/` folder contains pairs of:
+The `examples/outputs/` folder contains generated pairs of:
 
 - `input.js`
 - `output.asm`
 
-These are included so users can see how the compiler translates each example.
+These are included so users can see how the compiler translates each example
+without having to run the compiler first.
 
 ## Documentation
 

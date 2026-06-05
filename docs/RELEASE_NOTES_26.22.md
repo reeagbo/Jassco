@@ -8,7 +8,7 @@ This release focuses on compiler reliability while preserving the generated ASM 
 - Compiler diagnostics now separate fatal errors from compatibility warnings.
 - Compiler state reset, include resolution, main-label placement, and missing ASM routine detection were fixed.
 - Known restrictions are now documented and surfaced through warnings/errors where possible.
-- `outputs/` includes JS/ASM pairs so users can inspect how examples are translated.
+- `examples/outputs/` includes JS/ASM pairs so users can inspect how examples are translated.
 
 ## Verified Examples
 
