@@ -59,6 +59,7 @@
 - Report non-literal `Array.fill()` values for the current literal-only implementation.
 - Report unsupported unary elements in array declarations instead of assuming every unary has `.argument.value`.
 - Report constant array declarations as unsupported instead of attempting to compile them.
+- Fix `chesskelet_jassco.js` board initialization by replacing symbolic constants inside the `board` array with literal values, avoiding an undefined `board_` symbol in the generated ASM.
 - Log complex function call arguments as warnings, matching the known assembler-side restriction without breaking current working examples.
 - Convert tolerated redeclarations and empty statements from raw `print()` messages into compiler warnings.
 - Add compiler warnings for tolerated unsupported cases that should not be fatal yet.
