@@ -27,21 +27,9 @@ This limits recursion, reentrancy and string parameters.
 **Done when:** the calling convention defines parameter types, local storage,
 return values and stack cleanup without relying on shared parameter variables.
 
-### JAS-004 - Resolve `Memory.move` and `memory.copy`
-
-**Priority:** P2
-**Origin:** Restrictions, Improvements, `testplan.js`
-
-The documented compiler method is `memory.copy(source, target, size)`, while
-the test plan calls `Memory.move(...)`. Only `copy` currently dispatches to
-`mem_mov`, so `move` can be silently ignored.
-
-**Done when:** one canonical method is documented and tested, or `move` is an
-explicit compatibility alias. Unknown memory methods must fail compilation.
-
 ### JAS-005 - Define and validate `read()` semantics
 
-**Priority:** P2
+**Priority:** P1
 **Origin:** Technical Description, 26.24 chess investigation
 
 `read(destination)` is a statement that writes into a variable, not an
@@ -53,7 +41,7 @@ tested contract.
 
 ### JAS-006 - Verify `switch` and `default` runtime semantics
 
-**Priority:** P2
+**Priority:** P1
 **Origin:** Improvements
 
 Parser crashes were prevented, but fall-through, `break` and `default`

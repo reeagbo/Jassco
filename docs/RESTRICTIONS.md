@@ -20,7 +20,6 @@ receive_bit(send_bit)
 - Multiple sibling recursive calls preserve integer-compatible parameters.
   Function-local variables still use shared storage and are not yet reentrant.
 - Repeated variable declarations are tolerated as compatibility warnings.
-- `Memory.move(...)` needs semantic review against the current `memory.copy(...)`/`mem_mov` implementation.
 - Some 2D matrix literal behavior may be improvable, but changing it currently alters golden ASM output.
 
 ## Diagnostics

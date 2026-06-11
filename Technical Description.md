@@ -315,6 +315,9 @@ Memory:
 - `memory.write(address, value)`
 - `memory.copy(source, target, size)`
 
+`memory.copy(...)` is the canonical block-copy method. `memory.move(...)` is
+accepted as a compatibility alias. Memory method names are case-insensitive.
+
 Timing:
 
 - `setInterval(clock, milliseconds)`

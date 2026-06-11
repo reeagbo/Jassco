@@ -24,6 +24,9 @@ Status: working version, not yet released.
   calls, including two- and three-branch recursion.
 - Advance the auxiliary call-stack pointer as a 16-bit address for protected
   recursive functions.
+- Make `memory.copy(...)` functional and accept `Memory.move(...)` as a
+  compatibility alias; both use the `mem_cop` assembly routine.
+- Reject unknown memory methods and invalid memory-method argument counts.
 
 ## Example And Test Fixes
 
@@ -46,5 +49,7 @@ Status: working version, not yet released.
 - Updated outputs assemble successfully with Pasmo.
 - Fibonacci, a three-branch recursion case, and a full recursive Sierpinski
   drawing were tested successfully in an emulator.
+- `memory.copy(...)` and `Memory.move(...)` were tested successfully in an
+  emulator.
 
 Further changes may be added before 26.24 is packaged or published.

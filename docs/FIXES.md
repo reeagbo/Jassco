@@ -11,6 +11,10 @@
 - Use a 16-bit auxiliary stack pointer for protected recursive activations.
 - Verify the recursion fix with Fibonacci, a three-branch numeric case and a
   full recursive Sierpinski drawing in the emulator.
+- Make `memory.copy(...)` and the compatibility alias `Memory.move(...)`
+  dispatch to the real `mem_cop` assembly routine.
+- Require exact argument counts for memory methods and reject unknown methods
+  without producing ASM.
 
 ## 26.23
 

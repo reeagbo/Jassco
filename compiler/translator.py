@@ -869,36 +869,37 @@ def translate_to_assembly(js_code):
                                                                        
                     # special case: console.log() call to print text
                     elif object_name in ("Memory", "memory"):
-                        match property_name:
+                        memory_method = property_name.lower() if isinstance(property_name, str) else ""
+                        match memory_method:
                             case "read":
-                                if len(node.arguments) < 1:
-                                    report_error(f"{node.type}: memory.read() requires an address.")
+                                if len(node.arguments) != 1:
+                                    report_error(f"{node.type}: memory.read() requires exactly one address.")
                                     return
-                                if node.arguments:
-                                    for argument in node.arguments: # for every parameter in the call
-                                        process_node(argument)
-                                    nodes_code.append(f"        call mem_rea            ; ({node.type}) print string")
-                                    nodes_code.append ("")
+                                for argument in node.arguments:
+                                    process_node(argument)
+                                nodes_code.append(f"        call mem_rea            ; ({node.type}) print string")
+                                nodes_code.append ("")
 
                             case "write":
-                                if len(node.arguments) < 2:
-                                    report_error(f"{node.type}: memory.write() requires an address and a value.")
+                                if len(node.arguments) != 2:
+                                    report_error(f"{node.type}: memory.write() requires exactly an address and a value.")
                                     return
-                                if node.arguments:
-                                    for argument in node.arguments: # for every parameter in the call
-                                        process_node(argument)
-                                    nodes_code.append(f"        call mem_wri            ; ({node.type}) print string")
-                                    nodes_code.append ("")   
-                            
-                            case "copy":
-                                if len(node.arguments) < 3:
-                                    report_error(f"{node.type}: memory.copy() requires source, target, and size.")
+                                for argument in node.arguments:
+                                    process_node(argument)
+                                nodes_code.append(f"        call mem_wri            ; ({node.type}) print string")
+                                nodes_code.append ("")
+
+                            case "copy" | "move":
+                                if len(node.arguments) != 3:
+                                    report_error(f"{node.type}: memory.{memory_method}() requires exactly source, target, and size.")
                                     return
-                                if node.arguments:
-                                    for argument in node.arguments: # for every parameter in the call
-                                        process_node(argument)
-                                    nodes_code.append(f"        call mem_mov            ; ({node.type}) print string")
-                                    nodes_code.append ("")                        
+                                for argument in node.arguments:
+                                    process_node(argument)
+                                nodes_code.append(f"        call mem_cop            ; ({node.type}) copy memory block")
+                                nodes_code.append ("")
+
+                            case _:
+                                report_error(f"{node.type}: {object_name}.{property_name} method not supported.")
                      
                     elif object_name in ("Math", "math"):
                         match property_name:
