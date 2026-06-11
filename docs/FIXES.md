@@ -15,6 +15,11 @@
   dispatch to the real `mem_cop` assembly routine.
 - Require exact argument counts for memory methods and reject unknown methods
   without producing ASM.
+- Initialize `var` and `let` declarations without explicit values to `0`.
+- Require initializers for `const`, reject `let`/`const` redeclarations, and
+  reject assignment, increment, or decrement of constants at compile time.
+- Preserve compatible repeated `var` declarations and execute their latest
+  initializer.
 
 ## 26.23
 

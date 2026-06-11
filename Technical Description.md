@@ -358,7 +358,12 @@ Current major restrictions:
 - No full JavaScript runtime.
 - No dynamic memory management.
 - All variables are global.
-- Declarations must include an initial assignment.
+- `var` and `let` declarations without an initializer start at `0`.
+- Repeated `var` declarations are accepted for compatibility and execute their
+  initializer. `let` and `const` cannot be redeclared.
+- `const` requires an initializer and cannot be assigned, incremented, or
+  decremented after declaration. These rules are enforced by the compiler;
+  constants are not protected dynamically at runtime.
 - Function parameters are integer-compatible.
 - Arrays must be variables, not constants.
 - String support is limited.

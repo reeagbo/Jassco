@@ -38,184 +38,193 @@ numa_   defb 3, 1               ; (VariableDeclarator) integer matrix (cols, row
 stn_007 defb 5, 0, "adios"        ; (Literal) string
 stn_010 defb 5, 0, "hola "        ; (Literal) string
 stn_012 defb 13, 0, "Console tests"        ; (Literal) string
-stn_013 defb 28, 0, "Output: he100200hellogoodbye"        ; (Literal) string
+stn_013 defb 5, 0, "Hello"        ; (Literal) string
 stn_016 defb 5, 0, "hello"        ; (Literal) string
 stn_017 defb 7, 0, "goodbye"        ; (Literal) string
-stn_018 defb 17, 0, "String operations"        ; (Literal) string
-stn_019 defb 0, 0, ""        ; (Literal) string
-stn_020 defb 5, 0, "hello"        ; (Literal) string
-stn_021 defb 0, 0, ""        ; (Literal) string
-stn_022 defb 16, 0, "literal: goodbye"        ; (Literal) string
-stn_023 defb 18, 0, "Variable (hello): "        ; (Literal) string
-stn_024 defb 12, 0, "CharAt (e): "        ; (Literal) string
-stn_025 defb 21, 0, "String copy (hello): "        ; (Literal) string
-stn_026 defb 26, 0, "AssignmentExpression tests"        ; (Literal) string
-stn_027 defb 14, 0, "Integer/String"        ; (Literal) string
-stn_028 defb 6, 0, "Hello!"        ; (Literal) string
-stn_029 defb 6, 0, "(10): "        ; (Literal) string
-stn_030 defb 11, 0, ". (Hello!) "        ; (Literal) string
-stn_031 defb 17, 0, "Shift assignments"        ; (Literal) string
-stn_033 defb 27, 0, "<<= The number is (16384): "        ; (Literal) string
-stn_035 defb 24, 0, ">>= The number is (64): "        ; (Literal) string
-stn_036 defb 20, 0, "Assignment operators"        ; (Literal) string
-stn_037 defb 23, 0, "+= The number is (25): "        ; (Literal) string
-stn_038 defb 22, 0, "-= The number is (5): "        ; (Literal) string
-stn_039 defb 24, 0, "*= The number is (150): "        ; (Literal) string
-stn_040 defb 22, 0, "/= The number is (1): "        ; (Literal) string
-stn_041 defb 22, 0, "%= The number is (5): "        ; (Literal) string
-stn_042 defb 22, 0, "&= The number is (1): "        ; (Literal) string
-stn_043 defb 23, 0, "|= The number is (31): "        ; (Literal) string
-stn_044 defb 23, 0, "^= The number is (30): "        ; (Literal) string
-stn_045 defb 22, 0, "BinaryExpression tests"        ; (Literal) string
-stn_046 defb 21, 0, "Add/Subtraction tests"        ; (Literal) string
-stn_047 defb 29, 0, "Multiplication/division tests"        ; (Literal) string
-stn_048 defb 7, 0, "10*10= "        ; (Literal) string
-stn_049 defb 6, 0, "11/2= "        ; (Literal) string
-stn_050 defb 6, 0, "11%2= "        ; (Literal) string
-stn_051 defb 13, 0, "Bitwise tests"        ; (Literal) string
-stn_053 defb 10, 0, "<< 2 (64) "        ; (Literal) string
-stn_055 defb 9, 0, ">> 2 (4) "        ; (Literal) string
-stn_057 defb 9, 0, ">>> 2 (4)"        ; (Literal) string
-stn_058 defb 16, 0, "Comparison tests"        ; (Literal) string
-stn_062 defb 4, 0, "1==1"        ; (Literal) string
-stn_066 defb 4, 0, "2==1"        ; (Literal) string
-stn_070 defb 4, 0, "1==2"        ; (Literal) string
-stn_074 defb 4, 0, "1!=1"        ; (Literal) string
-stn_078 defb 4, 0, "2!=1"        ; (Literal) string
-stn_082 defb 4, 0, "1!=2"        ; (Literal) string
-stn_086 defb 3, 0, "1>1"        ; (Literal) string
-stn_090 defb 3, 0, "2>1"        ; (Literal) string
-stn_094 defb 3, 0, "1>2"        ; (Literal) string
-stn_098 defb 3, 0, "1<1"        ; (Literal) string
-stn_102 defb 3, 0, "2<1"        ; (Literal) string
-stn_106 defb 3, 0, "1<2"        ; (Literal) string
-stn_110 defb 4, 0, "1>=1"        ; (Literal) string
-stn_114 defb 4, 0, "2>=1"        ; (Literal) string
-stn_118 defb 4, 0, "1>=2"        ; (Literal) string
-stn_122 defb 4, 0, "1<=1"        ; (Literal) string
-stn_126 defb 4, 0, "2<=1"        ; (Literal) string
-stn_130 defb 4, 0, "1<=2"        ; (Literal) string
-stn_131 defb 18, 0, "Logical operations"        ; (Literal) string
-stn_132 defb 19, 0, "The number is (1): "        ; (Literal) string
-stn_133 defb 20, 0, "The number is (31): "        ; (Literal) string
-stn_134 defb 20, 0, "The number is (30): "        ; (Literal) string
-stn_135 defb 21, 0, "The number is (-16): "        ; (Literal) string
-stn_136 defb 20, 0, "CallExpression tests"        ; (Literal) string
-stn_137 defb 13, 0, "DoWhile tests"        ; (Literal) string
-stn_141 defb 20, 0, "Number (stop at 5): "        ; (Literal) string
-stn_143 defb 18, 0, "ForStatement tests"        ; (Literal) string
-stn_144 defb 9, 0, "Ascending"        ; (Literal) string
-stn_149 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
-stn_150 defb 10, 0, "Descending"        ; (Literal) string
-stn_155 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
-stn_156 defb 9, 0, "For-Break"        ; (Literal) string
-stn_164 defb 13, 0, "Stop at (3): "        ; (Literal) string
-stn_165 defb 12, 0, "For-Continue"        ; (Literal) string
-stn_173 defb 10, 0, "Skip (3): "        ; (Literal) string
-stn_174 defb 9, 0, "For-Break"        ; (Literal) string
-stn_182 defb 13, 0, "Stop at (3): "        ; (Literal) string
-stn_183 defb 12, 0, "Nested Loops"        ; (Literal) string
-stn_184 defb 8, 0, "(1 to 9)"        ; (Literal) string
-stn_193 defb 25, 0, "FunctionDeclaration tests"        ; (Literal) string
-stn_194 defb 17, 0, "IfStatement tests"        ; (Literal) string
-stn_198 defb 12, 0, "Good morning"        ; (Literal) string
-stn_202 defb 8, 0, "Good day"        ; (Literal) string
-stn_203 defb 12, 0, "Good evening"        ; (Literal) string
-stn_204 defb 6, 0, "Time: "        ; (Literal) string
-stn_205 defb 12, 0, ", Greeting: "        ; (Literal) string
-stn_209 defb 12, 0, "Good morning"        ; (Literal) string
-stn_213 defb 8, 0, "Good day"        ; (Literal) string
-stn_214 defb 12, 0, "Good evening"        ; (Literal) string
-stn_215 defb 6, 0, "Time: "        ; (Literal) string
-stn_216 defb 12, 0, ", Greeting: "        ; (Literal) string
-stn_220 defb 12, 0, "Good morning"        ; (Literal) string
-stn_224 defb 8, 0, "Good day"        ; (Literal) string
-stn_225 defb 12, 0, "Good evening"        ; (Literal) string
-stn_226 defb 6, 0, "Time: "        ; (Literal) string
-stn_227 defb 12, 0, ", Greeting: "        ; (Literal) string
-stn_228 defb 13, 0, "Literal tests"        ; (Literal) string
-stn_229 defb 16, 0, "Identifier tests"        ; (Literal) string
-stn_230 defb 21, 0, "SwitchStatement tests"        ; (Literal) string
-stn_231 defb 0, 0, ""        ; (Literal) string
-stn_234 defb 6, 0, "Monday"        ; (Literal) string
-stn_236 defb 7, 0, "Tuesday"        ; (Literal) string
-stn_238 defb 9, 0, "Wednesday"        ; (Literal) string
-stn_239 defb 10, 0, "(Tuesday):"        ; (Literal) string
-stn_240 defb 22, 0, "UptateExpression tests"        ; (Literal) string
-stn_241 defb 9, 0, "Ascending"        ; (Literal) string
-stn_246 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
-stn_247 defb 10, 0, "Descending"        ; (Literal) string
-stn_252 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
-stn_253 defb 25, 0, "VariableDeclaration tests"        ; (Literal) string
-stn_254 defb 20, 0, "WhileStatement tests"        ; (Literal) string
-stn_255 defb 14, 0, "Function tests"        ; (Literal) string
+stn_018 defb 0, 0, ""        ; (Literal) string
+stn_019 defb 17, 0, "String operations"        ; (Literal) string
+stn_020 defb 0, 0, ""        ; (Literal) string
+stn_021 defb 5, 0, "hello"        ; (Literal) string
+stn_022 defb 0, 0, ""        ; (Literal) string
+stn_023 defb 16, 0, "literal: goodbye"        ; (Literal) string
+stn_024 defb 18, 0, "Variable (hello): "        ; (Literal) string
+stn_025 defb 12, 0, "CharAt (e): "        ; (Literal) string
+stn_026 defb 21, 0, "String copy (hello): "        ; (Literal) string
+stn_027 defb 26, 0, "AssignmentExpression tests"        ; (Literal) string
+stn_028 defb 14, 0, "Integer/String"        ; (Literal) string
+stn_029 defb 6, 0, "Hello!"        ; (Literal) string
+stn_030 defb 6, 0, "(10): "        ; (Literal) string
+stn_031 defb 11, 0, ". (Hello!) "        ; (Literal) string
+stn_032 defb 17, 0, "Shift assignments"        ; (Literal) string
+stn_034 defb 27, 0, "<<= The number is (16384): "        ; (Literal) string
+stn_036 defb 24, 0, ">>= The number is (64): "        ; (Literal) string
+stn_037 defb 20, 0, "Assignment operators"        ; (Literal) string
+stn_038 defb 23, 0, "+= The number is (25): "        ; (Literal) string
+stn_039 defb 22, 0, "-= The number is (5): "        ; (Literal) string
+stn_040 defb 24, 0, "*= The number is (150): "        ; (Literal) string
+stn_041 defb 22, 0, "/= The number is (1): "        ; (Literal) string
+stn_042 defb 22, 0, "%= The number is (5): "        ; (Literal) string
+stn_043 defb 22, 0, "&= The number is (1): "        ; (Literal) string
+stn_044 defb 23, 0, "|= The number is (31): "        ; (Literal) string
+stn_045 defb 23, 0, "^= The number is (30): "        ; (Literal) string
+stn_046 defb 22, 0, "BinaryExpression tests"        ; (Literal) string
+stn_047 defb 21, 0, "Add/Subtraction tests"        ; (Literal) string
+stn_048 defb 29, 0, "Multiplication/division tests"        ; (Literal) string
+stn_049 defb 7, 0, "10*10= "        ; (Literal) string
+stn_050 defb 6, 0, "11/2= "        ; (Literal) string
+stn_051 defb 6, 0, "11%2= "        ; (Literal) string
+stn_052 defb 13, 0, "Bitwise tests"        ; (Literal) string
+stn_054 defb 10, 0, "<< 2 (64) "        ; (Literal) string
+stn_056 defb 9, 0, ">> 2 (4) "        ; (Literal) string
+stn_058 defb 9, 0, ">>> 2 (4)"        ; (Literal) string
+stn_059 defb 16, 0, "Comparison tests"        ; (Literal) string
+stn_063 defb 4, 0, "1==1"        ; (Literal) string
+stn_067 defb 4, 0, "2==1"        ; (Literal) string
+stn_071 defb 4, 0, "1==2"        ; (Literal) string
+stn_075 defb 4, 0, "1!=1"        ; (Literal) string
+stn_079 defb 4, 0, "2!=1"        ; (Literal) string
+stn_083 defb 4, 0, "1!=2"        ; (Literal) string
+stn_087 defb 3, 0, "1>1"        ; (Literal) string
+stn_091 defb 3, 0, "2>1"        ; (Literal) string
+stn_095 defb 3, 0, "1>2"        ; (Literal) string
+stn_099 defb 3, 0, "1<1"        ; (Literal) string
+stn_103 defb 3, 0, "2<1"        ; (Literal) string
+stn_107 defb 3, 0, "1<2"        ; (Literal) string
+stn_111 defb 4, 0, "1>=1"        ; (Literal) string
+stn_115 defb 4, 0, "2>=1"        ; (Literal) string
+stn_119 defb 4, 0, "1>=2"        ; (Literal) string
+stn_123 defb 4, 0, "1<=1"        ; (Literal) string
+stn_127 defb 4, 0, "2<=1"        ; (Literal) string
+stn_131 defb 4, 0, "1<=2"        ; (Literal) string
+stn_132 defb 18, 0, "Logical operations"        ; (Literal) string
+stn_133 defb 19, 0, "The number is (1): "        ; (Literal) string
+stn_134 defb 20, 0, "The number is (31): "        ; (Literal) string
+stn_135 defb 20, 0, "The number is (30): "        ; (Literal) string
+stn_136 defb 21, 0, "The number is (-16): "        ; (Literal) string
+stn_137 defb 20, 0, "CallExpression tests"        ; (Literal) string
+stn_138 defb 13, 0, "DoWhile tests"        ; (Literal) string
+stn_142 defb 20, 0, "Number (stop at 5): "        ; (Literal) string
+stn_144 defb 18, 0, "ForStatement tests"        ; (Literal) string
+stn_145 defb 9, 0, "Ascending"        ; (Literal) string
+stn_150 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
+stn_151 defb 10, 0, "Descending"        ; (Literal) string
+stn_156 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
+stn_157 defb 9, 0, "For-Break"        ; (Literal) string
+stn_165 defb 13, 0, "Stop at (3): "        ; (Literal) string
+stn_166 defb 12, 0, "For-Continue"        ; (Literal) string
+stn_174 defb 10, 0, "Skip (3): "        ; (Literal) string
+stn_175 defb 9, 0, "For-Break"        ; (Literal) string
+stn_183 defb 13, 0, "Stop at (3): "        ; (Literal) string
+stn_184 defb 12, 0, "Nested Loops"        ; (Literal) string
+stn_185 defb 8, 0, "(1 to 9)"        ; (Literal) string
+mat1_   defb 3, 3               ; (VariableDeclarator) integer matrix (cols, rows)
+        defw 1, 2, 3    ; matrix declaration
+        defw 4, 5, 6    ; matrix declaration
+        defw 7, 8, 9    ; matrix declaration
+stn_194 defb 25, 0, "FunctionDeclaration tests"        ; (Literal) string
+stn_195 defb 17, 0, "IfStatement tests"        ; (Literal) string
+stn_199 defb 12, 0, "Good morning"        ; (Literal) string
+stn_203 defb 8, 0, "Good day"        ; (Literal) string
+stn_204 defb 12, 0, "Good evening"        ; (Literal) string
+stn_205 defb 6, 0, "Time: "        ; (Literal) string
+stn_206 defb 12, 0, ", Greeting: "        ; (Literal) string
+stn_210 defb 12, 0, "Good morning"        ; (Literal) string
+stn_214 defb 8, 0, "Good day"        ; (Literal) string
+stn_215 defb 12, 0, "Good evening"        ; (Literal) string
+stn_216 defb 6, 0, "Time: "        ; (Literal) string
+stn_217 defb 12, 0, ", Greeting: "        ; (Literal) string
+stn_221 defb 12, 0, "Good morning"        ; (Literal) string
+stn_225 defb 8, 0, "Good day"        ; (Literal) string
+stn_226 defb 12, 0, "Good evening"        ; (Literal) string
+stn_227 defb 6, 0, "Time: "        ; (Literal) string
+stn_228 defb 12, 0, ", Greeting: "        ; (Literal) string
+stn_229 defb 13, 0, "Literal tests"        ; (Literal) string
+stn_230 defb 16, 0, "Identifier tests"        ; (Literal) string
+stn_231 defb 21, 0, "SwitchStatement tests"        ; (Literal) string
+stn_232 defb 0, 0, ""        ; (Literal) string
+stn_235 defb 6, 0, "Monday"        ; (Literal) string
+stn_237 defb 7, 0, "Tuesday"        ; (Literal) string
+stn_239 defb 9, 0, "Wednesday"        ; (Literal) string
+stn_240 defb 10, 0, "(Tuesday):"        ; (Literal) string
+stn_241 defb 22, 0, "UptateExpression tests"        ; (Literal) string
+stn_242 defb 9, 0, "Ascending"        ; (Literal) string
+stn_247 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
+stn_248 defb 10, 0, "Descending"        ; (Literal) string
+stn_253 defb 19, 0, "Number (stop at 5):"        ; (Literal) string
+stn_254 defb 25, 0, "VariableDeclaration tests"        ; (Literal) string
+stn_255 defb 20, 0, "WhileStatement tests"        ; (Literal) string
+stn_256 defb 14, 0, "Function tests"        ; (Literal) string
 num3_   defw 0                ; (FunctionDeclaration) literal int/bool
 num4_   defw 0                ; (FunctionDeclaration) literal int/bool
-stn_258 defb 13, 0, "6 + 5 (11) = "        ; (Literal) string
-stn_259 defb 11, 0, "Graph Tests"        ; (Literal) string
+stn_259 defb 13, 0, "6 + 5 (11) = "        ; (Literal) string
+stn_260 defb 11, 0, "Graph Tests"        ; (Literal) string
 ctx           defw 0         ; (VariableDeclarator) canvas
 ctx_x         defw 128       ;
 ctx_y         defw 96        ;
-stn_264 defb 17, 0, "Data Access Tests"        ; (Literal) string
+stn_265 defb 17, 0, "Data Access Tests"        ; (Literal) string
 arr1_   defb 4, 1               ; (VariableDeclarator) integer matrix (cols, rows)
         defw 1, 2, 3, 4    ; matrix declaration
-stn_265 defb 20, 0, "Before: arr1[2](3): "        ; (Literal) string
-stn_266 defb 20, 0, "After: arr1[2](10): "        ; (Literal) string
-stn_267 defb 23, 0, "Before, mat1[1][2](6): "        ; (Literal) string
-stn_268 defb 23, 0, "After, mat1[1][2](10): "        ; (Literal) string
+stn_266 defb 20, 0, "Before: arr1[2](3): "        ; (Literal) string
+stn_267 defb 20, 0, "After: arr1[2](10): "        ; (Literal) string
+mat2_   defb 3, 3               ; (VariableDeclarator) integer matrix (cols, rows)
+        defw 1, 2, 3    ; matrix declaration
+        defw 4, 5, 6    ; matrix declaration
+        defw 7, 8, 9    ; matrix declaration
+stn_268 defb 23, 0, "Before, mat1[1][2](6): "        ; (Literal) string
+stn_269 defb 23, 0, "After, mat1[1][2](10): "        ; (Literal) string
 dic1_   defw 3                  ; (VariableDeclarator) dictionary
         defw 3, 6              ; (VariableDeclarator) dictionary, integers
         defw 5, 10              ; (VariableDeclarator) dictionary, integers
         defw 4, 8              ; (VariableDeclarator) dictionary, integers
-stn_269 defb 21, 0, "Before dic1[5])(10): "        ; (Literal) string
-stn_273 defb 21, 0, "Before dic1[5])(99): "        ; (Literal) string
-stn_277 defb 24, 0, "16-bit signed operations"        ; (Literal) string
-stn_278 defb 14, 0, "100+10 (110): "        ; (Literal) string
-stn_279 defb 15, 0, "-100+10 (-90): "        ; (Literal) string
-stn_280 defb 13, 0, "100-10 (90): "        ; (Literal) string
-stn_281 defb 16, 0, "-100-10 (-110): "        ; (Literal) string
-stn_282 defb 13, 0, "100/10 (10): "        ; (Literal) string
-stn_283 defb 15, 0, "-100/10 (-10): "        ; (Literal) string
-stn_284 defb 15, 0, "100/-10 (-10): "        ; (Literal) string
-stn_285 defb 15, 0, "-100/-10 (10): "        ; (Literal) string
-stn_286 defb 15, 0, "100*10 (1000): "        ; (Literal) string
-stn_287 defb 17, 0, "-100*10 (-1000): "        ; (Literal) string
-stn_288 defb 17, 0, "100*-10 (-1000): "        ; (Literal) string
-stn_289 defb 17, 0, "-100*-10 (1000): "        ; (Literal) string
-stn_290 defb 12, 0, "Memory tests"        ; (Literal) string
-stn_291 defb 12, 0, "Before (0): "        ; (Literal) string
-stn_292 defb 13, 0, "After (255): "        ; (Literal) string
-stn_293 defb 26, 0, "Last block position (16): "        ; (Literal) string
-stn_294 defb 17, 0, "String operations"        ; (Literal) string
-stn_295 defb 10, 0, "0) literal"        ; (Literal) string
+stn_270 defb 21, 0, "Before dic1[5])(10): "        ; (Literal) string
+stn_274 defb 21, 0, "Before dic1[5])(99): "        ; (Literal) string
+stn_278 defb 24, 0, "16-bit signed operations"        ; (Literal) string
+stn_279 defb 14, 0, "100+10 (110): "        ; (Literal) string
+stn_280 defb 15, 0, "-100+10 (-90): "        ; (Literal) string
+stn_281 defb 13, 0, "100-10 (90): "        ; (Literal) string
+stn_282 defb 16, 0, "-100-10 (-110): "        ; (Literal) string
+stn_283 defb 13, 0, "100/10 (10): "        ; (Literal) string
+stn_284 defb 15, 0, "-100/10 (-10): "        ; (Literal) string
+stn_285 defb 15, 0, "100/-10 (-10): "        ; (Literal) string
+stn_286 defb 15, 0, "-100/-10 (10): "        ; (Literal) string
+stn_287 defb 15, 0, "100*10 (1000): "        ; (Literal) string
+stn_288 defb 17, 0, "-100*10 (-1000): "        ; (Literal) string
+stn_289 defb 17, 0, "100*-10 (-1000): "        ; (Literal) string
+stn_290 defb 17, 0, "-100*-10 (1000): "        ; (Literal) string
+stn_291 defb 12, 0, "Memory tests"        ; (Literal) string
+stn_292 defb 12, 0, "Before (0): "        ; (Literal) string
+stn_293 defb 13, 0, "After (255): "        ; (Literal) string
+stn_294 defb 26, 0, "Last block position (16): "        ; (Literal) string
+stn_295 defb 17, 0, "String operations"        ; (Literal) string
+stn_296 defb 10, 0, "0) literal"        ; (Literal) string
 im_text1_   defb 15, 0, "1) initial asg."       ; (VariableDeclarator) variable string, other length
 text1_   defw 0                  ; (VariableDeclarator) text1_ is a pointer
 im_text2_   defb 0, 0            ; (VariableDeclarator) empty string
         defs 32, 0xFF           ;
 text2_   defw 0                  ; (VariableDeclarator) text2_ is a pointer
-stn_296 defb 14, 0, "2) second asg."        ; (Literal) string
-stn_297 defb 17, 0, "3) var2var asg.: "        ; (Literal) string
+stn_297 defb 14, 0, "2) second asg."        ; (Literal) string
+stn_298 defb 17, 0, "3) var2var asg.: "        ; (Literal) string
 im_cars_   defb 3, 1            ; (VariableDeclarator) string matrix (cols, rows)
-stm_298 defb 4, 0, "Saab"        ;
+stm_299 defb 4, 0, "Saab"        ;
         defs 26                 ;
-stm_299 defb 5, 0, "Volvo"        ;
+stm_300 defb 5, 0, "Volvo"        ;
         defs 25                 ;
-stm_300 defb 3, 0, "BMW"        ;
+stm_301 defb 3, 0, "BMW"        ;
         defs 27                 ;
 cars_   defb 3, 1               ; (VariableDeclarator) string matrix (cols, rows)
         defw im_cars_+2        ; element 0
         defw im_cars_+34        ; element 1
         defw im_cars_+66        ; element 2
-stn_301 defb 23, 0, "array pos. lit (Saab): "        ; (Literal) string
-stn_303 defb 24, 0, "array pos. var (Volvo): "        ; (Literal) string
-stn_305 defb 14, 0, "4) Array print"        ; (Literal) string
-stn_310 defb 9, 0, "Position "        ; (Literal) string
-stn_311 defb 2, 0, ": "        ; (Literal) string
-stn_313 defb 25, 0, "5) Comparison (different)"        ; (Literal) string
-stn_314 defb 4, 0, "adix"        ; (Literal) string
-stn_315 defb 4, 0, "adio"        ; (Literal) string
-stn_320 defb 5, 0, "same!"        ; (Literal) string
-stn_321 defb 10, 0, "different!"        ; (Literal) string
+stn_302 defb 23, 0, "array pos. lit (Saab): "        ; (Literal) string
+stn_304 defb 24, 0, "array pos. var (Volvo): "        ; (Literal) string
+stn_306 defb 14, 0, "4) Array print"        ; (Literal) string
+stn_311 defb 9, 0, "Position "        ; (Literal) string
+stn_312 defb 2, 0, ": "        ; (Literal) string
+stn_314 defb 25, 0, "5) Comparison (different)"        ; (Literal) string
+stn_315 defb 4, 0, "adix"        ; (Literal) string
+stn_316 defb 4, 0, "adio"        ; (Literal) string
+stn_321 defb 5, 0, "same!"        ; (Literal) string
+stn_322 defb 10, 0, "different!"        ; (Literal) string
 
 ; Include files ----------------------------------------------
 ; File: io.asc. Basic Input/Output library for ZX Spectrum
@@ -686,157 +695,6 @@ mmv_loo ld a, (de)
     	ret
 
 ; Program code -----------------------------------------------
-
-
-
-
-
-
-                                ; (VariableDeclarator) * count_ *
-                                ; (Identifier) variable * count_ *
-        ld hl, count_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (count_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_key_         ; * key_ *
-        ld hl, key_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * num1_ *
-                                ; (Identifier) variable * num1_ *
-        ld hl, num1_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num1_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * num2_ *
-                                ; (Identifier) variable * num2_ *
-        ld hl, num2_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num2_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_tex1_         ; * tex1_ *
-        ld hl, tex1_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_tex2_         ; * tex2_ *
-        ld hl, tex2_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_tex_         ; * tex_ *
-        ld hl, tex_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_str1_         ; * str1_ *
-        ld hl, str1_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_str2_         ; * str2_ *
-        ld hl, str2_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * = * string array
-        ld de, im_cha1_         ; * cha1_ *
-        ld hl, cha1_            ;
-        ld (hl), e              ; immutable address to pointer variable
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (VariableDeclarator) * i_ *
-                                ; (Identifier) variable * i_ *
-        ld hl, i_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (i_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (Literal) * 'Recursion tests' *
-        ld hl, stn_000          ; literal string address
-        ld de, 15                ; string length
-        push de                 ; >>> push dummy content
-        push hl                 ; >>> push literal address
-
-        call prt_str            ; (CallExpression) print literal string
-
-        ld a, 0x0d              ; (CallExpression) <cr> after prints
-        rst 16                  ;
-
-
 ; (FunctionDeclaration) Function: summatory_
 summatory_                        ; (FunctionDeclaration) *** summatory_ ***
                                 ; save return address
@@ -997,6 +855,271 @@ fst_005                         ; (FunctionDeclaration) recover return address (
         dec (hl)                ;
         dec (hl)                ; end of return address restore
 fex_001 ret                     ; (FunctionDeclaration) end of...
+
+; (FunctionDeclaration) Function: sum_
+sum_                        ; (FunctionDeclaration) *** sum_ ***
+                                ; save return address
+        ld hl, sta_ck2          ; needed in recursion cases
+        ld e, (hl)              ; address pointed in DE
+        inc hl                  ;
+        ld d, (hl)              ;
+        ex de, hl               ; de= sta_ck2, hl= stack pointer
+        pop bc                  ; <<< pop return address
+        ld (hl), c              ;
+        inc hl                  ;
+        ld (hl), b              ;
+        ld hl, sta_ck2          ;
+        inc (hl)                ;
+        inc (hl)                ; end of return address preps
+
+                                ; (FunctionDeclaration) collect arguments
+        ld hl, num3_            ; argument *** num3_ ***
+        pop de                  ; <<< pop address
+        pop bc                  ; <<< pop value
+        ld (hl), e              ; store it in memory
+        inc hl                  ;
+        ld (hl), d              ;
+
+        ld hl, num4_            ; argument *** num4_ ***
+        pop de                  ; <<< pop address
+        pop bc                  ; <<< pop value
+        ld (hl), e              ; store it in memory
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (FunctionDeclaration) function body
+                                ; (Identifier) variable * num3_ *
+        ld hl, num3_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num3_)          ; variable content
+        push hl                 ; >>> push variable content
+
+                                ; (Identifier) variable * num3_ *
+        ld hl, num3_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num3_)          ; variable content
+        push hl                 ; >>> push variable content
+
+                                ; (Identifier) variable * num4_ *
+        ld hl, num4_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num4_)          ; variable content
+        push hl                 ; >>> push variable content
+
+                                ; (BinaryExpression) * + * (int)
+        pop bc                  ; <<< pop right side value
+        pop de                  ; <<< pop right side address, not used
+        pop hl                  ; <<< pop left side value
+        pop de                  ; <<< pop left side address, not used
+
+        add hl, bc              ; (BinaryExpression) 16-bit addition
+        push hl                 ; >>> bogus record address, unused
+        push hl                 ; >>> record value
+                                ; (BinaryExpression) end of...
+
+                                ; (AssignmentExpression) * = * (int)
+        pop bc                  ; <<< pop right side value
+        pop de                  ; <<< pop right side address
+        pop hl                  ; <<< pop left side value
+
+        push bc                 ; >>> push right side value
+        pop de                  ; <<< pop right side value
+
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (AssignmentExpression) end of...
+
+                                ; (ReturnStatement) return expression
+                                ; (Identifier) variable * num3_ *
+        ld hl, num3_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num3_)          ; variable content
+        push hl                 ; >>> push variable content
+
+
+                                ; (ReturnStatement) restore return address
+        ld hl, sta_ck2          ; update stack2 pointer
+        ld e, (hl)              ; pick stack pointer
+        inc hl                  ; update pointer
+        ld d, (hl)              ; pick stack pointer
+        ex de, hl               ; de= sta_ck2, hl= stack pointer
+        dec hl                  ;
+        ld b, (hl)              ; get return address from stack
+        dec hl                  ;
+        ld c, (hl)              ;
+        push bc                 ; >>> push return address
+        ld hl, sta_ck2          ;
+        dec (hl)                ;
+        dec (hl)                ;
+        ret                     ; return from function
+
+fst_258                         ; (FunctionDeclaration) recover return address (general)
+        ld hl, sta_ck2          ; update stack2 pointer
+        ld e, (hl)              ; pick stack pointer
+        inc hl                  ; update pointer
+        ld d, (hl)              ; pick stack pointer
+        ex de, hl               ; de= sta_ck2, hl= stack pointer
+        dec hl                  ;
+        ld b, (hl)              ; get return address from stack
+        dec hl                  ;
+        ld c, (hl)              ;
+        push bc                 ; >>> push return address
+        ld hl, sta_ck2          ;
+        dec (hl)                ;
+        dec (hl)                ; end of return address restore
+fex_257 ret                     ; (FunctionDeclaration) end of...
+
+mai_cod                         ; main code
+
+
+
+
+
+                                ; (VariableDeclarator) * count_ *
+                                ; (Identifier) variable * count_ *
+        ld hl, count_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (count_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_key_         ; * key_ *
+        ld hl, key_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * num1_ *
+                                ; (Identifier) variable * num1_ *
+        ld hl, num1_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num1_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * num2_ *
+                                ; (Identifier) variable * num2_ *
+        ld hl, num2_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num2_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_tex1_         ; * tex1_ *
+        ld hl, tex1_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_tex2_         ; * tex2_ *
+        ld hl, tex2_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_tex_         ; * tex_ *
+        ld hl, tex_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_str1_         ; * str1_ *
+        ld hl, str1_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_str2_         ; * str2_ *
+        ld hl, str2_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * = * string array
+        ld de, im_cha1_         ; * cha1_ *
+        ld hl, cha1_            ;
+        ld (hl), e              ; immutable address to pointer variable
+        inc hl                  ;
+        ld (hl), d              ;
+
+                                ; (VariableDeclarator) * i_ *
+                                ; (Identifier) variable * i_ *
+        ld hl, i_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (i_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (Literal) * 'Recursion tests' *
+        ld hl, stn_000          ; literal string address
+        ld de, 15                ; string length
+        push de                 ; >>> push dummy content
+        push hl                 ; >>> push literal address
+
+        call prt_str            ; (CallExpression) print literal string
+
+        ld a, 0x0d              ; (CallExpression) <cr> after prints
+        rst 16                  ;
 
 
                                 ; (CallExpression): regular call prep ***summatory_***
@@ -1203,9 +1326,9 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         rst 16                  ;
 
 
-                                ; (Literal) * 'Output: he100200hellogoodbye' *
+                                ; (Literal) * 'Hello' *
         ld hl, stn_013          ; literal string address
-        ld de, 28                ; string length
+        ld de, 5                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
 
@@ -1258,9 +1381,21 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         call prt_str            ; (CallExpression) print string
 
 
+                                ; (Literal) * '' *
+        ld hl, stn_018          ; literal string address
+        ld de, 0                ; string length
+        push de                 ; >>> push dummy content
+        push hl                 ; >>> push literal address
+
+        call prt_str            ; (CallExpression) print literal string
+
+        ld a, 0x0d              ; (CallExpression) <cr> after prints
+        rst 16                  ;
+
+
 
                                 ; (Literal) * 'String operations' *
-        ld hl, stn_018          ; literal string address
+        ld hl, stn_019          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1278,7 +1413,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * '' *
-        ld hl, stn_019          ; literal string address
+        ld hl, stn_020          ; literal string address
         ld de, 0                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1299,7 +1434,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'hello' *
-        ld hl, stn_020          ; literal string address
+        ld hl, stn_021          ; literal string address
         ld de, 5                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1320,7 +1455,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * '' *
-        ld hl, stn_021          ; literal string address
+        ld hl, stn_022          ; literal string address
         ld de, 0                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1335,7 +1470,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         ld (hl), d              ; copy immutable address string MSB
 
                                 ; (Literal) * 'literal: goodbye' *
-        ld hl, stn_022          ; literal string address
+        ld hl, stn_023          ; literal string address
         ld de, 16                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1347,7 +1482,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
 
 
                                 ; (Literal) * 'Variable (hello): ' *
-        ld hl, stn_023          ; literal string address
+        ld hl, stn_024          ; literal string address
         ld de, 18                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1383,6 +1518,23 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         push de                 ; >>> push value
 
                                 ; (CallExpression) String *** charAt ***
+        pop de                  ; <<< pop index value
+        pop hl                  ; <<< pop index address, unused
+        pop hl                  ; <<< pop string content pointer
+        pop bc                  ; <<< pop string variable address, unused
+        inc hl                  ; skip length
+        inc hl                  ;
+        add hl, de              ; string character address
+        ld a, (hl)              ; character
+        ld hl, 24000          ; one-character string buffer
+        ld (hl), 1              ; string length LSB
+        inc hl                  ;
+        ld (hl), 0              ; string length MSB
+        inc hl                  ;
+        ld (hl), a              ; string character
+        ld de, 24000          ; string content pointer
+        push de                 ; >>> bogus string variable address
+        push de                 ; >>> string content pointer
 
                                 ; (AssignmentExpression) * = * assign string
         pop de                  ; pop right string address
@@ -1394,7 +1546,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         ld (hl), d              ; copy immutable address string MSB
 
                                 ; (Literal) * 'CharAt (e): ' *
-        ld hl, stn_024          ; literal string address
+        ld hl, stn_025          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1435,7 +1587,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         ld (hl), d              ; copy immutable address string MSB
 
                                 ; (Literal) * 'String copy (hello): ' *
-        ld hl, stn_025          ; literal string address
+        ld hl, stn_026          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1455,7 +1607,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
 
 
                                 ; (Literal) * 'AssignmentExpression tests' *
-        ld hl, stn_026          ; literal string address
+        ld hl, stn_027          ; literal string address
         ld de, 26                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1467,7 +1619,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
 
 
                                 ; (Literal) * 'Integer/String' *
-        ld hl, stn_027          ; literal string address
+        ld hl, stn_028          ; literal string address
         ld de, 14                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1509,7 +1661,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Hello!' *
-        ld hl, stn_028          ; literal string address
+        ld hl, stn_029          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1524,7 +1676,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         ld (hl), d              ; copy immutable address string MSB
 
                                 ; (Literal) * '(10): ' *
-        ld hl, stn_029          ; literal string address
+        ld hl, stn_030          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1540,7 +1692,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         call prt_num            ; (CallExpression) print literal number
 
                                 ; (Literal) * '. (Hello!) ' *
-        ld hl, stn_030          ; literal string address
+        ld hl, stn_031          ; literal string address
         ld de, 11                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1561,7 +1713,7 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
 
 
                                 ; (Literal) * 'Shift assignments' *
-        ld hl, stn_031          ; literal string address
+        ld hl, stn_032          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1612,8 +1764,8 @@ fex_001 ret                     ; (FunctionDeclaration) end of...
         pop hl                  ; <<< pop left side value
 
         ld b, c                 ; number of shifts
-asg_032 add hl, hl              ; shift left
-        djnz asg_032            ;
+asg_033 add hl, hl              ; shift left
+        djnz asg_033            ;
         push hl                 ;
         pop de                  ; DE has the result
 
@@ -1624,7 +1776,7 @@ asg_032 add hl, hl              ; shift left
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '<<= The number is (16384): ' *
-        ld hl, stn_033          ; literal string address
+        ld hl, stn_034          ; literal string address
         ld de, 27                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1683,9 +1835,9 @@ asg_032 add hl, hl              ; shift left
         pop hl                  ; <<< pop left side value
 
         ld b, c                 ; number of shifts
-asg_034 srl h                   ; shift right 1
+asg_035 srl h                   ; shift right 1
         rr l                    ; shift right 2
-        djnz asg_034            ;
+        djnz asg_035            ;
         push hl                 ;
         pop de                  ; DE has the result
 
@@ -1696,7 +1848,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '>>= The number is (64): ' *
-        ld hl, stn_035          ; literal string address
+        ld hl, stn_036          ; literal string address
         ld de, 24                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1717,7 +1869,7 @@ asg_034 srl h                   ; shift right 1
 
 
                                 ; (Literal) * 'Assignment operators' *
-        ld hl, stn_036          ; literal string address
+        ld hl, stn_037          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1777,7 +1929,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '+= The number is (25): ' *
-        ld hl, stn_037          ; literal string address
+        ld hl, stn_038          ; literal string address
         ld de, 23                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1835,6 +1987,7 @@ asg_034 srl h                   ; shift right 1
         pop de                  ; <<< pop right side address
         pop hl                  ; <<< pop left side value
 
+        xor a                   ; clear carry before subtraction
         sbc hl, bc              ; HL has the result
         ex de, hl               ; DE has the result
 
@@ -1845,7 +1998,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '-= The number is (5): ' *
-        ld hl, stn_038          ; literal string address
+        ld hl, stn_039          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1915,7 +2068,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '*= The number is (150): ' *
-        ld hl, stn_039          ; literal string address
+        ld hl, stn_040          ; literal string address
         ld de, 24                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -1986,7 +2139,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '/= The number is (1): ' *
-        ld hl, stn_040          ; literal string address
+        ld hl, stn_041          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2057,7 +2210,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '%= The number is (5): ' *
-        ld hl, stn_041          ; literal string address
+        ld hl, stn_042          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2130,7 +2283,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '&= The number is (1): ' *
-        ld hl, stn_042          ; literal string address
+        ld hl, stn_043          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2202,7 +2355,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '|= The number is (31): ' *
-        ld hl, stn_043          ; literal string address
+        ld hl, stn_044          ; literal string address
         ld de, 23                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2274,7 +2427,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '^= The number is (30): ' *
-        ld hl, stn_044          ; literal string address
+        ld hl, stn_045          ; literal string address
         ld de, 23                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2295,7 +2448,7 @@ asg_034 srl h                   ; shift right 1
 
 
                                 ; (Literal) * 'BinaryExpression tests' *
-        ld hl, stn_045          ; literal string address
+        ld hl, stn_046          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2307,7 +2460,7 @@ asg_034 srl h                   ; shift right 1
 
 
                                 ; (Literal) * 'Add/Subtraction tests' *
-        ld hl, stn_046          ; literal string address
+        ld hl, stn_047          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2319,7 +2472,7 @@ asg_034 srl h                   ; shift right 1
 
 
                                 ; (Literal) * 'Multiplication/division tests' *
-        ld hl, stn_047          ; literal string address
+        ld hl, stn_048          ; literal string address
         ld de, 29                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2397,7 +2550,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '10*10= ' *
-        ld hl, stn_048          ; literal string address
+        ld hl, stn_049          ; literal string address
         ld de, 7                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2484,7 +2637,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '11/2= ' *
-        ld hl, stn_049          ; literal string address
+        ld hl, stn_050          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2571,7 +2724,7 @@ asg_034 srl h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '11%2= ' *
-        ld hl, stn_050          ; literal string address
+        ld hl, stn_051          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2592,7 +2745,7 @@ asg_034 srl h                   ; shift right 1
 
 
                                 ; (Literal) * 'Bitwise tests' *
-        ld hl, stn_051          ; literal string address
+        ld hl, stn_052          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2602,6 +2755,27 @@ asg_034 srl h                   ; shift right 1
         ld a, 0x0d              ; (CallExpression) <cr> after prints
         rst 16                  ;
 
+
+                                ; (VariableDeclarator) * num1_ *
+                                ; (Identifier) variable * num1_ *
+        ld hl, num1_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num1_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 16                ; (Literal) literal int: * 16 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
 
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
@@ -2626,8 +2800,8 @@ asg_034 srl h                   ; shift right 1
         pop de                  ; <<< pop left side address, not used
 
         ld b, c                 ; number of shifts
-bsh_052 add hl, hl              ; shift left
-        djnz bsh_052            ;
+bsh_053 add hl, hl              ; shift left
+        djnz bsh_053            ;
         push hl                 ; >>> bogus record address, unused
         push hl                 ; >>> record value
                                 ; (BinaryExpression) end of...
@@ -2647,7 +2821,7 @@ bsh_052 add hl, hl              ; shift left
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '<< 2 (64) ' *
-        ld hl, stn_053          ; literal string address
+        ld hl, stn_054          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2713,9 +2887,9 @@ bsh_052 add hl, hl              ; shift left
         pop de                  ; <<< pop left side address, not used
 
         ld b, c                 ; number of shifts
-bsh_054 sra h                   ; shift right 1
+bsh_055 sra h                   ; shift right 1
         rr l                    ; shift right 2
-        djnz bsh_054            ;
+        djnz bsh_055            ;
         push hl                 ; >>> bogus record address, unused
         push hl                 ; >>> record value
                                 ; (BinaryExpression) end of...
@@ -2735,7 +2909,7 @@ bsh_054 sra h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '>> 2 (4) ' *
-        ld hl, stn_055          ; literal string address
+        ld hl, stn_056          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2794,16 +2968,16 @@ bsh_054 sra h                   ; shift right 1
         push de                 ; >>> push bogus address, unused
         push de                 ; >>> push value
 
-                                ; (BinaryExpression) * >> * (int)
+                                ; (BinaryExpression) * >>> * (int)
         pop bc                  ; <<< pop right side value
         pop de                  ; <<< pop right side address, not used
         pop hl                  ; <<< pop left side value
         pop de                  ; <<< pop left side address, not used
 
         ld b, c                 ; number of shifts
-bsh_056 sra h                   ; shift right 1
+bsh_057 srl h                   ; shift right 1
         rr l                    ; shift right 2
-        djnz bsh_056            ;
+        djnz bsh_057            ;
         push hl                 ; >>> bogus record address, unused
         push hl                 ; >>> record value
                                 ; (BinaryExpression) end of...
@@ -2823,7 +2997,7 @@ bsh_056 sra h                   ; shift right 1
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '>>> 2 (4)' *
-        ld hl, stn_057          ; literal string address
+        ld hl, stn_058          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2844,7 +3018,7 @@ bsh_056 sra h                   ; shift right 1
 
 
                                 ; (Literal) * 'Comparison tests' *
-        ld hl, stn_058          ; literal string address
+        ld hl, stn_059          ; literal string address
         ld de, 16                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2873,9 +3047,9 @@ bsh_056 sra h                   ; shift right 1
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_061           ; if =, true -> skip change
+        jp z, equ_062           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_061 push de                 ; >>> push condition boolean
+equ_062 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -2883,9 +3057,9 @@ equ_061 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_059           ;
+        jp z, els_060           ;
                                 ; (Literal) * '1==1' *
-        ld hl, stn_062          ; literal string address
+        ld hl, stn_063          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2896,10 +3070,10 @@ equ_061 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_060              ; (IfStatement) ***1==1*** skips else
-els_059                         ; else
+        jp ski_061              ; (IfStatement) ***1==1*** skips else
+els_060                         ; else
 
-ski_060                         ; (IfStatement) ***1==1*** end of...
+ski_061                         ; (IfStatement) ***1==1*** end of...
 
                                 ; (IfStatement) ***2==1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -2919,9 +3093,9 @@ ski_060                         ; (IfStatement) ***1==1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_065           ; if =, true -> skip change
+        jp z, equ_066           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_065 push de                 ; >>> push condition boolean
+equ_066 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -2929,9 +3103,9 @@ equ_065 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_063           ;
+        jp z, els_064           ;
                                 ; (Literal) * '2==1' *
-        ld hl, stn_066          ; literal string address
+        ld hl, stn_067          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2942,10 +3116,10 @@ equ_065 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_064              ; (IfStatement) ***2==1*** skips else
-els_063                         ; else
+        jp ski_065              ; (IfStatement) ***2==1*** skips else
+els_064                         ; else
 
-ski_064                         ; (IfStatement) ***2==1*** end of...
+ski_065                         ; (IfStatement) ***2==1*** end of...
 
                                 ; (IfStatement) ***1==2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -2965,9 +3139,9 @@ ski_064                         ; (IfStatement) ***2==1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_069           ; if =, true -> skip change
+        jp z, equ_070           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_069 push de                 ; >>> push condition boolean
+equ_070 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -2975,9 +3149,9 @@ equ_069 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_067           ;
+        jp z, els_068           ;
                                 ; (Literal) * '1==2' *
-        ld hl, stn_070          ; literal string address
+        ld hl, stn_071          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -2988,10 +3162,10 @@ equ_069 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_068              ; (IfStatement) ***1==2*** skips else
-els_067                         ; else
+        jp ski_069              ; (IfStatement) ***1==2*** skips else
+els_068                         ; else
 
-ski_068                         ; (IfStatement) ***1==2*** end of...
+ski_069                         ; (IfStatement) ***1==2*** end of...
 
                                 ; (IfStatement) ***1!=1*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3011,9 +3185,9 @@ ski_068                         ; (IfStatement) ***1==2*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, neq_073           ; if !=, true -> skip change
+        jp nz, neq_074           ; if !=, true -> skip change
         dec e                   ; condition=false
-neq_073 push de                 ; >>> push condition boolean
+neq_074 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3021,9 +3195,9 @@ neq_073 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_071           ;
+        jp z, els_072           ;
                                 ; (Literal) * '1!=1' *
-        ld hl, stn_074          ; literal string address
+        ld hl, stn_075          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3034,10 +3208,10 @@ neq_073 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_072              ; (IfStatement) ***1!=1*** skips else
-els_071                         ; else
+        jp ski_073              ; (IfStatement) ***1!=1*** skips else
+els_072                         ; else
 
-ski_072                         ; (IfStatement) ***1!=1*** end of...
+ski_073                         ; (IfStatement) ***1!=1*** end of...
 
                                 ; (IfStatement) ***2!=1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -3057,9 +3231,9 @@ ski_072                         ; (IfStatement) ***1!=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, neq_077           ; if !=, true -> skip change
+        jp nz, neq_078           ; if !=, true -> skip change
         dec e                   ; condition=false
-neq_077 push de                 ; >>> push condition boolean
+neq_078 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3067,9 +3241,9 @@ neq_077 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_075           ;
+        jp z, els_076           ;
                                 ; (Literal) * '2!=1' *
-        ld hl, stn_078          ; literal string address
+        ld hl, stn_079          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3080,10 +3254,10 @@ neq_077 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_076              ; (IfStatement) ***2!=1*** skips else
-els_075                         ; else
+        jp ski_077              ; (IfStatement) ***2!=1*** skips else
+els_076                         ; else
 
-ski_076                         ; (IfStatement) ***2!=1*** end of...
+ski_077                         ; (IfStatement) ***2!=1*** end of...
 
                                 ; (IfStatement) ***1!=2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3103,9 +3277,9 @@ ski_076                         ; (IfStatement) ***2!=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, neq_081           ; if !=, true -> skip change
+        jp nz, neq_082           ; if !=, true -> skip change
         dec e                   ; condition=false
-neq_081 push de                 ; >>> push condition boolean
+neq_082 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3113,9 +3287,9 @@ neq_081 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_079           ;
+        jp z, els_080           ;
                                 ; (Literal) * '1!=2' *
-        ld hl, stn_082          ; literal string address
+        ld hl, stn_083          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3126,10 +3300,10 @@ neq_081 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_080              ; (IfStatement) ***1!=2*** skips else
-els_079                         ; else
+        jp ski_081              ; (IfStatement) ***1!=2*** skips else
+els_080                         ; else
 
-ski_080                         ; (IfStatement) ***1!=2*** end of...
+ski_081                         ; (IfStatement) ***1!=2*** end of...
 
                                 ; (IfStatement) ***1>1*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3149,10 +3323,10 @@ ski_080                         ; (IfStatement) ***1!=2*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp m, mor_085           ; if <, false -> change
-        jp z, mor_085           ; if =, false -> change
+        jp m, mor_086           ; if <, false -> change
+        jp z, mor_086           ; if =, false -> change
         inc e                   ; condition=true
-mor_085 push de                 ; >>> push condition boolean
+mor_086 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3160,9 +3334,9 @@ mor_085 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_083           ;
+        jp z, els_084           ;
                                 ; (Literal) * '1>1' *
-        ld hl, stn_086          ; literal string address
+        ld hl, stn_087          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3173,10 +3347,10 @@ mor_085 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_084              ; (IfStatement) ***1>1*** skips else
-els_083                         ; else
+        jp ski_085              ; (IfStatement) ***1>1*** skips else
+els_084                         ; else
 
-ski_084                         ; (IfStatement) ***1>1*** end of...
+ski_085                         ; (IfStatement) ***1>1*** end of...
 
                                 ; (IfStatement) ***2>1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -3196,10 +3370,10 @@ ski_084                         ; (IfStatement) ***1>1*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp m, mor_089           ; if <, false -> change
-        jp z, mor_089           ; if =, false -> change
+        jp m, mor_090           ; if <, false -> change
+        jp z, mor_090           ; if =, false -> change
         inc e                   ; condition=true
-mor_089 push de                 ; >>> push condition boolean
+mor_090 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3207,9 +3381,9 @@ mor_089 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_087           ;
+        jp z, els_088           ;
                                 ; (Literal) * '2>1' *
-        ld hl, stn_090          ; literal string address
+        ld hl, stn_091          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3220,10 +3394,10 @@ mor_089 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_088              ; (IfStatement) ***2>1*** skips else
-els_087                         ; else
+        jp ski_089              ; (IfStatement) ***2>1*** skips else
+els_088                         ; else
 
-ski_088                         ; (IfStatement) ***2>1*** end of...
+ski_089                         ; (IfStatement) ***2>1*** end of...
 
                                 ; (IfStatement) ***1>2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3243,10 +3417,10 @@ ski_088                         ; (IfStatement) ***2>1*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp m, mor_093           ; if <, false -> change
-        jp z, mor_093           ; if =, false -> change
+        jp m, mor_094           ; if <, false -> change
+        jp z, mor_094           ; if =, false -> change
         inc e                   ; condition=true
-mor_093 push de                 ; >>> push condition boolean
+mor_094 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3254,9 +3428,9 @@ mor_093 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_091           ;
+        jp z, els_092           ;
                                 ; (Literal) * '1>2' *
-        ld hl, stn_094          ; literal string address
+        ld hl, stn_095          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3267,10 +3441,10 @@ mor_093 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_092              ; (IfStatement) ***1>2*** skips else
-els_091                         ; else
+        jp ski_093              ; (IfStatement) ***1>2*** skips else
+els_092                         ; else
 
-ski_092                         ; (IfStatement) ***1>2*** end of...
+ski_093                         ; (IfStatement) ***1>2*** end of...
 
                                 ; (IfStatement) ***1<1*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3290,9 +3464,9 @@ ski_092                         ; (IfStatement) ***1>2*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_097          ; if >=, false -> change
+        jp nc, les_098          ; if >=, false -> change
         inc e                   ; condition=true
-les_097 push de                 ; >>> push condition boolean
+les_098 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3300,9 +3474,9 @@ les_097 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_095           ;
+        jp z, els_096           ;
                                 ; (Literal) * '1<1' *
-        ld hl, stn_098          ; literal string address
+        ld hl, stn_099          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3313,10 +3487,10 @@ les_097 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_096              ; (IfStatement) ***1<1*** skips else
-els_095                         ; else
+        jp ski_097              ; (IfStatement) ***1<1*** skips else
+els_096                         ; else
 
-ski_096                         ; (IfStatement) ***1<1*** end of...
+ski_097                         ; (IfStatement) ***1<1*** end of...
 
                                 ; (IfStatement) ***2<1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -3336,9 +3510,9 @@ ski_096                         ; (IfStatement) ***1<1*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_101          ; if >=, false -> change
+        jp nc, les_102          ; if >=, false -> change
         inc e                   ; condition=true
-les_101 push de                 ; >>> push condition boolean
+les_102 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3346,9 +3520,9 @@ les_101 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_099           ;
+        jp z, els_100           ;
                                 ; (Literal) * '2<1' *
-        ld hl, stn_102          ; literal string address
+        ld hl, stn_103          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3359,10 +3533,10 @@ les_101 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_100              ; (IfStatement) ***2<1*** skips else
-els_099                         ; else
+        jp ski_101              ; (IfStatement) ***2<1*** skips else
+els_100                         ; else
 
-ski_100                         ; (IfStatement) ***2<1*** end of...
+ski_101                         ; (IfStatement) ***2<1*** end of...
 
                                 ; (IfStatement) ***1<2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3382,9 +3556,9 @@ ski_100                         ; (IfStatement) ***2<1*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_105          ; if >=, false -> change
+        jp nc, les_106          ; if >=, false -> change
         inc e                   ; condition=true
-les_105 push de                 ; >>> push condition boolean
+les_106 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3392,9 +3566,9 @@ les_105 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_103           ;
+        jp z, els_104           ;
                                 ; (Literal) * '1<2' *
-        ld hl, stn_106          ; literal string address
+        ld hl, stn_107          ; literal string address
         ld de, 3                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3405,10 +3579,10 @@ les_105 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_104              ; (IfStatement) ***1<2*** skips else
-els_103                         ; else
+        jp ski_105              ; (IfStatement) ***1<2*** skips else
+els_104                         ; else
 
-ski_104                         ; (IfStatement) ***1<2*** end of...
+ski_105                         ; (IfStatement) ***1<2*** end of...
 
                                 ; (IfStatement) ***1>=1*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3428,9 +3602,9 @@ ski_104                         ; (IfStatement) ***1<2*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, meq_109          ; if >=, true -> skip change
+        jp nc, meq_110          ; if >=, true -> skip change
         dec e                   ; condition=false
-meq_109 push de                 ; >>> push condition boolean
+meq_110 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3438,9 +3612,9 @@ meq_109 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_107           ;
+        jp z, els_108           ;
                                 ; (Literal) * '1>=1' *
-        ld hl, stn_110          ; literal string address
+        ld hl, stn_111          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3451,10 +3625,10 @@ meq_109 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_108              ; (IfStatement) ***1>=1*** skips else
-els_107                         ; else
+        jp ski_109              ; (IfStatement) ***1>=1*** skips else
+els_108                         ; else
 
-ski_108                         ; (IfStatement) ***1>=1*** end of...
+ski_109                         ; (IfStatement) ***1>=1*** end of...
 
                                 ; (IfStatement) ***2>=1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -3474,9 +3648,9 @@ ski_108                         ; (IfStatement) ***1>=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, meq_113          ; if >=, true -> skip change
+        jp nc, meq_114          ; if >=, true -> skip change
         dec e                   ; condition=false
-meq_113 push de                 ; >>> push condition boolean
+meq_114 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3484,9 +3658,9 @@ meq_113 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_111           ;
+        jp z, els_112           ;
                                 ; (Literal) * '2>=1' *
-        ld hl, stn_114          ; literal string address
+        ld hl, stn_115          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3497,10 +3671,10 @@ meq_113 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_112              ; (IfStatement) ***2>=1*** skips else
-els_111                         ; else
+        jp ski_113              ; (IfStatement) ***2>=1*** skips else
+els_112                         ; else
 
-ski_112                         ; (IfStatement) ***2>=1*** end of...
+ski_113                         ; (IfStatement) ***2>=1*** end of...
 
                                 ; (IfStatement) ***1>=2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3520,9 +3694,9 @@ ski_112                         ; (IfStatement) ***2>=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, meq_117          ; if >=, true -> skip change
+        jp nc, meq_118          ; if >=, true -> skip change
         dec e                   ; condition=false
-meq_117 push de                 ; >>> push condition boolean
+meq_118 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3530,9 +3704,9 @@ meq_117 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_115           ;
+        jp z, els_116           ;
                                 ; (Literal) * '1>=2' *
-        ld hl, stn_118          ; literal string address
+        ld hl, stn_119          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3543,10 +3717,10 @@ meq_117 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_116              ; (IfStatement) ***1>=2*** skips else
-els_115                         ; else
+        jp ski_117              ; (IfStatement) ***1>=2*** skips else
+els_116                         ; else
 
-ski_116                         ; (IfStatement) ***1>=2*** end of...
+ski_117                         ; (IfStatement) ***1>=2*** end of...
 
                                 ; (IfStatement) ***1<=1*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3566,10 +3740,10 @@ ski_116                         ; (IfStatement) ***1>=2*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_121           ; if <, true -> skip change
-        jp z, leq_121           ; if =, true -> skip change
+        jp c, leq_122           ; if <, true -> skip change
+        jp z, leq_122           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_121 push de                 ; >>> push condition boolean
+leq_122 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3577,9 +3751,9 @@ leq_121 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_119           ;
+        jp z, els_120           ;
                                 ; (Literal) * '1<=1' *
-        ld hl, stn_122          ; literal string address
+        ld hl, stn_123          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3590,10 +3764,10 @@ leq_121 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_120              ; (IfStatement) ***1<=1*** skips else
-els_119                         ; else
+        jp ski_121              ; (IfStatement) ***1<=1*** skips else
+els_120                         ; else
 
-ski_120                         ; (IfStatement) ***1<=1*** end of...
+ski_121                         ; (IfStatement) ***1<=1*** end of...
 
                                 ; (IfStatement) ***2<=1*** test
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -3613,10 +3787,10 @@ ski_120                         ; (IfStatement) ***1<=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_125           ; if <, true -> skip change
-        jp z, leq_125           ; if =, true -> skip change
+        jp c, leq_126           ; if <, true -> skip change
+        jp z, leq_126           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_125 push de                 ; >>> push condition boolean
+leq_126 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3624,9 +3798,9 @@ leq_125 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_123           ;
+        jp z, els_124           ;
                                 ; (Literal) * '2<=1' *
-        ld hl, stn_126          ; literal string address
+        ld hl, stn_127          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3637,10 +3811,10 @@ leq_125 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_124              ; (IfStatement) ***2<=1*** skips else
-els_123                         ; else
+        jp ski_125              ; (IfStatement) ***2<=1*** skips else
+els_124                         ; else
 
-ski_124                         ; (IfStatement) ***2<=1*** end of...
+ski_125                         ; (IfStatement) ***2<=1*** end of...
 
                                 ; (IfStatement) ***1<=2*** test
         ld de, 1                ; (Literal) literal int: * 1 *
@@ -3660,10 +3834,10 @@ ski_124                         ; (IfStatement) ***2<=1*** end of...
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_129           ; if <, true -> skip change
-        jp z, leq_129           ; if =, true -> skip change
+        jp c, leq_130           ; if <, true -> skip change
+        jp z, leq_130           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_129 push de                 ; >>> push condition boolean
+leq_130 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -3671,9 +3845,9 @@ leq_129 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_127           ;
+        jp z, els_128           ;
                                 ; (Literal) * '1<=2' *
-        ld hl, stn_130          ; literal string address
+        ld hl, stn_131          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3684,14 +3858,14 @@ leq_129 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-        jp ski_128              ; (IfStatement) ***1<=2*** skips else
-els_127                         ; else
+        jp ski_129              ; (IfStatement) ***1<=2*** skips else
+els_128                         ; else
 
-ski_128                         ; (IfStatement) ***1<=2*** end of...
+ski_129                         ; (IfStatement) ***1<=2*** end of...
 
 
                                 ; (Literal) * 'Logical operations' *
-        ld hl, stn_131          ; literal string address
+        ld hl, stn_132          ; literal string address
         ld de, 18                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3771,7 +3945,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * 'The number is (1): ' *
-        ld hl, stn_132          ; literal string address
+        ld hl, stn_133          ; literal string address
         ld de, 19                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3835,7 +4009,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * 'The number is (31): ' *
-        ld hl, stn_133          ; literal string address
+        ld hl, stn_134          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3899,7 +4073,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * 'The number is (30): ' *
-        ld hl, stn_134          ; literal string address
+        ld hl, stn_135          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3956,7 +4130,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * 'The number is (-16): ' *
-        ld hl, stn_135          ; literal string address
+        ld hl, stn_136          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3977,7 +4151,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
 
 
                                 ; (Literal) * 'CallExpression tests' *
-        ld hl, stn_136          ; literal string address
+        ld hl, stn_137          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -3990,7 +4164,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
 
 
                                 ; (Literal) * 'DoWhile tests' *
-        ld hl, stn_137          ; literal string address
+        ld hl, stn_138          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4025,7 +4199,7 @@ ski_128                         ; (IfStatement) ***1<=2*** end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-dow_138                         ; (DoWhileStatement) 1. body
+dow_139                         ; (DoWhileStatement) 1. body
                                 ; (Identifier) variable * count_ *
         ld hl, count_            ; variable address
         push hl                 ; >>> push variable address
@@ -4068,7 +4242,7 @@ dow_138                         ; (DoWhileStatement) 1. body
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * 'Number (stop at 5): ' *
-        ld hl, stn_141          ; literal string address
+        ld hl, stn_142          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4107,9 +4281,9 @@ dow_138                         ; (DoWhileStatement) 1. body
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_142          ; if >=, false -> change
+        jp nc, les_143          ; if >=, false -> change
         inc e                   ; condition=true
-les_142 push de                 ; >>> push condition boolean
+les_143 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4117,13 +4291,13 @@ les_142 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, dox_139           ;
-        jp dow_138              ;
-dox_139                         ; (DoWhileStatement) end of...
+        jp z, dox_140           ;
+        jp dow_139              ;
+dox_140                         ; (DoWhileStatement) end of...
 
 
                                 ; (Literal) * 'ForStatement tests' *
-        ld hl, stn_143          ; literal string address
+        ld hl, stn_144          ; literal string address
         ld de, 18                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4135,7 +4309,7 @@ dox_139                         ; (DoWhileStatement) end of...
 
 
                                 ; (Literal) * 'Ascending' *
-        ld hl, stn_144          ; literal string address
+        ld hl, stn_145          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4171,7 +4345,7 @@ dox_139                         ; (DoWhileStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_145                         ; (ForStatement) 2. test --------------
+for_146                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -4191,10 +4365,10 @@ for_145                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_148           ; if <, true -> skip change
-        jp z, leq_148           ; if =, true -> skip change
+        jp c, leq_149           ; if <, true -> skip change
+        jp z, leq_149           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_148 push de                 ; >>> push condition boolean
+leq_149 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4202,11 +4376,11 @@ leq_148 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_146           ;
+        jp z, fex_147           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (Literal) * 'Number (stop at 5):' *
-        ld hl, stn_149          ; literal string address
+        ld hl, stn_150          ; literal string address
         ld de, 19                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4225,7 +4399,7 @@ leq_148 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_147                         ; (ForStatement) 4. update ---------
+fup_148                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -4267,11 +4441,11 @@ fup_147                         ; (ForStatement) 4. update ---------
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-        jp for_145
-fex_146                         ; (ForStatement) end of...
+        jp for_146
+fex_147                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'Descending' *
-        ld hl, stn_150          ; literal string address
+        ld hl, stn_151          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4307,7 +4481,7 @@ fex_146                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_151                         ; (ForStatement) 2. test --------------
+for_152                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -4327,9 +4501,9 @@ for_151                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, meq_154          ; if >=, true -> skip change
+        jp nc, meq_155          ; if >=, true -> skip change
         dec e                   ; condition=false
-meq_154 push de                 ; >>> push condition boolean
+meq_155 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4337,11 +4511,11 @@ meq_154 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_152           ;
+        jp z, fex_153           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (Literal) * 'Number (stop at 5):' *
-        ld hl, stn_155          ; literal string address
+        ld hl, stn_156          ; literal string address
         ld de, 19                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4360,7 +4534,7 @@ meq_154 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_153                         ; (ForStatement) 4. update ---------
+fup_154                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -4403,12 +4577,12 @@ fup_153                         ; (ForStatement) 4. update ---------
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-        jp for_151
-fex_152                         ; (ForStatement) end of...
+        jp for_152
+fex_153                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'For-Break' *
-        ld hl, stn_156          ; literal string address
+        ld hl, stn_157          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4468,7 +4642,7 @@ fex_152                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_157                         ; (ForStatement) 2. test --------------
+for_158                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4488,9 +4662,9 @@ for_157                         ; (ForStatement) 2. test --------------
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_160          ; if >=, false -> change
+        jp nc, les_161          ; if >=, false -> change
         inc e                   ; condition=true
-les_160 push de                 ; >>> push condition boolean
+les_161 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4498,7 +4672,7 @@ les_160 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_158           ;
+        jp z, fex_159           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (IfStatement) ***expression==3*** test
@@ -4521,9 +4695,9 @@ les_160 push de                 ; >>> push condition boolean
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_163           ; if =, true -> skip change
+        jp z, equ_164           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_163 push de                 ; >>> push condition boolean
+equ_164 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4531,13 +4705,13 @@ equ_163 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_161           ;
-        jp fex_158              ; (BreakStatement)
+        jp z, els_162           ;
+        jp fex_159              ; (BreakStatement)
 
-        jp ski_162              ; (IfStatement) ***expression==3*** skips else
-els_161                         ; else
+        jp ski_163              ; (IfStatement) ***expression==3*** skips else
+els_162                         ; else
 
-ski_162                         ; (IfStatement) ***expression==3*** end of...
+ski_163                         ; (IfStatement) ***expression==3*** end of...
 
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
@@ -4565,7 +4739,7 @@ ski_162                         ; (IfStatement) ***expression==3*** end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-fup_159                         ; (ForStatement) 4. update ---------
+fup_160                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4577,11 +4751,11 @@ fup_159                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_157
-fex_158                         ; (ForStatement) end of...
+        jp for_158
+fex_159                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'Stop at (3): ' *
-        ld hl, stn_164          ; literal string address
+        ld hl, stn_165          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4602,7 +4776,7 @@ fex_158                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'For-Continue' *
-        ld hl, stn_165          ; literal string address
+        ld hl, stn_166          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4662,7 +4836,7 @@ fex_158                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_166                         ; (ForStatement) 2. test --------------
+for_167                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4682,9 +4856,9 @@ for_166                         ; (ForStatement) 2. test --------------
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_169          ; if >=, false -> change
+        jp nc, les_170          ; if >=, false -> change
         inc e                   ; condition=true
-les_169 push de                 ; >>> push condition boolean
+les_170 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4692,7 +4866,7 @@ les_169 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_167           ;
+        jp z, fex_168           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (IfStatement) ***expression==3*** test
@@ -4715,9 +4889,9 @@ les_169 push de                 ; >>> push condition boolean
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_172           ; if =, true -> skip change
+        jp z, equ_173           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_172 push de                 ; >>> push condition boolean
+equ_173 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4725,16 +4899,16 @@ equ_172 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_170           ;
-        jp fup_168              ; (ContinueStatement)
+        jp z, els_171           ;
+        jp fup_169              ; (ContinueStatement)
 
-        jp ski_171              ; (IfStatement) ***expression==3*** skips else
-els_170                         ; else
+        jp ski_172              ; (IfStatement) ***expression==3*** skips else
+els_171                         ; else
 
-ski_171                         ; (IfStatement) ***expression==3*** end of...
+ski_172                         ; (IfStatement) ***expression==3*** end of...
 
                                 ; (Literal) * 'Skip (3): ' *
-        ld hl, stn_173          ; literal string address
+        ld hl, stn_174          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4753,7 +4927,7 @@ ski_171                         ; (IfStatement) ***expression==3*** end of...
         rst 16                  ;
 
 
-fup_168                         ; (ForStatement) 4. update ---------
+fup_169                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4765,11 +4939,11 @@ fup_168                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_166
-fex_167                         ; (ForStatement) end of...
+        jp for_167
+fex_168                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'For-Break' *
-        ld hl, stn_174          ; literal string address
+        ld hl, stn_175          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4829,7 +5003,7 @@ fex_167                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_175                         ; (ForStatement) 2. test --------------
+for_176                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4849,9 +5023,9 @@ for_175                         ; (ForStatement) 2. test --------------
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_178          ; if >=, false -> change
+        jp nc, les_179          ; if >=, false -> change
         inc e                   ; condition=true
-les_178 push de                 ; >>> push condition boolean
+les_179 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4859,7 +5033,7 @@ les_178 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_176           ;
+        jp z, fex_177           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (IfStatement) ***expression==3*** test
@@ -4882,9 +5056,9 @@ les_178 push de                 ; >>> push condition boolean
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp z, equ_181           ; if =, true -> skip change
+        jp z, equ_182           ; if =, true -> skip change
         dec e                   ; condition=false
-equ_181 push de                 ; >>> push condition boolean
+equ_182 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -4892,13 +5066,13 @@ equ_181 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_179           ;
-        jp fex_176              ; (BreakStatement)
+        jp z, els_180           ;
+        jp fex_177              ; (BreakStatement)
 
-        jp ski_180              ; (IfStatement) ***expression==3*** skips else
-els_179                         ; else
+        jp ski_181              ; (IfStatement) ***expression==3*** skips else
+els_180                         ; else
 
-ski_180                         ; (IfStatement) ***expression==3*** end of...
+ski_181                         ; (IfStatement) ***expression==3*** end of...
 
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
@@ -4926,7 +5100,7 @@ ski_180                         ; (IfStatement) ***expression==3*** end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-fup_177                         ; (ForStatement) 4. update ---------
+fup_178                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * i_ *
         ld hl, i_            ; variable address
         push hl                 ; >>> push variable address
@@ -4938,11 +5112,11 @@ fup_177                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_175
-fex_176                         ; (ForStatement) end of...
+        jp for_176
+fex_177                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'Stop at (3): ' *
-        ld hl, stn_182          ; literal string address
+        ld hl, stn_183          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4963,7 +5137,7 @@ fex_176                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'Nested Loops' *
-        ld hl, stn_183          ; literal string address
+        ld hl, stn_184          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4975,7 +5149,7 @@ fex_176                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * '(1 to 9)' *
-        ld hl, stn_184          ; literal string address
+        ld hl, stn_185          ; literal string address
         ld de, 8                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -4985,6 +5159,120 @@ fex_176                         ; (ForStatement) end of...
         ld a, 0x0d              ; (CallExpression) <cr> after prints
         rst 16                  ;
 
+
+        ld hl, mat1_          ; (VariableDeclarator) array/matrix assignment
+        inc hl                  ; skip dimensions
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 2                ; (Literal) literal int: * 2 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 3                ; (Literal) literal int: * 3 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 4                ; (Literal) literal int: * 4 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 5                ; (Literal) literal int: * 5 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 6                ; (Literal) literal int: * 6 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 7                ; (Literal) literal int: * 7 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 8                ; (Literal) literal int: * 8 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 9                ; (Literal) literal int: * 9 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+                                ; (VariableDeclarator) mat1_, end of...
 
                                 ; (ForStatement) 1. init --------------
                                 ; (Identifier) variable * num1_ *
@@ -5011,7 +5299,7 @@ fex_176                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_185                         ; (ForStatement) 2. test --------------
+for_186                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -5031,10 +5319,10 @@ for_185                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_188           ; if <, true -> skip change
-        jp z, leq_188           ; if =, true -> skip change
+        jp c, leq_189           ; if <, true -> skip change
+        jp z, leq_189           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_188 push de                 ; >>> push condition boolean
+leq_189 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5042,7 +5330,7 @@ leq_188 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_186           ;
+        jp z, fex_187           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (ForStatement) 1. init --------------
@@ -5070,7 +5358,7 @@ leq_188 push de                 ; >>> push condition boolean
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_189                         ; (ForStatement) 2. test --------------
+for_190                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -5090,10 +5378,10 @@ for_189                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_192           ; if <, true -> skip change
-        jp z, leq_192           ; if =, true -> skip change
+        jp c, leq_193           ; if <, true -> skip change
+        jp z, leq_193           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_192 push de                 ; >>> push condition boolean
+leq_193 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5101,7 +5389,7 @@ leq_192 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_190           ;
+        jp z, fex_191           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (MemberExpression) matrix ***mat1_*** 
@@ -5155,7 +5443,7 @@ leq_192 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_191                         ; (ForStatement) 4. update ---------
+fup_192                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -5167,10 +5455,10 @@ fup_191                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_189
-fex_190                         ; (ForStatement) end of...
+        jp for_190
+fex_191                         ; (ForStatement) end of...
 
-fup_187                         ; (ForStatement) 4. update ---------
+fup_188                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -5182,11 +5470,11 @@ fup_187                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_185
-fex_186                         ; (ForStatement) end of...
+        jp for_186
+fex_187                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'FunctionDeclaration tests' *
-        ld hl, stn_193          ; literal string address
+        ld hl, stn_194          ; literal string address
         ld de, 25                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5199,7 +5487,7 @@ fex_186                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'IfStatement tests' *
-        ld hl, stn_194          ; literal string address
+        ld hl, stn_195          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5254,9 +5542,9 @@ fex_186                         ; (ForStatement) end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_197          ; if >=, false -> change
+        jp nc, les_198          ; if >=, false -> change
         inc e                   ; condition=true
-les_197 push de                 ; >>> push condition boolean
+les_198 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5264,7 +5552,7 @@ les_197 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_195           ;
+        jp z, els_196           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5272,7 +5560,7 @@ les_197 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good morning' *
-        ld hl, stn_198          ; literal string address
+        ld hl, stn_199          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5286,8 +5574,8 @@ les_197 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_196              ; (IfStatement) ***expression<10*** skips else
-els_195                         ; else
+        jp ski_197              ; (IfStatement) ***expression<10*** skips else
+els_196                         ; else
 
                                 ; (IfStatement) ***expression<20*** test
                                 ; (Identifier) variable * num1_ *
@@ -5309,9 +5597,9 @@ els_195                         ; else
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_201          ; if >=, false -> change
+        jp nc, les_202          ; if >=, false -> change
         inc e                   ; condition=true
-les_201 push de                 ; >>> push condition boolean
+les_202 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5319,7 +5607,7 @@ les_201 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_199           ;
+        jp z, els_200           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5327,7 +5615,7 @@ les_201 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good day' *
-        ld hl, stn_202          ; literal string address
+        ld hl, stn_203          ; literal string address
         ld de, 8                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5341,8 +5629,8 @@ les_201 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_200              ; (IfStatement) ***expression<20*** skips else
-els_199                         ; else
+        jp ski_201              ; (IfStatement) ***expression<20*** skips else
+els_200                         ; else
 
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
@@ -5351,7 +5639,7 @@ els_199                         ; else
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good evening' *
-        ld hl, stn_203          ; literal string address
+        ld hl, stn_204          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5365,12 +5653,12 @@ els_199                         ; else
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-ski_200                         ; (IfStatement) ***expression<20*** end of...
+ski_201                         ; (IfStatement) ***expression<20*** end of...
 
-ski_196                         ; (IfStatement) ***expression<10*** end of...
+ski_197                         ; (IfStatement) ***expression<10*** end of...
 
                                 ; (Literal) * 'Time: ' *
-        ld hl, stn_204          ; literal string address
+        ld hl, stn_205          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5386,7 +5674,7 @@ ski_196                         ; (IfStatement) ***expression<10*** end of...
         call prt_num            ; (CallExpression) print literal number
 
                                 ; (Literal) * ', Greeting: ' *
-        ld hl, stn_205          ; literal string address
+        ld hl, stn_206          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5449,9 +5737,9 @@ ski_196                         ; (IfStatement) ***expression<10*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_208          ; if >=, false -> change
+        jp nc, les_209          ; if >=, false -> change
         inc e                   ; condition=true
-les_208 push de                 ; >>> push condition boolean
+les_209 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5459,7 +5747,7 @@ les_208 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_206           ;
+        jp z, els_207           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5467,7 +5755,7 @@ les_208 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good morning' *
-        ld hl, stn_209          ; literal string address
+        ld hl, stn_210          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5481,8 +5769,8 @@ les_208 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_207              ; (IfStatement) ***expression<10*** skips else
-els_206                         ; else
+        jp ski_208              ; (IfStatement) ***expression<10*** skips else
+els_207                         ; else
 
                                 ; (IfStatement) ***expression<20*** test
                                 ; (Identifier) variable * num1_ *
@@ -5504,9 +5792,9 @@ els_206                         ; else
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_212          ; if >=, false -> change
+        jp nc, les_213          ; if >=, false -> change
         inc e                   ; condition=true
-les_212 push de                 ; >>> push condition boolean
+les_213 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5514,7 +5802,7 @@ les_212 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_210           ;
+        jp z, els_211           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5522,7 +5810,7 @@ les_212 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good day' *
-        ld hl, stn_213          ; literal string address
+        ld hl, stn_214          ; literal string address
         ld de, 8                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5536,8 +5824,8 @@ les_212 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_211              ; (IfStatement) ***expression<20*** skips else
-els_210                         ; else
+        jp ski_212              ; (IfStatement) ***expression<20*** skips else
+els_211                         ; else
 
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
@@ -5546,7 +5834,7 @@ els_210                         ; else
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good evening' *
-        ld hl, stn_214          ; literal string address
+        ld hl, stn_215          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5560,12 +5848,12 @@ els_210                         ; else
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-ski_211                         ; (IfStatement) ***expression<20*** end of...
+ski_212                         ; (IfStatement) ***expression<20*** end of...
 
-ski_207                         ; (IfStatement) ***expression<10*** end of...
+ski_208                         ; (IfStatement) ***expression<10*** end of...
 
                                 ; (Literal) * 'Time: ' *
-        ld hl, stn_215          ; literal string address
+        ld hl, stn_216          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5581,7 +5869,7 @@ ski_207                         ; (IfStatement) ***expression<10*** end of...
         call prt_num            ; (CallExpression) print literal number
 
                                 ; (Literal) * ', Greeting: ' *
-        ld hl, stn_216          ; literal string address
+        ld hl, stn_217          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5644,9 +5932,9 @@ ski_207                         ; (IfStatement) ***expression<10*** end of...
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_219          ; if >=, false -> change
+        jp nc, les_220          ; if >=, false -> change
         inc e                   ; condition=true
-les_219 push de                 ; >>> push condition boolean
+les_220 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5654,7 +5942,7 @@ les_219 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_217           ;
+        jp z, els_218           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5662,7 +5950,7 @@ les_219 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good morning' *
-        ld hl, stn_220          ; literal string address
+        ld hl, stn_221          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5676,8 +5964,8 @@ les_219 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_218              ; (IfStatement) ***expression<10*** skips else
-els_217                         ; else
+        jp ski_219              ; (IfStatement) ***expression<10*** skips else
+els_218                         ; else
 
                                 ; (IfStatement) ***expression<20*** test
                                 ; (Identifier) variable * num1_ *
@@ -5699,9 +5987,9 @@ els_217                         ; else
         ld de, 0                ; assume condition=false
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_223          ; if >=, false -> change
+        jp nc, les_224          ; if >=, false -> change
         inc e                   ; condition=true
-les_223 push de                 ; >>> push condition boolean
+les_224 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -5709,7 +5997,7 @@ les_223 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_221           ;
+        jp z, els_222           ;
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5717,7 +6005,7 @@ les_223 push de                 ; >>> push condition boolean
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good day' *
-        ld hl, stn_224          ; literal string address
+        ld hl, stn_225          ; literal string address
         ld de, 8                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5731,8 +6019,8 @@ les_223 push de                 ; >>> push condition boolean
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp ski_222              ; (IfStatement) ***expression<20*** skips else
-els_221                         ; else
+        jp ski_223              ; (IfStatement) ***expression<20*** skips else
+els_222                         ; else
 
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
@@ -5741,7 +6029,7 @@ els_221                         ; else
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Good evening' *
-        ld hl, stn_225          ; literal string address
+        ld hl, stn_226          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5755,12 +6043,12 @@ els_221                         ; else
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-ski_222                         ; (IfStatement) ***expression<20*** end of...
+ski_223                         ; (IfStatement) ***expression<20*** end of...
 
-ski_218                         ; (IfStatement) ***expression<10*** end of...
+ski_219                         ; (IfStatement) ***expression<10*** end of...
 
                                 ; (Literal) * 'Time: ' *
-        ld hl, stn_226          ; literal string address
+        ld hl, stn_227          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5776,7 +6064,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
         call prt_num            ; (CallExpression) print literal number
 
                                 ; (Literal) * ', Greeting: ' *
-        ld hl, stn_227          ; literal string address
+        ld hl, stn_228          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5797,7 +6085,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
 
 
                                 ; (Literal) * 'Literal tests' *
-        ld hl, stn_228          ; literal string address
+        ld hl, stn_229          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5810,7 +6098,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
 
 
                                 ; (Literal) * 'Identifier tests' *
-        ld hl, stn_229          ; literal string address
+        ld hl, stn_230          ; literal string address
         ld de, 16                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5823,7 +6111,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
 
 
                                 ; (Literal) * 'SwitchStatement tests' *
-        ld hl, stn_230          ; literal string address
+        ld hl, stn_231          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5865,7 +6153,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * '' *
-        ld hl, stn_231          ; literal string address
+        ld hl, stn_232          ; literal string address
         ld de, 0                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5900,7 +6188,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
         push hl                 ; >>> push discriminant value
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, swi_233          ; if =, skip
+        jp nz, swi_234          ; if =, skip
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5908,7 +6196,7 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Monday' *
-        ld hl, stn_234          ; literal string address
+        ld hl, stn_235          ; literal string address
         ld de, 6                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5922,9 +6210,9 @@ ski_218                         ; (IfStatement) ***expression<10*** end of...
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp swx_232              ; (BreakStatement)
+        jp swx_233              ; (BreakStatement)
 
-swi_233                         ; (SwitchCase)
+swi_234                         ; (SwitchCase)
 
                                 ; (SwitchCase)
         ld de, 2                ; (Literal) literal int: * 2 *
@@ -5940,7 +6228,7 @@ swi_233                         ; (SwitchCase)
         push hl                 ; >>> push discriminant value
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, swi_235          ; if =, skip
+        jp nz, swi_236          ; if =, skip
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5948,7 +6236,7 @@ swi_233                         ; (SwitchCase)
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Tuesday' *
-        ld hl, stn_236          ; literal string address
+        ld hl, stn_237          ; literal string address
         ld de, 7                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -5962,9 +6250,9 @@ swi_233                         ; (SwitchCase)
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp swx_232              ; (BreakStatement)
+        jp swx_233              ; (BreakStatement)
 
-swi_235                         ; (SwitchCase)
+swi_236                         ; (SwitchCase)
 
                                 ; (SwitchCase)
         ld de, 3                ; (Literal) literal int: * 3 *
@@ -5980,7 +6268,7 @@ swi_235                         ; (SwitchCase)
         push hl                 ; >>> push discriminant value
         xor a                   ;
         sbc hl, bc              ;
-        jp nz, swi_237          ; if =, skip
+        jp nz, swi_238          ; if =, skip
                                 ; (Identifier) variable * tex_ *
         ld hl, tex_            ; variable address
         push hl                 ; >>> push variable address
@@ -5988,7 +6276,7 @@ swi_235                         ; (SwitchCase)
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'Wednesday' *
-        ld hl, stn_238          ; literal string address
+        ld hl, stn_239          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6002,17 +6290,17 @@ swi_235                         ; (SwitchCase)
         inc hl                  ;
         ld (hl), d              ; copy immutable address string MSB
 
-        jp swx_232              ; (BreakStatement)
+        jp swx_233              ; (BreakStatement)
 
-swi_237                         ; (SwitchCase)
+swi_238                         ; (SwitchCase)
 
-swx_232                         ; (SwitchStatement)
+swx_233                         ; (SwitchStatement)
 
         pop hl                  ; <<< clean stack
         pop hl                  ; <<< clean stack
 
                                 ; (Literal) * '(Tuesday):' *
-        ld hl, stn_239          ; literal string address
+        ld hl, stn_240          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6033,7 +6321,7 @@ swx_232                         ; (SwitchStatement)
 
 
                                 ; (Literal) * 'UptateExpression tests' *
-        ld hl, stn_240          ; literal string address
+        ld hl, stn_241          ; literal string address
         ld de, 22                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6045,7 +6333,7 @@ swx_232                         ; (SwitchStatement)
 
 
                                 ; (Literal) * 'Ascending' *
-        ld hl, stn_241          ; literal string address
+        ld hl, stn_242          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6081,7 +6369,7 @@ swx_232                         ; (SwitchStatement)
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_242                         ; (ForStatement) 2. test --------------
+for_243                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -6101,10 +6389,10 @@ for_242                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_245           ; if <, true -> skip change
-        jp z, leq_245           ; if =, true -> skip change
+        jp c, leq_246           ; if <, true -> skip change
+        jp z, leq_246           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_245 push de                 ; >>> push condition boolean
+leq_246 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -6112,11 +6400,11 @@ leq_245 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_243           ;
+        jp z, fex_244           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (Literal) * 'Number (stop at 5):' *
-        ld hl, stn_246          ; literal string address
+        ld hl, stn_247          ; literal string address
         ld de, 19                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6135,7 +6423,7 @@ leq_245 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_244                         ; (ForStatement) 4. update ---------
+fup_245                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -6147,11 +6435,11 @@ fup_244                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         inc (hl)                ; (UpdateExpression) increment
 
-        jp for_242
-fex_243                         ; (ForStatement) end of...
+        jp for_243
+fex_244                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'Descending' *
-        ld hl, stn_247          ; literal string address
+        ld hl, stn_248          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6187,7 +6475,7 @@ fex_243                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_248                         ; (ForStatement) 2. test --------------
+for_249                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -6207,9 +6495,9 @@ for_248                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp nc, meq_251          ; if >=, true -> skip change
+        jp nc, meq_252          ; if >=, true -> skip change
         dec e                   ; condition=false
-meq_251 push de                 ; >>> push condition boolean
+meq_252 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -6217,11 +6505,11 @@ meq_251 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_249           ;
+        jp z, fex_250           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (Literal) * 'Number (stop at 5):' *
-        ld hl, stn_252          ; literal string address
+        ld hl, stn_253          ; literal string address
         ld de, 19                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6240,7 +6528,7 @@ meq_251 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_250                         ; (ForStatement) 4. update ---------
+fup_251                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num2_ *
         ld hl, num2_            ; variable address
         push hl                 ; >>> push variable address
@@ -6252,12 +6540,12 @@ fup_250                         ; (ForStatement) 4. update ---------
         pop hl                  ; <<< pop left side address
         dec (hl)                ; (UpdateExpression) decrement
 
-        jp for_248
-fex_249                         ; (ForStatement) end of...
+        jp for_249
+fex_250                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'VariableDeclaration tests' *
-        ld hl, stn_253          ; literal string address
+        ld hl, stn_254          ; literal string address
         ld de, 25                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6270,7 +6558,7 @@ fex_249                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'WhileStatement tests' *
-        ld hl, stn_254          ; literal string address
+        ld hl, stn_255          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6283,7 +6571,7 @@ fex_249                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'Function tests' *
-        ld hl, stn_255          ; literal string address
+        ld hl, stn_256          ; literal string address
         ld de, 14                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6342,122 +6630,6 @@ fex_249                         ; (ForStatement) end of...
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-; (FunctionDeclaration) Function: sum_
-sum_                        ; (FunctionDeclaration) *** sum_ ***
-                                ; save return address
-        ld hl, sta_ck2          ; needed in recursion cases
-        ld e, (hl)              ; address pointed in DE
-        inc hl                  ;
-        ld d, (hl)              ;
-        ex de, hl               ; de= sta_ck2, hl= stack pointer
-        pop bc                  ; <<< pop return address
-        ld (hl), c              ;
-        inc hl                  ;
-        ld (hl), b              ;
-        ld hl, sta_ck2          ;
-        inc (hl)                ;
-        inc (hl)                ; end of return address preps
-
-                                ; (FunctionDeclaration) collect arguments
-        ld hl, num3_            ; argument *** num3_ ***
-        pop de                  ; <<< pop address
-        pop bc                  ; <<< pop value
-        ld (hl), e              ; store it in memory
-        inc hl                  ;
-        ld (hl), d              ;
-
-        ld hl, num4_            ; argument *** num4_ ***
-        pop de                  ; <<< pop address
-        pop bc                  ; <<< pop value
-        ld (hl), e              ; store it in memory
-        inc hl                  ;
-        ld (hl), d              ;
-
-                                ; (FunctionDeclaration) function body
-                                ; (Identifier) variable * num3_ *
-        ld hl, num3_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num3_)          ; variable content
-        push hl                 ; >>> push variable content
-
-                                ; (Identifier) variable * num3_ *
-        ld hl, num3_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num3_)          ; variable content
-        push hl                 ; >>> push variable content
-
-                                ; (Identifier) variable * num4_ *
-        ld hl, num4_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num4_)          ; variable content
-        push hl                 ; >>> push variable content
-
-                                ; (BinaryExpression) * + * (int)
-        pop bc                  ; <<< pop right side value
-        pop de                  ; <<< pop right side address, not used
-        pop hl                  ; <<< pop left side value
-        pop de                  ; <<< pop left side address, not used
-
-        add hl, bc              ; (BinaryExpression) 16-bit addition
-        push hl                 ; >>> bogus record address, unused
-        push hl                 ; >>> record value
-                                ; (BinaryExpression) end of...
-
-                                ; (AssignmentExpression) * = * (int)
-        pop bc                  ; <<< pop right side value
-        pop de                  ; <<< pop right side address
-        pop hl                  ; <<< pop left side value
-
-        push bc                 ; >>> push right side value
-        pop de                  ; <<< pop right side value
-
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (AssignmentExpression) end of...
-
-                                ; (ReturnStatement) return expression
-                                ; (Identifier) variable * num3_ *
-        ld hl, num3_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (num3_)          ; variable content
-        push hl                 ; >>> push variable content
-
-
-                                ; (ReturnStatement) restore return address
-        ld hl, sta_ck2          ; update stack2 pointer
-        ld e, (hl)              ; pick stack pointer
-        inc hl                  ; update pointer
-        ld d, (hl)              ; pick stack pointer
-        ex de, hl               ; de= sta_ck2, hl= stack pointer
-        dec hl                  ;
-        ld b, (hl)              ; get return address from stack
-        dec hl                  ;
-        ld c, (hl)              ;
-        push bc                 ; >>> push return address
-        ld hl, sta_ck2          ;
-        dec (hl)                ;
-        dec (hl)                ;
-        ret                     ; return from function
-
-fst_257                         ; (FunctionDeclaration) recover return address (general)
-        ld hl, sta_ck2          ; update stack2 pointer
-        ld e, (hl)              ; pick stack pointer
-        inc hl                  ; update pointer
-        ld d, (hl)              ; pick stack pointer
-        ex de, hl               ; de= sta_ck2, hl= stack pointer
-        dec hl                  ;
-        ld b, (hl)              ; get return address from stack
-        dec hl                  ;
-        ld c, (hl)              ;
-        push bc                 ; >>> push return address
-        ld hl, sta_ck2          ;
-        dec (hl)                ;
-        dec (hl)                ; end of return address restore
-fex_256 ret                     ; (FunctionDeclaration) end of...
-
-mai_cod                         ; main code
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -6495,7 +6667,7 @@ mai_cod                         ; main code
                                 ; (AssignmentExpression) end of...
 
                                 ; (Literal) * '6 + 5 (11) = ' *
-        ld hl, stn_258          ; literal string address
+        ld hl, stn_259          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6515,7 +6687,7 @@ mai_cod                         ; main code
 
 
                                 ; (Literal) * 'Graph Tests' *
-        ld hl, stn_259          ; literal string address
+        ld hl, stn_260          ; literal string address
         ld de, 11                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -6575,7 +6747,7 @@ mai_cod                         ; main code
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_260                         ; (ForStatement) 2. test --------------
+for_261                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -6595,10 +6767,10 @@ for_260                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_263           ; if <, true -> skip change
-        jp z, leq_263           ; if =, true -> skip change
+        jp c, leq_264           ; if <, true -> skip change
+        jp z, leq_264           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_263 push de                 ; >>> push condition boolean
+leq_264 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -6606,7 +6778,7 @@ leq_263 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_261           ;
+        jp z, fex_262           ;
 
                                 ; (ForStatement) 3. body -------------
         ld de, 128                ; (Literal) literal int: * 128 *
@@ -6910,7 +7082,7 @@ leq_263 push de                 ; >>> push condition boolean
         ld l, a                  ;
         call dra_lin            ; (CallExpression) call function ctx
 
-fup_262                         ; (ForStatement) 4. update ---------
+fup_263                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -6935,11 +7107,11 @@ fup_262                         ; (ForStatement) 4. update ---------
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-        jp for_260
-fex_261                         ; (ForStatement) end of...
+        jp for_261
+fex_262                         ; (ForStatement) end of...
 
                                 ; (Literal) * 'Data Access Tests' *
-        ld hl, stn_264          ; literal string address
+        ld hl, stn_265          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7005,7 +7177,7 @@ fex_261                         ; (ForStatement) end of...
                                 ; (VariableDeclarator) arr1_, end of...
 
                                 ; (Literal) * 'Before: arr1[2](3): ' *
-        ld hl, stn_265          ; literal string address
+        ld hl, stn_266          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7082,7 +7254,7 @@ fex_261                         ; (ForStatement) end of...
 
 
                                 ; (Literal) * 'After: arr1[2](10): ' *
-        ld hl, stn_266          ; literal string address
+        ld hl, stn_267          ; literal string address
         ld de, 20                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7119,63 +7291,121 @@ fex_261                         ; (ForStatement) end of...
         rst 16                  ;
 
 
-                                ; (Literal) * 'Before, mat1[1][2](6): ' *
-        ld hl, stn_267          ; literal string address
-        ld de, 23                ; string length
-        push de                 ; >>> push dummy content
-        push hl                 ; >>> push literal address
+        ld hl, mat2_          ; (VariableDeclarator) array/matrix assignment
+        inc hl                  ; skip dimensions
+        inc hl                  ;
 
-        call prt_str            ; (CallExpression) print literal string
-
-                                ; (MemberExpression) matrix ***mat2_*** 
-        ld hl, mat2_            ; variable address
-        push hl                 ; >>>
-        ld hl, (mat2_)          ; variable content
-        push hl                 ; >>>
-
-                                ; (MemberExpression) matrix column
         ld de, 1                ; (Literal) literal int: * 1 *
         push de                 ; >>> push bogus address, unused
         push de                 ; >>> push value
 
-                                ; (MemberExpression) matrix row
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
         ld de, 2                ; (Literal) literal int: * 2 *
         push de                 ; >>> push bogus address, unused
         push de                 ; >>> push value
 
-                                ; (MemberExpression) matrix access
-        pop ix                  ; <<< pop column content
-        pop de                  ; <<< pop column address, unused
-        pop de                  ; <<< pop row content
-        pop bc                  ; <<< pop row address, unused
-        pop bc                  ; <<< pop matrix size (cols, rows)
-        ld b, 0                 ; leave rows only
-        push ix                 ; >>> push row size
-        push bc                 ; >>> push row size
-        push de                 ; >>> push row number
-        call mul_16b            ;
-        pop hl                  ; <<< pop row index
-        pop de                  ; <<< pop column content
-        add hl, de              ; record position
-        add hl, hl              ; record position
-        ld de, 2                ; header size
-        add hl, de              ; record position + header
-        pop de                  ; <<< pop matrix address
-        add hl, de              ; exact position!
-        push hl                 ; >>> push address
-        ld e, (hl)              ; position content!
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
         inc hl                  ;
-        ld d, (hl)              ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 3                ; (Literal) literal int: * 3 *
+        push de                 ; >>> push bogus address, unused
         push de                 ; >>> push value
 
-        call prt_num            ; (CallExpression) print literal number
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
 
-        ld a, 0x0d              ; (CallExpression) <cr> after prints
-        rst 16                  ;
+        ld de, 4                ; (Literal) literal int: * 4 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
 
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
 
+        ld de, 5                ; (Literal) literal int: * 5 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
 
-                                ; (Literal) * 'After, mat1[1][2](10): ' *
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 6                ; (Literal) literal int: * 6 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 7                ; (Literal) literal int: * 7 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 8                ; (Literal) literal int: * 8 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 9                ; (Literal) literal int: * 9 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+                                ; (VariableDeclarator) mat2_, end of...
+
+                                ; (Literal) * 'Before, mat1[1][2](6): ' *
         ld hl, stn_268          ; literal string address
         ld de, 23                ; string length
         push de                 ; >>> push dummy content
@@ -7230,8 +7460,119 @@ fex_261                         ; (ForStatement) end of...
         rst 16                  ;
 
 
-                                ; (Literal) * 'Before dic1[5])(10): ' *
+                                ; (AssignmentExpression) * = * value to array assignment
+        ld de, 10                ; (Literal) literal int: * 10 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (MemberExpression) matrix ***mat2_*** 
+        ld hl, mat2_            ; variable address
+        push hl                 ; >>>
+        ld hl, (mat2_)          ; variable content
+        push hl                 ; >>>
+
+                                ; (MemberExpression) matrix column
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (MemberExpression) matrix row
+        ld de, 2                ; (Literal) literal int: * 2 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (MemberExpression) matrix access
+        pop ix                  ; <<< pop column content
+        pop de                  ; <<< pop column address, unused
+        pop de                  ; <<< pop row content
+        pop bc                  ; <<< pop row address, unused
+        pop bc                  ; <<< pop matrix size (cols, rows)
+        ld b, 0                 ; leave rows only
+        push ix                 ; >>> push row size
+        push bc                 ; >>> push row size
+        push de                 ; >>> push row number
+        call mul_16b            ;
+        pop hl                  ; <<< pop row index
+        pop de                  ; <<< pop column content
+        add hl, de              ; record position
+        add hl, hl              ; record position
+        ld de, 2                ; header size
+        add hl, de              ; record position + header
+        pop de                  ; <<< pop matrix address
+        add hl, de              ; exact position!
+        push hl                 ; >>> push address
+        ld e, (hl)              ; position content!
+        inc hl                  ;
+        ld d, (hl)              ;
+        push de                 ; >>> push value
+
+        pop bc                  ; <<< pop right array value, unused
+        pop hl                  ; <<< pop right array address
+        pop de                  ; <<< pop right array value
+        pop bc                  ; <<< pop right array address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ; next
+        ld (hl), d              ; write MSB
+        inc hl                  ; next
+
+
+                                ; (Literal) * 'After, mat1[1][2](10): ' *
         ld hl, stn_269          ; literal string address
+        ld de, 23                ; string length
+        push de                 ; >>> push dummy content
+        push hl                 ; >>> push literal address
+
+        call prt_str            ; (CallExpression) print literal string
+
+                                ; (MemberExpression) matrix ***mat2_*** 
+        ld hl, mat2_            ; variable address
+        push hl                 ; >>>
+        ld hl, (mat2_)          ; variable content
+        push hl                 ; >>>
+
+                                ; (MemberExpression) matrix column
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (MemberExpression) matrix row
+        ld de, 2                ; (Literal) literal int: * 2 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (MemberExpression) matrix access
+        pop ix                  ; <<< pop column content
+        pop de                  ; <<< pop column address, unused
+        pop de                  ; <<< pop row content
+        pop bc                  ; <<< pop row address, unused
+        pop bc                  ; <<< pop matrix size (cols, rows)
+        ld b, 0                 ; leave rows only
+        push ix                 ; >>> push row size
+        push bc                 ; >>> push row size
+        push de                 ; >>> push row number
+        call mul_16b            ;
+        pop hl                  ; <<< pop row index
+        pop de                  ; <<< pop column content
+        add hl, de              ; record position
+        add hl, hl              ; record position
+        ld de, 2                ; header size
+        add hl, de              ; record position + header
+        pop de                  ; <<< pop matrix address
+        add hl, de              ; exact position!
+        push hl                 ; >>> push address
+        ld e, (hl)              ; position content!
+        inc hl                  ;
+        ld d, (hl)              ;
+        push de                 ; >>> push value
+
+        call prt_num            ; (CallExpression) print literal number
+
+        ld a, 0x0d              ; (CallExpression) <cr> after prints
+        rst 16                  ;
+
+
+                                ; (Literal) * 'Before dic1[5])(10): ' *
+        ld hl, stn_270          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7255,7 +7596,7 @@ fex_261                         ; (ForStatement) end of...
         ld b, e                 ; count through the dictionary, DE is free
         pop ix                  ; <<< pop dictionary address
 
-dic_270 inc ix                  ; skip size
+dic_271 inc ix                  ; skip size
         inc ix                  ;
         ld e, (ix+0)            ; read key, byte 1, from dictionary
         ld d, (ix+1)            ; read key, byte 2
@@ -7265,20 +7606,20 @@ dic_270 inc ix                  ; skip size
         push hl                 ; >>> value to search
         sbc hl, de              ; compare search value with key
         pop hl                  ; <<< pop value to search
-        jr z, dfo_271           ;
-        djnz dic_270            ;
+        jr z, dfo_272           ;
+        djnz dic_271            ;
 
         ld de, 0                ; if not found, value= 0
         ld bc, 0                ; if not found, address= 0
         push bc                 ; >>> push value address
         push de                 ; >>> push value
-        jr dex_272              ; skip match
+        jr dex_273              ; skip match
 
-dfo_271 ld e, (ix+0)            ; read value, byte 1, from dictionary
+dfo_272 ld e, (ix+0)            ; read value, byte 1, from dictionary
         ld d, (ix+1)            ; read value, byte 2
         push ix                 ; >>> push value address
         push de                 ; >>> push value 
-dex_272                         ; (MemberExpression) exit dictionary access
+dex_273                         ; (MemberExpression) exit dictionary access
 
         call prt_num            ; (CallExpression) print literal number
 
@@ -7288,7 +7629,7 @@ dex_272                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'Before dic1[5])(99): ' *
-        ld hl, stn_273          ; literal string address
+        ld hl, stn_274          ; literal string address
         ld de, 21                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7312,7 +7653,7 @@ dex_272                         ; (MemberExpression) exit dictionary access
         ld b, e                 ; count through the dictionary, DE is free
         pop ix                  ; <<< pop dictionary address
 
-dic_274 inc ix                  ; skip size
+dic_275 inc ix                  ; skip size
         inc ix                  ;
         ld e, (ix+0)            ; read key, byte 1, from dictionary
         ld d, (ix+1)            ; read key, byte 2
@@ -7322,20 +7663,20 @@ dic_274 inc ix                  ; skip size
         push hl                 ; >>> value to search
         sbc hl, de              ; compare search value with key
         pop hl                  ; <<< pop value to search
-        jr z, dfo_275           ;
-        djnz dic_274            ;
+        jr z, dfo_276           ;
+        djnz dic_275            ;
 
         ld de, 0                ; if not found, value= 0
         ld bc, 0                ; if not found, address= 0
         push bc                 ; >>> push value address
         push de                 ; >>> push value
-        jr dex_276              ; skip match
+        jr dex_277              ; skip match
 
-dfo_275 ld e, (ix+0)            ; read value, byte 1, from dictionary
+dfo_276 ld e, (ix+0)            ; read value, byte 1, from dictionary
         ld d, (ix+1)            ; read value, byte 2
         push ix                 ; >>> push value address
         push de                 ; >>> push value 
-dex_276                         ; (MemberExpression) exit dictionary access
+dex_277                         ; (MemberExpression) exit dictionary access
 
         call prt_num            ; (CallExpression) print literal number
 
@@ -7344,7 +7685,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '16-bit signed operations' *
-        ld hl, stn_277          ; literal string address
+        ld hl, stn_278          ; literal string address
         ld de, 24                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7356,7 +7697,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100+10 (110): ' *
-        ld hl, stn_278          ; literal string address
+        ld hl, stn_279          ; literal string address
         ld de, 14                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7389,7 +7730,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100+10 (-90): ' *
-        ld hl, stn_279          ; literal string address
+        ld hl, stn_280          ; literal string address
         ld de, 15                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7423,7 +7764,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100-10 (90): ' *
-        ld hl, stn_280          ; literal string address
+        ld hl, stn_281          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7457,7 +7798,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100-10 (-110): ' *
-        ld hl, stn_281          ; literal string address
+        ld hl, stn_282          ; literal string address
         ld de, 16                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7492,7 +7833,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100/10 (10): ' *
-        ld hl, stn_282          ; literal string address
+        ld hl, stn_283          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7529,7 +7870,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100/10 (-10): ' *
-        ld hl, stn_283          ; literal string address
+        ld hl, stn_284          ; literal string address
         ld de, 15                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7567,7 +7908,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100/-10 (-10): ' *
-        ld hl, stn_284          ; literal string address
+        ld hl, stn_285          ; literal string address
         ld de, 15                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7605,7 +7946,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100/-10 (10): ' *
-        ld hl, stn_285          ; literal string address
+        ld hl, stn_286          ; literal string address
         ld de, 15                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7644,7 +7985,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100*10 (1000): ' *
-        ld hl, stn_286          ; literal string address
+        ld hl, stn_287          ; literal string address
         ld de, 15                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7682,7 +8023,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100*10 (-1000): ' *
-        ld hl, stn_287          ; literal string address
+        ld hl, stn_288          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7719,7 +8060,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '100*-10 (-1000): ' *
-        ld hl, stn_288          ; literal string address
+        ld hl, stn_289          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7756,7 +8097,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '-100*-10 (1000): ' *
-        ld hl, stn_289          ; literal string address
+        ld hl, stn_290          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7794,7 +8135,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'Memory tests' *
-        ld hl, stn_290          ; literal string address
+        ld hl, stn_291          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7806,7 +8147,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'Before (0): ' *
-        ld hl, stn_291          ; literal string address
+        ld hl, stn_292          ; literal string address
         ld de, 12                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7838,7 +8179,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'After (255): ' *
-        ld hl, stn_292          ; literal string address
+        ld hl, stn_293          ; literal string address
         ld de, 13                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7858,9 +8199,23 @@ dex_276                         ; (MemberExpression) exit dictionary access
         rst 16                  ;
 
 
+        ld de, 4096                ; (Literal) literal int: * 4096 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+        ld de, 61440                ; (Literal) literal int: * 61440 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+        ld de, 255                ; (Literal) literal int: * 255 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+        call mem_cop            ; (CallExpression) copy memory block
+
 
                                 ; (Literal) * 'Last block position (16): ' *
-        ld hl, stn_293          ; literal string address
+        ld hl, stn_294          ; literal string address
         ld de, 26                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7881,7 +8236,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'String operations' *
-        ld hl, stn_294          ; literal string address
+        ld hl, stn_295          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7893,7 +8248,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '0) literal' *
-        ld hl, stn_295          ; literal string address
+        ld hl, stn_296          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7911,10 +8266,10 @@ dex_276                         ; (MemberExpression) exit dictionary access
         inc hl                  ;
         ld (hl), d              ;
 
-                                ; (Identifier) variable * tex1_ *
-        ld hl, tex1_            ; variable address
+                                ; (Identifier) variable * text1_ *
+        ld hl, text1_            ; variable address
         push hl                 ; >>> push variable address
-        ld hl, (tex1_)          ; variable content
+        ld hl, (text1_)          ; variable content
         push hl                 ; >>> push variable content
 
         call prt_str            ; (CallExpression) print literal string
@@ -7937,7 +8292,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * '2) second asg.' *
-        ld hl, stn_296          ; literal string address
+        ld hl, stn_297          ; literal string address
         ld de, 14                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -7969,10 +8324,10 @@ dex_276                         ; (MemberExpression) exit dictionary access
         ld hl, (text2_)          ; variable content
         push hl                 ; >>> push variable content
 
-                                ; (Identifier) variable * tex1_ *
-        ld hl, tex1_            ; variable address
+                                ; (Identifier) variable * text1_ *
+        ld hl, text1_            ; variable address
         push hl                 ; >>> push variable address
-        ld hl, (tex1_)          ; variable content
+        ld hl, (text1_)          ; variable content
         push hl                 ; >>> push variable content
 
                                 ; (AssignmentExpression) * = * assign string
@@ -7985,7 +8340,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
         ld (hl), d              ; copy immutable address string MSB
 
                                 ; (Literal) * '3) var2var asg.: ' *
-        ld hl, stn_297          ; literal string address
+        ld hl, stn_298          ; literal string address
         ld de, 17                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8003,6 +8358,27 @@ dex_276                         ; (MemberExpression) exit dictionary access
         ld a, 0x0d              ; (CallExpression) <cr> after prints
         rst 16                  ;
 
+
+                                ; (VariableDeclarator) * num1_ *
+                                ; (Identifier) variable * num1_ *
+        ld hl, num1_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (num1_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
 
                                 ; (VariableDeclarator) * = * string 
         ld hl, cars_+2          ; * cars_ * strings array
@@ -8024,7 +8400,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
                                 ; (VariableDeclarator) cars_, end of...
 
                                 ; (Literal) * 'array pos. lit (Saab): ' *
-        ld hl, stn_301          ; literal string address
+        ld hl, stn_302          ; literal string address
         ld de, 23                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8064,7 +8440,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * 'array pos. var (Volvo): ' *
-        ld hl, stn_303          ; literal string address
+        ld hl, stn_304          ; literal string address
         ld de, 24                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8106,7 +8482,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
 
 
                                 ; (Literal) * '4) Array print' *
-        ld hl, stn_305          ; literal string address
+        ld hl, stn_306          ; literal string address
         ld de, 14                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8142,7 +8518,7 @@ dex_276                         ; (MemberExpression) exit dictionary access
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-for_306                         ; (ForStatement) 2. test --------------
+for_307                         ; (ForStatement) 2. test --------------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -8162,10 +8538,10 @@ for_306                         ; (ForStatement) 2. test --------------
         ld de, 1                ; assume condition=true
         xor a                   ;
         sbc hl, bc              ;
-        jp c, leq_309           ; if <, true -> skip change
-        jp z, leq_309           ; if =, true -> skip change
+        jp c, leq_310           ; if <, true -> skip change
+        jp z, leq_310           ; if =, true -> skip change
         dec e                   ; condition=false
-leq_309 push de                 ; >>> push condition boolean
+leq_310 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused
                                 ; (BinaryExpression) end of...
 
@@ -8173,11 +8549,11 @@ leq_309 push de                 ; >>> push condition boolean
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, fex_307           ;
+        jp z, fex_308           ;
 
                                 ; (ForStatement) 3. body -------------
                                 ; (Literal) * 'Position ' *
-        ld hl, stn_310          ; literal string address
+        ld hl, stn_311          ; literal string address
         ld de, 9                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8193,7 +8569,7 @@ leq_309 push de                 ; >>> push condition boolean
         call prt_num            ; (CallExpression) print literal number
 
                                 ; (Literal) * ': ' *
-        ld hl, stn_311          ; literal string address
+        ld hl, stn_312          ; literal string address
         ld de, 2                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8234,7 +8610,7 @@ leq_309 push de                 ; >>> push condition boolean
         rst 16                  ;
 
 
-fup_308                         ; (ForStatement) 4. update ---------
+fup_309                         ; (ForStatement) 4. update ---------
                                 ; (Identifier) variable * num1_ *
         ld hl, num1_            ; variable address
         push hl                 ; >>> push variable address
@@ -8276,11 +8652,11 @@ fup_308                         ; (ForStatement) 4. update ---------
         ld (hl), d              ;
                                 ; (AssignmentExpression) end of...
 
-        jp for_306
-fex_307                         ; (ForStatement) end of...
+        jp for_307
+fex_308                         ; (ForStatement) end of...
 
                                 ; (Literal) * '5) Comparison (different)' *
-        ld hl, stn_313          ; literal string address
+        ld hl, stn_314          ; literal string address
         ld de, 25                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8298,7 +8674,7 @@ fex_307                         ; (ForStatement) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'adix' *
-        ld hl, stn_314          ; literal string address
+        ld hl, stn_315          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8319,7 +8695,7 @@ fex_307                         ; (ForStatement) end of...
         push hl                 ; >>> push variable content
 
                                 ; (Literal) * 'adio' *
-        ld hl, stn_315          ; literal string address
+        ld hl, stn_316          ; literal string address
         ld de, 4                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8356,15 +8732,15 @@ fex_307                         ; (ForStatement) end of...
         inc b                   ;
 
         ld c, 0                 ; C=0, assume the strings are different
-com_318 ld a, (de)              ; (BinaryExpression) == string
+com_319 ld a, (de)              ; (BinaryExpression) == string
         sub (hl)                ;
-        jr nz, cox_319          ; if one character is different, exit
+        jr nz, cox_320          ; if one character is different, exit
         inc de                  ; next character
         inc hl                  ; next character
-        djnz com_318            ; countdown until B=0
+        djnz com_319            ; countdown until B=0
 
         inc c                   ; 
-cox_319        push bc                 ;
+cox_320        push bc                 ;
 
                                 ; (BinaryExpression) end of...
 
@@ -8372,9 +8748,9 @@ cox_319        push bc                 ;
         pop hl                  ; <<< pop address, unused
         xor a                   ; A=0
         cp e                    ; if E=0, condition not fulfiled
-        jp z, els_316           ;
+        jp z, els_317           ;
                                 ; (Literal) * 'same!' *
-        ld hl, stn_320          ; literal string address
+        ld hl, stn_321          ; literal string address
         ld de, 5                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8385,11 +8761,11 @@ cox_319        push bc                 ;
         rst 16                  ;
 
 
-        jp ski_317              ; (IfStatement) ***expression==expression*** skips else
-els_316                         ; else
+        jp ski_318              ; (IfStatement) ***expression==expression*** skips else
+els_317                         ; else
 
                                 ; (Literal) * 'different!' *
-        ld hl, stn_321          ; literal string address
+        ld hl, stn_322          ; literal string address
         ld de, 10                ; string length
         push de                 ; >>> push dummy content
         push hl                 ; >>> push literal address
@@ -8400,6 +8776,6 @@ els_316                         ; else
         rst 16                  ;
 
 
-ski_317                         ; (IfStatement) ***expression==expression*** end of...
+ski_318                         ; (IfStatement) ***expression==expression*** end of...
 
         ret                     ; end of code

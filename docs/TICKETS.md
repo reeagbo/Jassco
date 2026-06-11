@@ -1,7 +1,5 @@
 ﻿# JASSCO Tickets
 
-This is the canonical backlog for work planned after release 26.24.
-
 ## Open Functional Tickets
 
 ### JAS-002 - Make complex function arguments reliable
@@ -71,15 +69,6 @@ producing a usable ASM output.
 
 Errors and warnings should include the source filename, line number, relevant
 JavaScript text and AST node type where available.
-
-### JAS-009 - Decide declaration semantics
-
-**Priority:** P2
-**Origin:** Technical Description, Restrictions
-
-Define the supported differences between `var`, `let` and `const`, including
-repeated declarations and declarations without initializers. Release 26.24
-executes repeated initializers but still reports compatibility warnings.
 
 ### JAS-010 - Review calculated and nested structure access
 

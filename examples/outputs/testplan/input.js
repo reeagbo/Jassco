@@ -34,10 +34,11 @@ str1="adios"
 console.log (1, " ", num1, " ", "hola ", str1, " ", numa[2])
 
 console.log("Console tests")
-console.log("Output: he100200hellogoodbye")
+console.log("Hello")
 console.logchar("h","e")
 console.lognumber(100,200)
 console.logstring("hello", "goodbye")
+console.log("")
 read(key)  
 
 //---------------------------------------------------------
@@ -123,7 +124,7 @@ num1=16
 num1 = num1 >> 2
 console.log (">> 2 (4) ", num1)
 num1=16
-num1 = num1 >> 2
+num1 = num1 >>> 2
 console.log (">>> 2 (4)", num1)
 read(key)
 
@@ -391,11 +392,11 @@ console.log("String operations")
 
 console.log ("0) literal")
 var text1="1) initial asg."
-console.log (tex1)
+console.log (text1)
 var text2=""
 text2="2) second asg."
 console.log (text2)
-text2=tex1
+text2=text1
 console.log ("3) var2var asg.: ", text2)
 
 var num1=1

@@ -19,7 +19,10 @@ receive_bit(send_bit)
 - Function parameters are currently treated as integer-compatible values.
 - Multiple sibling recursive calls preserve integer-compatible parameters.
   Function-local variables still use shared storage and are not yet reentrant.
-- Repeated variable declarations are tolerated as compatibility warnings.
+- Repeated `var` declarations are tolerated as compatibility warnings. `let`
+  and `const` redeclarations are compiler errors.
+- Block scope is not implemented: declarations still use JASSCO's global
+  storage model.
 - Some 2D matrix literal behavior may be improvable, but changing it currently alters golden ASM output.
 
 ## Diagnostics

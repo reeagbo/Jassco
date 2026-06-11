@@ -68,6 +68,7 @@ def translate_to_assembly(js_code):
     ast = esprima.parseScript(js_code)
 
     current_preserved_parameters = []
+    declaration_kind_list = {}
 
     def restore_preserved_parameters(parameter_names):
         for parameter_name in reversed(parameter_names):
@@ -1778,6 +1779,12 @@ def translate_to_assembly(js_code):
                 if update_argument is None:
                     report_error(f"{node.type}: update expression without an argument is not supported.")
                     return
+                update_argument_name = getattr(update_argument, "name", None)
+                if update_argument_name:
+                    update_variable_name = add_underscore_to_var(update_argument_name)
+                    if update_variable_name in constant_type_list:
+                        report_error(f"{node.type}: constant {update_variable_name} cannot be altered.")
+                        return
                 process_node(update_argument)
                 nodes_code.append(f"                                ; ({node.type}) *** {node.operator} ***")
                 nodes_code.append(f"        pop hl                  ; <<< pop left side value, not used")
@@ -1807,6 +1814,26 @@ def translate_to_assembly(js_code):
                 #print (f"({node.type}) Node:\n {node}")
                 variable_name= add_underscore_to_var(node.id.name)
                 init_node = node.init
+                existing_kind = declaration_kind_list.get(variable_name)
+
+                if existing_kind is not None:
+                    if variable_kind == "var" and existing_kind == "var":
+                        report_warning(f"{node.type}: {variable_name} already declared with var.")
+                    else:
+                        report_error(
+                            f"{node.type}: {variable_name} cannot be redeclared "
+                            f"as {variable_kind}; it was already declared as {existing_kind}."
+                        )
+                        return
+                else:
+                    declaration_kind_list[variable_name] = variable_kind
+
+                if init_node is None:
+                    if variable_kind == "const":
+                        report_error(f"{node.type}: const {variable_name} requires an initializer.")
+                        return
+                    init_node = esprima.parseScript("0").body[0].expression
+
                 init_type = getattr(init_node, "type", None)
                 init_elements = getattr(init_node, "elements", [])
                 init_arguments = getattr(init_node, "arguments", [])
@@ -1842,8 +1869,6 @@ def translate_to_assembly(js_code):
                         if variable_name not in variable_type_list:
                             variable_type_list[variable_name]= "int"
                             variable_declarations.append(f'{variable_name}   defw {int(variable_value)}                  ; ({node.type}) variable int/bool')
-                        else:
-                            report_warning(f"{node.type}: {variable_name} already declared.")
 
                         # JavaScript var redeclarations still execute their
                         # initializer even though no new storage is created.

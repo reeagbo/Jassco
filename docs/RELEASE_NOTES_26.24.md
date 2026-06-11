@@ -1,6 +1,6 @@
 # Release Notes 26.24
 
-Status: working version, not yet released.
+Released: June 11, 2026.
 
 ## Baseline
 
@@ -27,6 +27,10 @@ Status: working version, not yet released.
 - Make `memory.copy(...)` functional and accept `Memory.move(...)` as a
   compatibility alias; both use the `mem_cop` assembly routine.
 - Reject unknown memory methods and invalid memory-method argument counts.
+- Initialize `var` and `let` declarations without explicit values to `0`.
+- Enforce declaration rules at compile time: `const` requires an initializer
+  and cannot be modified; `let` and `const` cannot be redeclared; repeated
+  `var` remains supported for compatibility.
 
 ## Example And Test Fixes
 
@@ -51,5 +55,6 @@ Status: working version, not yet released.
   drawing were tested successfully in an emulator.
 - `memory.copy(...)` and `Memory.move(...)` were tested successfully in an
   emulator.
-
-Further changes may be added before 26.24 is packaged or published.
+- Declaration defaults, repeated `var`, and constants were tested successfully
+  in an emulator; invalid declaration and constant operations were verified to
+  fail without producing ASM.
