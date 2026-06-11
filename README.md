@@ -24,13 +24,13 @@ pip install -r requirements.txt
 5. Run:
 
 ```powershell
-run_jassco.cmd
+.\run_jassco.cmd
 ```
 
 or:
 
 ```powershell
-jassco.bat input.js output.asm
+.\jassco.bat input.js output.asm
 ```
 
 The compiler writes the generated Z80 assembly to `output.asm`.

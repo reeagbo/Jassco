@@ -11,6 +11,9 @@ Released: June 11, 2026.
 - Add a consolidated validation workspace without duplicate example and output trees.
 - Add validation launchers for JASSCO, Pasmo and the complete `run_jassco_pasmo.cmd` flow.
 - Add `--quiet` so scripted compilation keeps warnings visible without printing the full ASM to the terminal.
+- Expand the User Manual with a verified JASSCO-to-Pasmo chain, PowerShell
+  invocation details, TAP/TAPBAS differences, path handling, symbols output,
+  include resolution, and stale-output safeguards.
 
 ## Compiler Fixes
 
