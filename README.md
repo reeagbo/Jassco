@@ -5,9 +5,10 @@ program and generates Z80 assembly code. The current target is ZX Spectrum, but
 the compiler is built around separate assembly support libraries so other Z80
 machines can be explored later.
 
-The project is intentionally packaged by version. Each release ZIP is meant to
-be self-contained: download it, extract it, edit `input.js`, run the compiler,
-and use the generated `output.asm` with your preferred Z80 assembler/emulator.
+The current compiler source is visible file by file in `compiler/`. Each release
+is also published as a self-contained ZIP: download it, extract it, edit
+`input.js`, run the compiler, and use the generated `output.asm` with your
+preferred Z80 assembler/emulator.
 
 ## Quick Start
 
@@ -63,12 +64,24 @@ The `examples/outputs/` folder contains generated pairs of:
 These are included so users can see how the compiler translates each example
 without having to run the compiler first.
 
+## Repository Layout
+
+- `compiler/`: source and support files for the latest published version.
+- `examples/`: example JavaScript programs.
+- `examples/outputs/`: generated JS/ASM pairs for inspection.
+- `docs/`: release notes, restrictions, fixes, and development backlog.
+- `software/`: historical self-contained release ZIPs.
+
+The files in `compiler/` and the compiler contained in the latest release ZIP
+must always represent the same version.
+
 ## Documentation
 
 - `User Manual.md`: basic setup and first compilation walkthrough.
 - `Technical Description.md`: supported JavaScript subset and implementation
   notes.
 - `docs/RESTRICTIONS.md`: known compiler restrictions.
+- `docs/TICKETS.md`: canonical backlog for unresolved work after the current release.
 - `docs/FIXES.md`: fixes applied during the current cleanup pass.
 - `docs/IMPROVEMENTS.md`: possible improvements to review later.
 - `docs/RELEASE_NOTES_26.22.md`: notes for the 26.22 release.

@@ -509,11 +509,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         inc hl                  ; skip dimensions
         inc hl                  ;
 
-        ld de, 43                ; (Literal) literal int: * 43 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bR_ *
+        ld hl, bR_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -521,11 +522,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 19                ; (Literal) literal int: * 19 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bN_ *
+        ld hl, bN_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -533,11 +535,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 27                ; (Literal) literal int: * 27 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bB_ *
+        ld hl, bB_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -545,11 +548,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 59                ; (Literal) literal int: * 59 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bQ_ *
+        ld hl, bQ_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -557,11 +561,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 67                ; (Literal) literal int: * 67 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bK_ *
+        ld hl, bK_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -569,11 +574,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 27                ; (Literal) literal int: * 27 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bB_ *
+        ld hl, bB_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -581,11 +587,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 19                ; (Literal) literal int: * 19 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bN_ *
+        ld hl, bN_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -593,11 +600,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 43                ; (Literal) literal int: * 43 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bR_ *
+        ld hl, bR_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -605,11 +613,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -617,11 +626,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -629,11 +639,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -641,11 +652,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -653,11 +665,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -665,11 +678,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -677,11 +691,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -689,11 +704,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -701,11 +717,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -713,11 +730,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -725,11 +743,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -737,11 +756,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -749,11 +769,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -761,11 +782,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -773,11 +795,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -785,11 +808,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 7                ; (Literal) literal int: * 7 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * bP_ *
+        ld hl, bP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -797,11 +821,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -809,11 +834,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -821,11 +847,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -833,11 +860,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -845,11 +873,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -857,11 +886,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -869,11 +899,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -881,11 +912,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -893,11 +925,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -905,11 +938,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -917,11 +951,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -929,11 +964,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -941,11 +977,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -953,11 +990,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -965,11 +1003,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -977,11 +1016,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -989,11 +1029,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1001,11 +1042,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1013,11 +1055,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1025,11 +1068,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1037,11 +1081,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1049,11 +1094,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1061,11 +1107,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1073,11 +1120,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1085,11 +1133,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1097,11 +1146,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1109,11 +1159,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1121,11 +1172,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1133,11 +1185,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1145,11 +1198,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1157,11 +1211,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1169,11 +1224,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1181,11 +1237,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1193,11 +1250,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1205,11 +1263,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1217,11 +1276,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1229,11 +1289,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1241,11 +1302,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1253,11 +1315,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1265,11 +1328,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1277,11 +1341,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1289,11 +1354,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1301,11 +1367,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1313,11 +1380,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1325,11 +1393,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1337,11 +1406,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1349,11 +1419,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1361,11 +1432,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1373,11 +1445,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1385,11 +1458,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1397,11 +1471,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1409,11 +1484,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1421,11 +1497,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1433,11 +1510,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1445,11 +1523,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1457,11 +1536,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1469,11 +1549,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1481,11 +1562,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1493,11 +1575,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1505,11 +1588,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1517,11 +1601,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1529,11 +1614,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1541,11 +1627,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1553,11 +1640,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1565,11 +1653,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1577,11 +1666,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1589,11 +1679,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1601,11 +1692,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1613,11 +1705,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1625,11 +1718,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1637,11 +1731,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1649,11 +1744,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1661,11 +1757,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1673,11 +1770,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1685,11 +1783,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1697,11 +1796,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1709,11 +1809,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1721,11 +1822,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1733,11 +1835,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1745,11 +1848,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 5                ; (Literal) literal int: * 5 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wP_ *
+        ld hl, wP_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1757,11 +1861,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1769,11 +1874,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1781,11 +1887,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1793,11 +1900,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1805,11 +1913,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1817,11 +1926,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1829,11 +1939,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1841,11 +1952,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1853,11 +1965,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 41                ; (Literal) literal int: * 41 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wR_ *
+        ld hl, wR_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1865,11 +1978,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 17                ; (Literal) literal int: * 17 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wN_ *
+        ld hl, wN_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1877,11 +1991,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 25                ; (Literal) literal int: * 25 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wB_ *
+        ld hl, wB_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1889,11 +2004,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 57                ; (Literal) literal int: * 57 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wQ_ *
+        ld hl, wQ_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1901,11 +2017,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 65                ; (Literal) literal int: * 65 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wK_ *
+        ld hl, wK_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1913,11 +2030,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 25                ; (Literal) literal int: * 25 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wB_ *
+        ld hl, wB_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1925,11 +2043,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 17                ; (Literal) literal int: * 17 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wN_ *
+        ld hl, wN_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1937,11 +2056,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 41                ; (Literal) literal int: * 41 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * wR_ *
+        ld hl, wR_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1949,11 +2069,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1961,11 +2082,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1973,11 +2095,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1985,11 +2108,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -1997,11 +2121,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -2009,11 +2134,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -2021,11 +2147,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB
@@ -2033,11 +2160,12 @@ stack	ld sp, 0            	; 0  overwritten by first instruction
         ld (hl), d              ; write MSB
         inc hl                  ;
 
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
+                                ; (Identifier) constant * eS_ *
+        ld hl, eS_            ; variable content
+        push hl                 ; >>> push variable address (bogus)
+        push hl                 ; >>> push variable content
 
-                                ; (ArrayExpression) literal assignment
+                                ; (ArrayExpression) constant assignment
         pop de                  ; <<< pop value
         pop bc                  ; <<< pop address, unused
         ld (hl), e              ; write LSB

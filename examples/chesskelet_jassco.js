@@ -36,14 +36,14 @@ let pieces = {                                                           // Piec
 };
 
 var board = [                                                            // Chess board representation
-  0x2B, 0x13, 0x1B, 0x3B, 0x43, 0x1B, 0x13, 0x2B,  0, 0, 0, 0, 0, 0, 0, 0, // Rank8 + dummy squares
-  0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,  0, 0, 0, 0, 0, 0, 0, 0, // Rank7 + dummy squares
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0, 0, 0, 0, 0, 0, 0, 0, // Rank6 + dummy squares
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0, 0, 0, 0, 0, 0, 0, 0, // Rank5 + dummy squares
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0, 0, 0, 0, 0, 0, 0, 0, // Rank4 + dummy squares
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0, 0, 0, 0, 0, 0, 0, 0, // Rank3 + dummy squares
-  0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05, 0x05,  0, 0, 0, 0, 0, 0, 0, 0, // Rank2 + dummy squares
-  0x29, 0x11, 0x19, 0x39, 0x41, 0x19, 0x11, 0x29,  0, 0, 0, 0, 0, 0, 0, 0  // Rank1 + dummy squares
+  bR, bN, bB, bQ, bK, bB, bN, bR,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank8 + dummy squares
+  bP, bP, bP, bP, bP, bP, bP, bP,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank7 + dummy squares
+  eS, eS, eS, eS, eS, eS, eS, eS,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank6 + dummy squares
+  eS, eS, eS, eS, eS, eS, eS, eS,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank5 + dummy squares
+  eS, eS, eS, eS, eS, eS, eS, eS,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank4 + dummy squares
+  eS, eS, eS, eS, eS, eS, eS, eS,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank3 + dummy squares
+  wP, wP, wP, wP, wP, wP, wP, wP,  eS, eS, eS, eS, eS, eS, eS, eS,       // Rank2 + dummy squares
+  wR, wN, wB, wQ, wK, wB, wN, wR,  eS, eS, eS, eS, eS, eS, eS, eS        // Rank1 + dummy squares
 ];
 
 var vector_pointers = {                                                  // Move vector table pointers
@@ -213,7 +213,6 @@ function userInput(key) {
     else                                                                   // Otherwise
       board[best_move[1]] = board[best_move[0]];                           // Just make a move
     board[best_move[0]] = 0x00;                                            // and clear source square
-	key=read(dkey)
     renderBoard();                                                         // Draw board
   }    
   

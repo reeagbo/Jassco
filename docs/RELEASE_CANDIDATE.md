@@ -24,14 +24,16 @@
 - `Memory.move(...)` behavior needs semantic review against `memory.copy(...)`.
 - 2D matrix literal behavior may be improvable, but changing it alters golden output.
 
-## Recommended Release Contents
+## Repository And Release Layout
 
-- `src/` or compiler source directory
-- `examples/`
-- `examples/outputs/` with JS/ASM pairs for user inspection
-- `golden/`
-- `tests/`
-- `docs/`
-- `FIXES.md`
-- `IMPROVEMENTS.md`
-- `RESTRICTIONS.md` once extracted from docs/release notes
+- Keep the latest published compiler visible file by file in `compiler/`.
+- Keep examples and generated JS/ASM pairs in `examples/` and
+  `examples/outputs/` in the repository.
+- Build the self-contained release ZIP from the approved contents of
+  `compiler/`.
+- Add `release notes.txt`, the main documentation, `LICENSE`, and the public
+  `docs/` material to the ZIP.
+- Do not include examples, outputs, golden references, validation files,
+  `FIXES.md`, `testplan.js`, `output.asm`, or Python cache files in the ZIP.
+- Before commit, verify that `compiler/` and the ZIP contain the same compiler
+  source files.

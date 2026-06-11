@@ -1,6 +1,34 @@
 # Fixes
 
-## Cleanup for 26.22
+## 26.24 working version
+
+- Created from the closed 26.23 compiler baseline.
+- Add the optional `--quiet` CLI flag so automation can write ASM without printing the complete generated file to the terminal.
+- Add a manual validation workspace with `input.js`, JASSCO launchers, a portable Pasmo launcher and the combined `run_jassco_pasmo.cmd` command.
+- Consolidate validation sources, golden references and generated artifacts into a single non-duplicated structure.
+
+## 26.23
+
+- Add the optional `--tapbas` compiler flag, which emits the `start:` entry label and `end start` directive required by `pasmo --tapbas`.
+- Integrate Pasmo assembly validation into the golden runner. Every golden case must now match its ASM reference and assemble successfully into a TAP file.
+- Make the golden runner locate Python and Pasmo portably instead of relying on user-specific absolute paths. Pasmo can be selected with `--pasmo`, `JASSCO_PASMO`, a project-local copy, or the system `PATH`.
+- Resolve static values in array and matrix declarations when the first usable element is a literal, a unary numeric literal, a previously declared constant, or a nested array row.
+- Store constant values separately from constant types so constants can be used safely inside numeric array literals.
+- Fix missing declarations for 2D numeric matrices whose first element is an `ArrayExpression`.
+- Fix missing declarations for arrays/matrices whose first element is a negative numeric literal.
+- Restore `chesskelet_jassco.js` board initialization to symbolic constants and compile it correctly by resolving constants inside numeric array declarations.
+- Regenerate the affected local golden ASM files:
+  - `neural v2.0 hidden layer.asm`
+  - `chesskelet_jassco.asm`
+  - `testplan.asm`
+
+## 26.23 verification
+
+- Golden ASM tests pass with the closed 26.23 compiler baseline.
+- Pasmo accepts the TAPBAS output for every current golden test and produces a TAP file.
+- Static symbol scan reports no missing generated labels or underscored variables in the current golden ASM outputs.
+
+## 25.44 working copy
 
 - Reset compiler state before each compilation so consecutive runs in the same Python process do not leak labels, declarations, includes, type tables, loop labels, or temporary memory pointers.
 - Resolve assembly includes relative to the input file and compiler directory instead of depending only on the current working directory.
@@ -59,7 +87,6 @@
 - Report non-literal `Array.fill()` values for the current literal-only implementation.
 - Report unsupported unary elements in array declarations instead of assuming every unary has `.argument.value`.
 - Report constant array declarations as unsupported instead of attempting to compile them.
-- Fix `chesskelet_jassco.js` board initialization by replacing symbolic constants inside the `board` array with literal values, avoiding an undefined `board_` symbol in the generated ASM.
 - Log complex function call arguments as warnings, matching the known assembler-side restriction without breaking current working examples.
 - Convert tolerated redeclarations and empty statements from raw `print()` messages into compiler warnings.
 - Add compiler warnings for tolerated unsupported cases that should not be fatal yet.
