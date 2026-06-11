@@ -6,6 +6,11 @@
 - Add the optional `--quiet` CLI flag so automation can write ASM without printing the complete generated file to the terminal.
 - Add a manual validation workspace with `input.js`, JASSCO launchers, a portable Pasmo launcher and the combined `run_jassco_pasmo.cmd` command.
 - Consolidate validation sources, golden references and generated artifacts into a single non-duplicated structure.
+- Preserve integer-compatible parameters for functions with multiple sibling
+  recursive calls, restoring the caller state before each following branch.
+- Use a 16-bit auxiliary stack pointer for protected recursive activations.
+- Verify the recursion fix with Fibonacci, a three-branch numeric case and a
+  full recursive Sierpinski drawing in the emulator.
 
 ## 26.23
 

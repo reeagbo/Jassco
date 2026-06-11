@@ -1,30 +1,12 @@
-# JASSCO Tickets
+﻿# JASSCO Tickets
 
 This is the canonical backlog for work planned after release 26.24.
 
-Priorities:
-
-- **P1**: functional correctness or silently wrong output.
-- **P2**: important language behavior, diagnostics, or test coverage.
-- **P3**: maintainability or deliberate language expansion.
-
 ## Open Functional Tickets
-
-### JAS-001 - Support multiple sibling recursive calls
-
-**Priority:** P1  
-**Origin:** Technical Description, Restrictions
-
-Function parameters and local values are stored globally. A call such as
-`fibonacci(n - 1) + fibonacci(n - 2)` can therefore overwrite values needed by
-the sibling call.
-
-**Done when:** each active call has independent parameters/local values, nested
-sibling recursion works, and positive and negative recursion tests pass.
 
 ### JAS-002 - Make complex function arguments reliable
 
-**Priority:** P1  
+**Priority:** P2
 **Origin:** Technical Description, Restrictions
 
 Expressions such as `receive_bit(input_bits[pointer])` currently produce a
@@ -36,7 +18,7 @@ defined behavior, with regression tests for each supported form.
 
 ### JAS-003 - Introduce real function frames and parameter types
 
-**Priority:** P1  
+**Priority:** P2
 **Origin:** Technical Description, Improvements
 
 Parameters are currently assumed to be integers and stored in global labels.
@@ -47,7 +29,7 @@ return values and stack cleanup without relying on shared parameter variables.
 
 ### JAS-004 - Resolve `Memory.move` and `memory.copy`
 
-**Priority:** P1  
+**Priority:** P2
 **Origin:** Restrictions, Improvements, `testplan.js`
 
 The documented compiler method is `memory.copy(source, target, size)`, while
@@ -59,7 +41,7 @@ explicit compatibility alias. Unknown memory methods must fail compilation.
 
 ### JAS-005 - Define and validate `read()` semantics
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Technical Description, 26.24 chess investigation
 
 `read(destination)` is a statement that writes into a variable, not an
@@ -71,7 +53,7 @@ tested contract.
 
 ### JAS-006 - Verify `switch` and `default` runtime semantics
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Improvements
 
 Parser crashes were prevented, but fall-through, `break` and `default`
@@ -84,7 +66,7 @@ fall-through and break behavior.
 
 ### JAS-007 - Add negative compiler tests
 
-**Priority:** P3  
+**Priority:** P3
 **Origin:** Improvements
 
 Add automated failures for missing includes, unsupported methods, malformed
@@ -96,7 +78,7 @@ producing a usable ASM output.
 
 ### JAS-008 - Add source locations to diagnostics
 
-**Priority:** P3  
+**Priority:** P3
 **Origin:** Improvements
 
 Errors and warnings should include the source filename, line number, relevant
@@ -104,7 +86,7 @@ JavaScript text and AST node type where available.
 
 ### JAS-009 - Decide declaration semantics
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Technical Description, Restrictions
 
 Define the supported differences between `var`, `let` and `const`, including
@@ -113,7 +95,7 @@ executes repeated initializers but still reports compatibility warnings.
 
 ### JAS-010 - Review calculated and nested structure access
 
-**Priority:** P2  
+**Priority:** P3
 **Origin:** Improvements
 
 Extend focused runtime coverage for arrays, matrices and dictionaries using
@@ -123,7 +105,7 @@ calculated indexes, nested member access and non-literal initialization.
 
 ### JAS-011 - Expand string support
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Technical Description
 
 Define and implement the next useful string operations beyond assignment,
@@ -131,7 +113,7 @@ comparison, `charAt()` and `charCodeAt()`.
 
 ### JAS-012 - Consider constant arrays
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Technical Description, Restrictions
 
 Constant arrays are deliberately unsupported. Revisit only after immutable
@@ -139,7 +121,7 @@ storage and element-access semantics are specified.
 
 ### JAS-013 - Refactor compiler architecture
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Improvements
 
 Split `translator.py` by AST area, replace wildcard imports, centralize built-in
@@ -147,7 +129,7 @@ dispatch, extract common stack sequences and reduce global mutable state.
 
 ### JAS-014 - Improve project and test layout
 
-**Priority:** P2  
+**Priority:** P2
 **Origin:** Improvements
 
 Consider a stable source package, a standard test command and clearer handling

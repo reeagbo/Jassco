@@ -45,12 +45,49 @@ def first_array_static_value(elements):
                 return value
     return None
 
+def count_named_calls(node, function_name):
+    if node is None:
+        return 0
+    if isinstance(node, (list, tuple)):
+        return sum(count_named_calls(item, function_name) for item in node)
+
+    count = 0
+    if getattr(node, "type", None) == "CallExpression":
+        callee = getattr(node, "callee", None)
+        if getattr(callee, "name", None) == function_name:
+            count += 1
+
+    for value in vars(node).values():
+        if hasattr(value, "type") or isinstance(value, (list, tuple)):
+            count += count_named_calls(value, function_name)
+    return count
+
 def translate_to_assembly(js_code):
     #--------------------------------------------------------------------------         
     # Parse JavaScript using esprima
     ast = esprima.parseScript(js_code)
 
+    current_preserved_parameters = []
+
+    def restore_preserved_parameters(parameter_names):
+        for parameter_name in reversed(parameter_names):
+            nodes_code.append(f"        ld hl, sta_ck2          ; restore saved parameter {parameter_name}")
+            nodes_code.append(f"        ld e, (hl)              ; pick auxiliary stack pointer")
+            nodes_code.append(f"        inc hl                  ;")
+            nodes_code.append(f"        ld d, (hl)              ;")
+            nodes_code.append(f"        ex de, hl               ; HL= auxiliary stack pointer")
+            nodes_code.append(f"        dec hl                  ; saved parameter high byte")
+            nodes_code.append(f"        ld d, (hl)              ;")
+            nodes_code.append(f"        dec hl                  ; saved parameter low byte")
+            nodes_code.append(f"        ld e, (hl)              ;")
+            nodes_code.append(f"        ld (sta_ck2), hl        ; release saved parameter")
+            nodes_code.append(f"        ld hl, {parameter_name}            ; restore caller parameter")
+            nodes_code.append(f"        ld (hl), e              ;")
+            nodes_code.append(f"        inc hl                  ;")
+            nodes_code.append(f"        ld (hl), d              ;")
+
     def process_node(node):
+        nonlocal current_preserved_parameters
         global garbage_address, discriminant_name, array_name, variable_declarations, \
             function_end_tag, function_exit_tag, \
             matrix_type_list, object_type_list, variable_type_list, array_type_list, string_type_list, constant_type_list, \
@@ -1118,6 +1155,15 @@ def translate_to_assembly(js_code):
                     report_error(f"{node.type}: unnamed function declarations are not supported.")
                     return
                 function_name = add_underscore_to_var(function_raw_name)
+                previous_preserved_parameters = current_preserved_parameters
+                recursive_call_count = count_named_calls(node.body, function_raw_name)
+                current_preserved_parameters = []
+                if recursive_call_count > 1:
+                    current_preserved_parameters = [
+                        add_underscore_to_var(param.name)
+                        for param in node.params
+                        if getattr(param, "name", None)
+                    ]
 
                 if function_name not in function_declarations:
                     function_declarations.append(function_name)
@@ -1137,9 +1183,15 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"        ld (hl), c              ;")
                 nodes_code.append(f"        inc hl                  ;")
                 nodes_code.append(f"        ld (hl), b              ;")
-                nodes_code.append(f"        ld hl, sta_ck2          ;")
-                nodes_code.append(f"        inc (hl)                ;")
-                nodes_code.append(f"        inc (hl)                ; end of return address preps\n")
+                if current_preserved_parameters:
+                    nodes_code.append(f"        ld hl, (sta_ck2)        ; reserve return address")
+                    nodes_code.append(f"        inc hl                  ;")
+                    nodes_code.append(f"        inc hl                  ;")
+                    nodes_code.append(f"        ld (sta_ck2), hl        ; end of return address preps\n")
+                else:
+                    nodes_code.append(f"        ld hl, sta_ck2          ;")
+                    nodes_code.append(f"        inc (hl)                ;")
+                    nodes_code.append(f"        inc (hl)                ; end of return address preps\n")
               
                 # 3.2) collect arguments   
                 nodes_code.append(f"                                ; ({node.type}) collect arguments")
@@ -1154,6 +1206,20 @@ def translate_to_assembly(js_code):
                         variable_type_list[parameter_name] = "int" # Pending: wrong assumption. all parameters are marked as integer
                         # variable declaration
                         variable_declarations.append(f'{parameter_name}   defw 0                ; ({node.type}) literal int/bool')
+                        if parameter_name in current_preserved_parameters:
+                            nodes_code.append(f"        ld hl, sta_ck2          ; save caller parameter {parameter_name}")
+                            nodes_code.append(f"        ld e, (hl)              ; pick auxiliary stack pointer")
+                            nodes_code.append(f"        inc hl                  ;")
+                            nodes_code.append(f"        ld d, (hl)              ;")
+                            nodes_code.append(f"        ex de, hl               ; HL= auxiliary stack pointer")
+                            nodes_code.append(f"        ld de, ({parameter_name})       ; caller parameter value")
+                            nodes_code.append(f"        ld (hl), e              ;")
+                            nodes_code.append(f"        inc hl                  ;")
+                            nodes_code.append(f"        ld (hl), d              ;")
+                            nodes_code.append(f"        ld hl, (sta_ck2)        ; reserve saved parameter")
+                            nodes_code.append(f"        inc hl                  ;")
+                            nodes_code.append(f"        inc hl                  ;")
+                            nodes_code.append(f"        ld (sta_ck2), hl        ;")
                         # assembly code: load variable with values in stack in reverse order
                         nodes_code.append(f"        ld hl, {parameter_name}            ; argument *** {parameter_name} ***")
                         nodes_code.append(f"        pop de                  ; <<< pop address")
@@ -1173,6 +1239,7 @@ def translate_to_assembly(js_code):
                 # 5) return address
                 function_stack_tag=new_label("fst_")
                 nodes_code.append(f"{function_stack_tag}                         ; ({node.type}) recover return address (general)")
+                restore_preserved_parameters(current_preserved_parameters)
                 nodes_code.append(f"        ld hl, sta_ck2          ; update stack2 pointer")
                 nodes_code.append(f"        ld e, (hl)              ; pick stack pointer")
                 nodes_code.append(f"        inc hl                  ; update pointer")
@@ -1183,13 +1250,17 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"        dec hl                  ;")
                 nodes_code.append(f"        ld c, (hl)              ;")
                 nodes_code.append(f"        push bc                 ; >>> push return address")
-                nodes_code.append(f"        ld hl, sta_ck2          ;")
-                nodes_code.append(f"        dec (hl)                ;")
-                nodes_code.append(f"        dec (hl)                ; end of return address restore")
+                if current_preserved_parameters:
+                    nodes_code.append(f"        ld (sta_ck2), hl        ; end of return address restore")
+                else:
+                    nodes_code.append(f"        ld hl, sta_ck2          ;")
+                    nodes_code.append(f"        dec (hl)                ;")
+                    nodes_code.append(f"        dec (hl)                ; end of return address restore")
                 
                 # 6) exit
                 nodes_code.append(f"{function_exit_tag} ret                     ; ({node.type}) end of...\n")
                 nodes_code.append(f"{function_end_tag}")
+                current_preserved_parameters = previous_preserved_parameters
              
             #------------------------------------------------------------------             
                 
@@ -1205,6 +1276,7 @@ def translate_to_assembly(js_code):
                 # pending: we could just jump to "recover return address (general)"
                 nodes_code.append(f"                                ; ({node.type}) restore return address")
 
+                restore_preserved_parameters(current_preserved_parameters)
                 nodes_code.append(f"        ld hl, sta_ck2          ; update stack2 pointer")
                 nodes_code.append(f"        ld e, (hl)              ; pick stack pointer")
                 nodes_code.append(f"        inc hl                  ; update pointer")
@@ -1216,10 +1288,12 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"        dec hl                  ;")
                 nodes_code.append(f"        ld c, (hl)              ;")
                 nodes_code.append(f"        push bc                 ; >>> push return address")
-                
-                nodes_code.append(f"        ld hl, sta_ck2          ;")
-                nodes_code.append(f"        dec (hl)                ;")
-                nodes_code.append(f"        dec (hl)                ;") 
+                if current_preserved_parameters:
+                    nodes_code.append(f"        ld (sta_ck2), hl        ; release return address")
+                else:
+                    nodes_code.append(f"        ld hl, sta_ck2          ;")
+                    nodes_code.append(f"        dec (hl)                ;")
+                    nodes_code.append(f"        dec (hl)                ;")
                 nodes_code.append(f"        ret                     ; return from function")
                 nodes_code.append("")
                                 

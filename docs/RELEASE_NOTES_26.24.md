@@ -20,6 +20,10 @@ Status: working version, not yet released.
 - Keep function declarations outside the executable flow while preserving every top-level statement, including statements written before or between function declarations.
 - Execute the initializer of a repeated variable declaration without allocating the variable a second time.
 - Implement `String.charAt()` and fix `String.charCodeAt()` so both use the string content pointer correctly.
+- Preserve integer-compatible parameters across multiple sibling recursive
+  calls, including two- and three-branch recursion.
+- Advance the auxiliary call-stack pointer as a 16-bit address for protected
+  recursive functions.
 
 ## Example And Test Fixes
 
@@ -40,5 +44,7 @@ Status: working version, not yet released.
 - Chess was tested manually: candidate generation, valuation, move selection and board movement work correctly.
 - The complete interactive `testplan.js` was reviewed and approved for this release.
 - Updated outputs assemble successfully with Pasmo.
+- Fibonacci, a three-branch recursion case, and a full recursive Sierpinski
+  drawing were tested successfully in an emulator.
 
 Further changes may be added before 26.24 is packaged or published.

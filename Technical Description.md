@@ -204,11 +204,10 @@ Important details:
 - Function parameters are currently treated as integer-compatible values.
 - A function with `return` must be used where a value is expected.
 - A function without `return` must be used as a statement.
-- Recursion is supported in simple cases.
-- Multiple sibling recursive calls in the same function level are not supported
-  yet.
+- Recursion supports single and multiple sibling calls when parameters are
+  integer-compatible.
 
-Example of the unsupported recursive pattern:
+Example of a supported recursive pattern:
 
 ```javascript
 function fibonacci(n) {
@@ -363,8 +362,8 @@ Current major restrictions:
 - Objects are not generally supported, except for documented compiler patterns.
 - Complex function-call arguments should be replaced with intermediate
   variables.
-- Multiple sibling recursive calls in the same function level are not supported
-  yet.
+- Recursive calls preserve integer-compatible parameters. Function-local
+  variables still use shared storage and are not reentrant.
 
 See `docs/RESTRICTIONS.md` for the current working list of restrictions and
 compatibility notes.
