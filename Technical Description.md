@@ -29,8 +29,13 @@ Main stages:
 Assembly support files can be included from JavaScript with:
 
 ```javascript
-include("io.asc")
+// jassco: include("io.asc")
 ```
+
+This comment directive is the supported include form. It keeps the source file
+valid for regular JavaScript tools while still letting JASSCO embed the
+requested assembly support library. Plain `include("...")` calls are not part of
+the supported source format.
 
 ## Data Types
 
@@ -41,14 +46,16 @@ JASSCO currently supports:
 - Limited strings.
 - Integer arrays.
 - Integer 2D matrices.
+- String arrays declared as literal text tables.
 - Simple integer dictionaries/maps.
 
 Floating-point numbers are not supported.
 
 ## Declarations
 
-Variables and constants must be declared with an initial value. The compiler
-uses the initial assignment to infer the type.
+The compiler uses the initial assignment to infer the type. `const` declarations
+must have an initializer. `var` and `let` declarations without an initializer
+are allowed and start at `0`.
 
 ```javascript
 const white = 0x05
@@ -57,15 +64,23 @@ var text = "hello"
 var a = 0, b = 1
 ```
 
-Declarations without assignment are not supported:
-
-```javascript
-// Not supported
-var number
-```
-
 All variables are currently global, even if they are declared inside a function
 or block.
+
+`const` values are stored using the same practical storage model as compatible
+variables, but JASSCO rejects writes from compiled JavaScript:
+
+```javascript
+const wall = 1
+const values = [1, 2, 3]
+const rooms = ["", "Hall", "Kitchen"]
+
+console.log(values[1])
+console.log(rooms[2])
+```
+
+The compiler enforces read-only use from JavaScript. Inline assembly can still
+write to memory directly; JASSCO does not try to protect constants at runtime.
 
 ## Arrays, Matrices, And Maps
 
@@ -75,6 +90,26 @@ Integer arrays:
 var values = [1, 2, 3, 4]
 values[2] = 10
 console.log(values[2])
+```
+
+String arrays / text tables:
+
+```javascript
+var rooms = ["", "Hall", "Kitchen"]
+console.log(rooms[currentRoom])
+```
+
+String arrays must be declared with literal text values. Arrays created with
+`Array(n)` are numeric arrays and cannot later receive strings:
+
+```javascript
+// Supported numeric array
+var scores = Array(5)
+scores[0] = 10
+
+// Not supported
+var rooms = Array(5)
+rooms[1] = "Hall"
 ```
 
 Integer matrices:
@@ -93,7 +128,18 @@ dict[5] = 99
 console.log(dict[5])
 ```
 
-Arrays must be variables. Constant arrays are not supported.
+Arrays and matrices currently support dimensions from 1 to 255. Larger or zero
+dimensions are reported as compiler errors.
+
+Constant arrays can be declared and read, but not modified:
+
+```javascript
+const values = [7, 8, 9]
+console.log(values[1])
+
+// Not supported
+values[1] = 10
+```
 
 ## Empty Data Structures
 
@@ -102,7 +148,7 @@ structures.
 
 ```javascript
 var text = String(5)     // empty string with room for 5 characters
-var arr = Array(5)       // empty array with 5 numbers
+var arr = Array(5)       // empty numeric array with 5 numbers
 var matrix = Array(5, 2) // empty matrix
 var dict = Map(5, 4)     // empty dictionary/map structure
 ```
@@ -184,8 +230,13 @@ Updates:
 - `++`
 - `--`
 
-String support is intentionally small. String assignment, equality comparison,
-and limited concatenation are supported in known cases.
+String support is intentionally small. Supported string operations include
+assignment, copying, equality comparison, literal string arrays, `charAt()`,
+`charCodeAt()`, `String.fromCharCode(n)`, and the console string helpers.
+
+General string concatenation with `+` is not supported. Use separate
+`console.log(...)` arguments, `console.logchar(...)`, or
+`console.logstring(...)` for generated Spectrum output.
 
 ## Functions
 
@@ -262,7 +313,9 @@ Keyboard input helper:
 read(text)
 ```
 
-This reads keyboard input into a string variable.
+`read(destination)` reads keyboard input into a destination variable. `read()`
+with no arguments is a statement-only keyboard pause. `read()` is not an
+expression that returns a value.
 
 ## Keyboard Events
 
@@ -307,7 +360,7 @@ Math:
 String:
 
 - `String.fromCharCode(value)` returns a character from an 8-bit value.
-- `String.length(value)` returns string length.
+- `text.length` returns string length for supported string variables.
 
 Memory:
 
@@ -350,6 +403,19 @@ The compiler now separates:
 The generated ASM for the current reference examples is protected by golden
 tests.
 
+## Command-Line Options
+
+`main.py` accepts the input file and output assembly file as positional
+arguments.
+
+Useful options:
+
+- `--tapbas`: wrap generated assembly with the `start`/`end start` directives
+  expected by `pasmo --tapbas`.
+- `--quiet`: reduce console output for scripted builds.
+- `--org ADDRESS`: set the generated assembly origin address. Decimal and
+  Python-style hexadecimal values such as `0x8000` are accepted.
+
 ## Known Restrictions
 
 Current major restrictions:
@@ -365,7 +431,8 @@ Current major restrictions:
   decremented after declaration. These rules are enforced by the compiler;
   constants are not protected dynamically at runtime.
 - Function parameters are integer-compatible.
-- Arrays must be variables, not constants.
+- Arrays created with `Array(n)` are numeric arrays. Use literal string arrays
+  for text tables.
 - String support is limited.
 - Objects are not generally supported, except for documented compiler patterns.
 - Complex function-call arguments should be replaced with intermediate

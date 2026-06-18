@@ -74,6 +74,14 @@ prt_chr	;ld a,2			; upper screen
 		push ix			; >>> push return address
 		ret				;
     	
+; rea_pau: wait for a new key press without returning a value
+rea_pau	ld hl, 0x5C08	; LASTKEY system variable
+		xor a				;
+		ld (hl), a		; discard the previous key
+rea_pa1	or (hl)			;
+		jr z, rea_pa1	; wait until the ROM records a key
+		ret				;
+
 ; rea_kbd: reads keyboard and returns string in variable
 rea_kbd	; initialize registers
 		pop ix			; <<< pop return address
@@ -186,6 +194,7 @@ dig_loo	push bc			; >>> push counter
 ; cls_rom: calls zx spectrum clearscreen routine
 cls_rom	call 3503		; rom address for zx cls routine
 		ret				;
+
 ; File: math.asc. Basic math library for Z80
 
 ; mul_16b: 16-bit multiplication (Stack(HL)=BCxDE)
@@ -509,6 +518,14 @@ for_001                         ; (ForStatement) 2. test --------------
         pop de                  ; <<< pop left side address, not used
                                 ; (BinaryExpression) operation: <=
         ld de, 1                ; assume condition=true
+        ld a, h                 ; left sign
+        xor b                   ; compare signs
+        jp p, les_005          ; same sign
+        bit 7, h                ; left negative?
+        jp nz, leq_004          ; negative <= positive is true
+        dec e                   ; positive <= negative is false
+        jp leq_004              ;
+les_005 xor a                   ;
         xor a                   ;
         sbc hl, bc              ;
         jp c, leq_004           ; if <, true -> skip change

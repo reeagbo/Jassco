@@ -62,6 +62,12 @@ def count_named_calls(node, function_name):
             count += count_named_calls(value, function_name)
     return count
 
+def validate_array_dimension(node_type, dimension):
+    if not isinstance(dimension, int) or isinstance(dimension, bool) or dimension < 1 or dimension > 255:
+        report_error(f"{node_type}: Array dimensions must be between 1 and 255.")
+        return False
+    return True
+
 def translate_to_assembly(js_code):
     #--------------------------------------------------------------------------         
     # Parse JavaScript using esprima
@@ -69,6 +75,7 @@ def translate_to_assembly(js_code):
 
     current_preserved_parameters = []
     declaration_kind_list = {}
+    statement_expression = None
 
     def restore_preserved_parameters(parameter_names):
         for parameter_name in reversed(parameter_names):
@@ -88,7 +95,7 @@ def translate_to_assembly(js_code):
             nodes_code.append(f"        ld (hl), d              ;")
 
     def process_node(node):
-        nonlocal current_preserved_parameters
+        nonlocal current_preserved_parameters, statement_expression
         global garbage_address, discriminant_name, array_name, variable_declarations, \
             function_end_tag, function_exit_tag, \
             matrix_type_list, object_type_list, variable_type_list, array_type_list, string_type_list, constant_type_list, \
@@ -142,6 +149,20 @@ def translate_to_assembly(js_code):
                     content_type = object_type_list[object_name] # correct: arrays and dictionaries share structure
                 if variable_name in constant_type_list:
                     report_error(f"({node.type}) Constants cannot be altered.")
+                    return
+                if object_name in constant_type_list or matrix_name in constant_type_list:
+                    report_error(f"({node.type}) Constants cannot be altered.")
+                    return
+                if (
+                    getattr(node.left, "type", None) == "MemberExpression"
+                    and content_type == "int"
+                    and get_content_type(node.right) == "str"
+                ):
+                    report_error(
+                        f"{node.type}: string values cannot be assigned to numeric arrays. "
+                        "Declare string arrays with a literal, for example [\"\", \"hello\"]."
+                    )
+                    return
                 
                 #print (f"({node.type}) AssignmentExpression: {variable_name}{object_name}: {content_type}")       
                 
@@ -314,7 +335,10 @@ def translate_to_assembly(js_code):
                     process_node(statement)
 
             case "ExpressionStatement":
+                previous_statement_expression = statement_expression
+                statement_expression = node.expression
                 process_node(node.expression)
+                statement_expression = previous_statement_expression
                 
             #------------------------------------------------------------------            
             case "BinaryExpression":
@@ -328,10 +352,18 @@ def translate_to_assembly(js_code):
                 
                 operator_name= node.operator
                 # find out the variable type
+                value_type = None
+                if operator_name == "+" and (
+                    get_content_type(node.left) == "str" or get_content_type(node.right) == "str"
+                ):
+                    value_type = "str"
                 # plain variables
-                left_name = getattr(node.left, "name", None)
-                right_name = getattr(node.right, "name", None)
-                if left_name: 
+                else:
+                    left_name = getattr(node.left, "name", None)
+                    right_name = getattr(node.right, "name", None)
+                if value_type == "str":
+                    pass
+                elif left_name: 
                     parameter_left_name= add_underscore_to_var(left_name)
                     if parameter_left_name in variable_type_list:
                         value_type= variable_type_list[parameter_left_name]
@@ -415,35 +447,68 @@ def translate_to_assembly(js_code):
                                         
                                     case "<":
                                         equ_label = new_label("les_")
+                                        signed_same_label = new_label("lss_")
                                         nodes_code.append(f"        ld de, 0                ; assume condition=false")
-                                        nodes_code.append(f"        xor a                   ;")
+                                        nodes_code.append(f"        ld a, h                 ; left sign")
+                                        nodes_code.append(f"        xor b                   ; compare signs")
+                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
+                                        nodes_code.append(f"        bit 7, h                ; left negative?")
+                                        nodes_code.append(f"        jp z, {equ_label}          ; positive < negative is false")
+                                        nodes_code.append(f"        inc e                   ; negative < positive is true")
+                                        nodes_code.append(f"        jp {equ_label}              ;")
+                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
                                         nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp nc, {equ_label}          ; if >=, false -> change")
+                                        nodes_code.append(f"        jp nc, {equ_label}          ; if >=, false -> skip change")
                                         nodes_code.append(f"        inc e                   ; condition=true")
                                         nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
-                                        
+
                                     case ">":
                                         equ_label = new_label("mor_")
+                                        signed_same_label = new_label("mss_")
                                         nodes_code.append(f"        ld de, 0                ; assume condition=false")
-                                        nodes_code.append(f"        xor a                   ;")
+                                        nodes_code.append(f"        ld a, h                 ; left sign")
+                                        nodes_code.append(f"        xor b                   ; compare signs")
+                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
+                                        nodes_code.append(f"        bit 7, h                ; left negative?")
+                                        nodes_code.append(f"        jp nz, {equ_label}          ; negative > positive is false")
+                                        nodes_code.append(f"        inc e                   ; positive > negative is true")
+                                        nodes_code.append(f"        jp {equ_label}              ;")
+                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
                                         nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp m, {equ_label}           ; if <, false -> change")
-                                        nodes_code.append(f"        jp z, {equ_label}           ; if =, false -> change")                        
+                                        nodes_code.append(f"        jp c, {equ_label}           ; if <, false -> skip change")
+                                        nodes_code.append(f"        jp z, {equ_label}           ; if =, false -> skip change")
                                         nodes_code.append(f"        inc e                   ; condition=true")
                                         nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
-                                        
+
                                     case ">=":
                                         equ_label = new_label("meq_")
+                                        signed_same_label = new_label("ges_")
                                         nodes_code.append(f"        ld de, 1                ; assume condition=true")
-                                        nodes_code.append(f"        xor a                   ;")
+                                        nodes_code.append(f"        ld a, h                 ; left sign")
+                                        nodes_code.append(f"        xor b                   ; compare signs")
+                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
+                                        nodes_code.append(f"        bit 7, h                ; left negative?")
+                                        nodes_code.append(f"        jp z, {equ_label}          ; positive >= negative is true")
+                                        nodes_code.append(f"        dec e                   ; negative >= positive is false")
+                                        nodes_code.append(f"        jp {equ_label}              ;")
+                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
                                         nodes_code.append(f"        sbc hl, bc              ;")
                                         nodes_code.append(f"        jp nc, {equ_label}          ; if >=, true -> skip change")
                                         nodes_code.append(f"        dec e                   ; condition=false")
                                         nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
-                                        
+
                                     case "<=":
                                         equ_label = new_label("leq_")
+                                        signed_same_label = new_label("les_")
                                         nodes_code.append(f"        ld de, 1                ; assume condition=true")
+                                        nodes_code.append(f"        ld a, h                 ; left sign")
+                                        nodes_code.append(f"        xor b                   ; compare signs")
+                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
+                                        nodes_code.append(f"        bit 7, h                ; left negative?")
+                                        nodes_code.append(f"        jp nz, {equ_label}          ; negative <= positive is true")
+                                        nodes_code.append(f"        dec e                   ; positive <= negative is false")
+                                        nodes_code.append(f"        jp {equ_label}              ;")
+                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
                                         nodes_code.append(f"        xor a                   ;")
                                         nodes_code.append(f"        sbc hl, bc              ;")
                                         nodes_code.append(f"        jp c, {equ_label}           ; if <, true -> skip change")
@@ -581,12 +646,11 @@ def translate_to_assembly(js_code):
                                 nodes_code.append(f"        inc hl                  ; next character")
                                 nodes_code.append(f"        djnz {compare_label}            ; countdown until B=0\n")
                                 nodes_code.append(f"        inc c                   ; ")
-                                nodes_code.append(f"{compare_exit_label}        push bc                 ;\n")
+                                nodes_code.append(f"{compare_exit_label}        push bc                 ; >>> bogus record address, unused")
+                                nodes_code.append(f"        push bc                 ; >>> comparison result\n")
                             
                             case "+":
-                                # get both sides strings processed
-                                process_node(node.left)
-                                process_node(node.right)
+                                report_error(f"{node.type}: string concatenation with + is not supported. Print strings separately or use console.log() arguments.")
                                  
                             case _:
                                 report_error(f"{node.type}: Operation {node.operator} not supported for strings.")
@@ -618,21 +682,34 @@ def translate_to_assembly(js_code):
                                 return
                             nodes_code.append(f"        {assembly_line}") # take the eval argument only
                      
-                    # include(): read filenames and add them to the includes list
-                    case "include": 
+                    # __jassco_include(): internal call generated from comment directives
+                    case "__jassco_include":
                         if len(node.arguments) < 1:
-                            report_error(f"{node.type}: include() requires a filename.")
+                            report_error(f"{node.type}: JASSCO include directive requires a filename.")
                             return
                         filename = getattr(node.arguments[0], "value", None)
                         if filename is None:
-                            report_error(f"{node.type}: include() requires a literal filename.")
+                            report_error(f"{node.type}: JASSCO include directive requires a literal filename.")
                             return
                         include_filenames_list.append(filename)
+
+                    # include(): old public tag intentionally removed
+                    case "include":
+                        report_error(
+                            f'{node.type}: include() is not valid JavaScript. Use // jassco: include("file.asc").'
+                        )
+                        return
                          
                     # read(): read keyboard
                     case "read":
-                        if len(node.arguments) < 1:
-                            report_error(f"{node.type}: read() requires a destination variable.")
+                        if node is not statement_expression:
+                            report_error(f"{node.type}: read() is a statement and cannot be used as a value.")
+                            return
+                        if len(node.arguments) > 1:
+                            report_error(f"{node.type}: read() accepts zero or one destination variable.")
+                            return
+                        if len(node.arguments) == 0:
+                            nodes_code.append(f"        call rea_pau            ; ({node.type}) wait for a key")
                             return
                         # process argument
                         read_argument_name = getattr(node.arguments[0], "name", None)
@@ -648,7 +725,7 @@ def translate_to_assembly(js_code):
                             match variable_type:
                                 case "int":
                                     # assembly code
-                                    # pending: garbage assignment size?
+                                    # Keep the existing integer-input path unchanged for compatibility.
                                     garbage_address=get_garbage_address(2)
                                     nodes_code.append(f"                                ; ({node.type}) read integer")
                                     nodes_code.append(f"        ld hl, {garbage_address}          ; garbage zone")
@@ -909,6 +986,17 @@ def translate_to_assembly(js_code):
                                 nodes_code.append(f"        call rnd_16b            ; ({node.type}) get 16-bit random number")
                             case _:
                                 report_error(f"{node.type}: {object_name}.{property_name} method not supported.")
+
+                    elif object_name == "String":
+                        match property_name:
+                            case "fromCharCode" | "fromcharcode":
+                                if len(node.arguments) != 1:
+                                    report_error(f"{node.type}: String.fromCharCode() requires exactly one character code.")
+                                    return
+                                process_node(node.arguments[0])
+                                process_node(callee)
+                            case _:
+                                report_error(f"{node.type}: String.{property_name} method not supported.")
                             
                     # special case: read keyboard
                     elif property_name in ("addEventListener", "addeventlistener"):
@@ -1029,14 +1117,6 @@ def translate_to_assembly(js_code):
                         report_error(f"{node.type}: '{object_name}' object not supported.")
                 
                 nodes_code.append ("")
-
-                if hasattr(callee_object, "name"):
-                    # generic string methods
-                    if callee_object.name== "String": # here is where methods for literals should arrive at
-                        nodes_code.append(f"                                ; ({node.type}) String methods")
-                        for argument in node.arguments:
-                            process_node(argument)
-                        process_node(callee)
 
                 if hasattr(callee_object, "type"):
                     # genric literal methods
@@ -1623,16 +1703,17 @@ def translate_to_assembly(js_code):
                             nodes_code.append(f"        pop de                  ; <<< pop char value")
                             nodes_code.append(f"        pop bc                  ; <<< pop char address")
                             nodes_code.append(f"        ld hl, {garbage_address}            ; save value in garbage zone")
-                            nodes_code.append(f"        push hl                 ; >>> push address")
                             nodes_code.append(f"        ld (hl), 1              ; string length")
                             nodes_code.append(f"        inc hl                  ;")
                             nodes_code.append(f"        ld (hl), 0              ; string length")
                             nodes_code.append(f"        ld bc, 1                ; string length")
-                            nodes_code.append(f"        push bc                 ; >>> push address")
+                            nodes_code.append(f"        push bc                 ; >>> push dummy content")
                             nodes_code.append(f"        inc hl                  ;")
                             nodes_code.append(f"        ld (hl), e              ; string value")
                             nodes_code.append(f"        inc hl                  ;")
                             nodes_code.append(f"        ld (hl), d              ;\n")
+                            nodes_code.append(f"        ld hl, {garbage_address}            ; string address")
+                            nodes_code.append(f"        push hl                 ; >>> push string address")
                     
                     if variable_name in string_type_list:
                         # string length
@@ -1660,64 +1741,61 @@ def translate_to_assembly(js_code):
                        
             #------------------------------------------------------------------ 
             case "SwitchStatement":
-                #print (f"({node.type}) Node:\n {node}")
-                break_label_stack.append(new_label("swx_"))
+                switch_exit_label = new_label("swx_")
                 discriminant_raw_name = getattr(node.discriminant, "name", None)
                 if not discriminant_raw_name:
                     report_error(f"{node.type}: only variable switch discriminants are supported.")
-                    break_label_stack.pop()
                     return
                 discriminant_name=add_underscore_to_var(discriminant_raw_name)
-                
-                if discriminant_name in variable_type_list:
-                    nodes_code.append(f"                                ; ({node.type})")
-                    
-                    process_node(node.discriminant)
-                    
-                    # cases
-                    for switchcase in node.cases:
-                        process_node(switchcase)
-                    
-                    nodes_code.append(f"{break_label_stack.pop()}                         ; ({node.type})\n") 
-                    nodes_code.append(f"        pop hl                  ; <<< clean stack")
-                    nodes_code.append(f"        pop hl                  ; <<< clean stack")   
-                    nodes_code.append("")
-                
-                else:
+                if discriminant_name not in variable_type_list:
                     report_error(f"{node.type}: {discriminant_name} not in variable list.")
+                    return
+
+                case_entries = []
+                default_label = switch_exit_label
+                for switchcase in node.cases:
+                    case_label = new_label("swi_")
+                    if switchcase.test is None:
+                        default_label = case_label
+                        case_entries.append((switchcase, case_label, None))
+                        continue
+
+                    case_value = resolve_static_value(switchcase.test)
+                    if not isinstance(case_value, int) or isinstance(case_value, bool):
+                        report_error(f"{switchcase.type}: case value must be a compile-time integer.")
+                        return
+                    case_entries.append((switchcase, case_label, case_value))
+
+                nodes_code.append(f"                                ; ({node.type}) dispatch")
+                process_node(node.discriminant)
+                nodes_code.append(f"        pop hl                  ; <<< discriminant value")
+                nodes_code.append(f"        pop de                  ; <<< discriminant address, unused")
+
+                for _, case_label, case_value in case_entries:
+                    if case_value is None:
+                        continue
+                    nodes_code.append(f"        ld bc, {case_value}             ; case value")
+                    nodes_code.append(f"        xor a                   ; clear carry")
+                    nodes_code.append(f"        sbc hl, bc              ; compare")
+                    nodes_code.append(f"        jp z, {case_label}              ; matching case")
+                    nodes_code.append(f"        add hl, bc              ; restore discriminant")
+
+                nodes_code.append(f"        jp {default_label}              ; default or switch exit")
+                nodes_code.append("")
+
+                break_label_stack.append(switch_exit_label)
+                for switchcase, case_label, _ in case_entries:
+                    label_kind = "default" if switchcase.test is None else "case"
+                    nodes_code.append(f"{case_label}                         ; ({switchcase.type}) {label_kind}")
+                    for consequent in switchcase.consequent:
+                        process_node(consequent)
+
+                break_label_stack.pop()
+                nodes_code.append(f"{switch_exit_label}                         ; ({node.type}) end")
+                nodes_code.append("")
                     
             case "SwitchCase":
-                #print (f"({node.type}) Node:\n {node}")
-
-                switch_label = new_label("swi_")
-                nodes_code.append(f"                                ; ({node.type})")
-                if node.test is None:
-                    for conseq in node.consequent:
-                        process_node(conseq)
-                    nodes_code.append(f"{switch_label}                         ; ({node.type}) default")
-                    nodes_code.append("")
-                    return
-                # test, contains the value to be tested
-                process_node(node.test)
-                
-                # assembly code
-                nodes_code.append(f"                                ; ({node.type})")
-                nodes_code.append(f"        pop bc                  ; <<< pop case value")
-                nodes_code.append(f"        pop af                  ; <<< pop case address, unused")
-                nodes_code.append(f"        pop hl                  ; <<< pop discriminant value")
-                nodes_code.append(f"        pop de                  ; <<< pop discriminant address")
-                nodes_code.append(f"        push de                 ; >>> push discriminant address")
-                nodes_code.append(f"        push hl                 ; >>> push discriminant value")
-                nodes_code.append(f"        xor a                   ;")
-                nodes_code.append(f"        sbc hl, bc              ;")
-                nodes_code.append(f"        jp nz, {switch_label}          ; if =, skip")
-                
-                # consequent
-                for conseq in node.consequent:
-                        process_node(conseq)
-                
-                nodes_code.append(f"{switch_label}                         ; ({node.type})")
-                nodes_code.append("")
+                report_error(f"{node.type}: switch cases must belong to a switch statement.")
                 
             case "BreakStatement":
                 #print (f"({node.type}) Exit Label: {break_label_stack[-1]}\n")
@@ -1838,17 +1916,17 @@ def translate_to_assembly(js_code):
                 init_elements = getattr(init_node, "elements", [])
                 init_arguments = getattr(init_node, "arguments", [])
                 init_callee = getattr(init_node, "callee", None)
+                is_array_constructor = (
+                    init_type == "CallExpression"
+                    and getattr(init_callee, "name", None) == "Array"
+                )
                 
                 variable_value = resolve_static_value(init_node)
                 if variable_value is None and init_type not in ("ArrayExpression", "CallExpression", "ObjectExpression"):
                     report_error(f"{node.type}: non-literal declarations not supported.")
                                 
                 # constants
-                if variable_kind== "const":
-                    if init_type == "ArrayExpression":
-                        report_error(f"{node.type}: constant arrays are not supported. Declare arrays with var/let.")
-                        return
-                  
+                if variable_kind== "const" and init_type != "ArrayExpression" and not is_array_constructor:
                     if isinstance(variable_value, int): # constant integer
                         constant_type_list[variable_name]= "int" # not a variable, but for this type it works
                         constant_value_list[variable_name]= variable_value
@@ -1860,6 +1938,9 @@ def translate_to_assembly(js_code):
                         constant_value_list[variable_name]= variable_value
                         variable_declarations.append(f'{variable_name}   defb {variable_length}, 0, "{variable_value}"       ; ({node.type}) constant string')
                         variable_declarations.append(f'        defs {32-2-len(variable_value)}                 ;') # -2 due to length indicator
+                    if variable_value is None:
+                        report_error(f"{node.type}: const initializer not supported.")
+                        return
 
                 # variables
                 else:
@@ -1952,11 +2033,16 @@ def translate_to_assembly(js_code):
                                     # It's a 1D array
                                     matrix_cols = matrix_rows
                                     matrix_rows = 1
+
+                                if not validate_array_dimension(node.type, matrix_cols) or not validate_array_dimension(node.type, matrix_rows):
+                                    return
                                     
                                 content_sample = first_array_static_value(init_elements)
                                 
                                 # integers
                                 if isinstance(content_sample, int):
+                                    if variable_kind == "const":
+                                        constant_type_list[variable_name] = "int"
 
                                     # array/matrix declaration
                                     variable_declarations.append(f"{matrix_name}   defb {matrix_cols}, {matrix_rows}               ; ({node.type}) integer matrix (cols, rows)")
@@ -1974,6 +2060,8 @@ def translate_to_assembly(js_code):
                                 # strings
                                 if isinstance(content_sample, str):
                                     array_type_list[variable_name]= "str"
+                                    if variable_kind == "const":
+                                        constant_type_list[variable_name] = "str"
                                     immutable_name="im_" + matrix_name
                                     
                                     # array/matrix declaration
@@ -2040,14 +2128,22 @@ def translate_to_assembly(js_code):
                                                     return
                                                 matrix_rows = 1
                                                 matrix_cols = init_arguments[0].value
+                                                if not validate_array_dimension(node.type, matrix_cols):
+                                                    return
                                                 array_type_list[matrix_name]= "int" # pending: all matrices and arrays are treated as integers.
+                                                if variable_kind == "const":
+                                                    constant_type_list[matrix_name] = "int"
                                             case 2: # 2D matrix
                                                 if getattr(init_arguments[0], "value", None) is None or getattr(init_arguments[1], "value", None) is None:
                                                     report_error(f"{node.type}: Array() dimensions must be literal values.")
                                                     return
                                                 matrix_rows= init_arguments[0].value
                                                 matrix_cols = init_arguments[1].value
+                                                if not validate_array_dimension(node.type, matrix_cols) or not validate_array_dimension(node.type, matrix_rows):
+                                                    return
                                                 matrix_type_list[matrix_name]= "int" # pending: all matrices and arrays are treated as integers.
+                                                if variable_kind == "const":
+                                                    constant_type_list[matrix_name] = "int"
                                             case _: # higher dimensions
                                                 report_error(f"{node.type}: {matrix_name}, number of dimensions not supported.")
                                         

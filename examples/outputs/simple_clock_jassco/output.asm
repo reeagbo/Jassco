@@ -77,6 +77,14 @@ prt_chr	;ld a,2			; upper screen
 		push ix			; >>> push return address
 		ret				;
     	
+; rea_pau: wait for a new key press without returning a value
+rea_pau	ld hl, 0x5C08	; LASTKEY system variable
+		xor a				;
+		ld (hl), a		; discard the previous key
+rea_pa1	or (hl)			;
+		jr z, rea_pa1	; wait until the ROM records a key
+		ret				;
+
 ; rea_kbd: reads keyboard and returns string in variable
 rea_kbd	; initialize registers
 		pop ix			; <<< pop return address
@@ -189,6 +197,7 @@ dig_loo	push bc			; >>> push counter
 ; cls_rom: calls zx spectrum clearscreen routine
 cls_rom	call 3503		; rom address for zx cls routine
 		ret				;
+
 ; File: time.asc. Basic timer library for ZX Spectrum
 ; set_int: sets interrupts to handle a timer
 set_int
@@ -243,73 +252,6 @@ tim_exi	pop af
 
 
 ; Program code -----------------------------------------------
-
-
-
-
-                                ; (VariableDeclarator) * hours_ *
-                                ; (Identifier) variable * hours_ *
-        ld hl, hours_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (hours_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * minutes_ *
-                                ; (Identifier) variable * minutes_ *
-        ld hl, minutes_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (minutes_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * seconds_ *
-                                ; (Identifier) variable * seconds_ *
-        ld hl, seconds_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (seconds_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
 ; (FunctionDeclaration) Function: timer_function_
 timer_function_                        ; (FunctionDeclaration) *** timer_function_ ***
                                 ; save return address
@@ -436,7 +378,6 @@ fst_006                         ; (FunctionDeclaration) recover return address (
         dec (hl)                ; end of return address restore
 fex_000 ret                     ; (FunctionDeclaration) end of...
 
-
 ; (FunctionDeclaration) Function: userInput_
 userInput_                        ; (FunctionDeclaration) *** userInput_ ***
                                 ; save return address
@@ -472,6 +413,72 @@ fst_008                         ; (FunctionDeclaration) recover return address (
 fex_007 ret                     ; (FunctionDeclaration) end of...
 
 mai_cod                         ; main code
+
+
+
+                                ; (VariableDeclarator) * hours_ *
+                                ; (Identifier) variable * hours_ *
+        ld hl, hours_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (hours_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * minutes_ *
+                                ; (Identifier) variable * minutes_ *
+        ld hl, minutes_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (minutes_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * seconds_ *
+                                ; (Identifier) variable * seconds_ *
+        ld hl, seconds_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (seconds_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
         call set_int            ; calls the interruptions routine
 
         ld hl, keydown_activation           ; (CallExpression) keydown activate feature

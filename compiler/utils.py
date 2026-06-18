@@ -95,6 +95,21 @@ def get_content_type(node):
                 node_name=add_underscore_to_var(node_object.name)
                 if node_name in config.array_type_list:
                     content_type= config.array_type_list[node_name]
+
+        case "CallExpression":
+            callee = getattr(node, "callee", None)
+            callee_object = getattr(callee, "object", None)
+            callee_property = getattr(callee, "property", None)
+            if (
+                getattr(callee_object, "name", None) == "String"
+                and getattr(callee_property, "name", None) in ("fromCharCode", "fromcharcode")
+            ):
+                content_type = "str"
+
+        case "BinaryExpression":
+            if getattr(node, "operator", None) == "+":
+                if get_content_type(node.left) == "str" or get_content_type(node.right) == "str":
+                    content_type = "str"
                           
     #print (f"Type is {content_type}")
     return content_type
@@ -111,13 +126,25 @@ def process_non_js(js_code):
         escaped = assembly_line.replace("\\", "\\\\").replace('"', '\\"')
         return f'eval("{escaped}")'
 
+    def as_include_line(filename):
+        escaped = filename.replace("\\", "\\\\").replace('"', '\\"')
+        return f'__jassco_include("{escaped}")'
+
     # Marks lines in assembly blocks as eval(), so that esprima will not complain.
     inside_block = False
     
     for line in js_code_lines:  
-        current_line = line.strip()
+        current_line = line.strip().lstrip("\ufeff")
 
         if not current_line:
+            continue
+
+        include_match = re.fullmatch(
+            r'//\s*jassco:\s*include\s*\(\s*["\']([^"\']+)["\']\s*\)\s*;?',
+            current_line,
+        )
+        if include_match:
+            processed_lines.append(as_include_line(include_match.group(1)))
             continue
 
         if inside_block:

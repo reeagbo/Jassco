@@ -1,9 +1,6 @@
-
-include ("io.asc")
-include ("math.asc")
-include ("graph.asc")
-
-
+﻿// jassco: include("io.asc")
+// jassco: include("math.asc")
+// jassco: include("graph.asc")
 const eS = 0x00;                                                         // Empty square
 const wP = 0x05;                                                         // White pawn
 const wN = 0x11;                                                         // White knight
@@ -224,3 +221,4 @@ function userInput(key) {
   }
 renderBoard()
 document.addEventListener("keydown", userInput);                         // Listen to keyboard input
+

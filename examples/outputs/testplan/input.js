@@ -1,7 +1,7 @@
-include ("io.asc")
-include ("math.asc")
-include ("graph.asc")
-include ("memory.asc")
+﻿// jassco: include("io.asc")
+// jassco: include("math.asc")
+// jassco: include("graph.asc")
+// jassco: include("memory.asc")
 var count=0
 var key=""
 var num1=0
@@ -51,6 +51,9 @@ console.log ("literal: goodbye")
 console.log ("Variable (hello): ",str1)
 cha1=str1.charAt(1)
 console.log ("CharAt (e): ", cha1)
+cha1=String.fromCharCode(65)
+console.log ("fromCharCode (A): ", cha1)
+console.log ("fromCharCode direct (B): ", String.fromCharCode(66))
 str2=str1
 console.log ("String copy (hello): ",str2)
 
@@ -351,6 +354,11 @@ console.log ("Before: arr1[2](3): ", arr1[2])
 arr1[2]=10
 console.log ("After: arr1[2](10): ", arr1[2])
 
+const constArr1 = [7,8,9]
+const constStrArr1 = ["zero", "one", "two"]
+console.log ("Const array [1](8): ", constArr1[1])
+console.log ("Const string array [2](two): ", constStrArr1[2])
+
 var mat2= [[1,2,3],[4,5,6],[7,8,9]]
 console.log("Before, mat1[1][2](6): ", mat2[1][2])
 mat2[1][2]=10
@@ -378,6 +386,17 @@ console.log("100*10 (1000): ", -100*-10)
 console.log("-100*10 (-1000): ", -100*10)
 console.log("100*-10 (-1000): ", 100*-10)
 console.log("-100*-10 (1000): ", -100*-10)
+
+console.log("Signed comparisons")
+console.log("-5 < 0 (1): ", -5 < 0)
+console.log("0 > -5 (1): ", 0 > -5)
+console.log("-5 <= -5 (1): ", -5 <= -5)
+console.log("-5 >= 0 (0): ", -5 >= 0)
+num1=-5
+if (num1 < 0) {
+	num1=0
+}
+console.log("ReLU -5 (0): ", num1)
 
 //---------------------------------------------------------
 console.log("Memory tests")
@@ -418,3 +437,4 @@ if (text1==text2) {
 else {
 	console.log ("different!")
 }
+

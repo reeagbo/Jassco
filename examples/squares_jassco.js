@@ -1,7 +1,6 @@
-include ("io.asc")
-include ("math.asc")
-include ("graph.asc")
-
+﻿// jassco: include("io.asc")
+// jassco: include("math.asc")
+// jassco: include("graph.asc")
 console.log ("Graph Tests")
 var num1=0
 var canvas = document.getElementById("myCanvas");

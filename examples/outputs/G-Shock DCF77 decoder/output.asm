@@ -175,6 +175,14 @@ prt_chr	;ld a,2			; upper screen
 		push ix			; >>> push return address
 		ret				;
     	
+; rea_pau: wait for a new key press without returning a value
+rea_pau	ld hl, 0x5C08	; LASTKEY system variable
+		xor a				;
+		ld (hl), a		; discard the previous key
+rea_pa1	or (hl)			;
+		jr z, rea_pa1	; wait until the ROM records a key
+		ret				;
+
 ; rea_kbd: reads keyboard and returns string in variable
 rea_kbd	; initialize registers
 		pop ix			; <<< pop return address
@@ -287,6 +295,7 @@ dig_loo	push bc			; >>> push counter
 ; cls_rom: calls zx spectrum clearscreen routine
 cls_rom	call 3503		; rom address for zx cls routine
 		ret				;
+
 ; File: math.asc. Basic math library for Z80
 
 ; mul_16b: 16-bit multiplication (Stack(HL)=BCxDE)
@@ -391,1176 +400,6 @@ rnd_16b pop ix					;
     
 
 ; Program code -----------------------------------------------
-
-
-
-
-        ld hl, input_bits_          ; (VariableDeclarator) array/matrix assignment
-        inc hl                  ; skip dimensions
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (ArrayExpression) literal assignment
-        pop de                  ; <<< pop value
-        pop bc                  ; <<< pop address, unused
-        ld (hl), e              ; write LSB
-        inc hl                  ;
-        ld (hl), d              ; write MSB
-        inc hl                  ;
-
-                                ; (VariableDeclarator) input_bits_, end of...
-
-                                ; (VariableDeclarator) * = * string 
-        ld hl, dow_str_+2          ; * dow_str_ * strings array
-        ld de, im_dow_str_+2      ; element 0
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+34      ; element 1
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+66      ; element 2
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+98      ; element 3
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+130      ; element 4
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+162      ; element 5
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+194      ; element 6
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_dow_str_+226      ; element 7
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-                                ; (VariableDeclarator) dow_str_, end of...
-
-                                ; (VariableDeclarator) * = * string 
-        ld hl, month_str_+2          ; * month_str_ * strings array
-        ld de, im_month_str_+2      ; element 0
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+34      ; element 1
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+66      ; element 2
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+98      ; element 3
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+130      ; element 4
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+162      ; element 5
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+194      ; element 6
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+226      ; element 7
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+258      ; element 8
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+290      ; element 9
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+322      ; element 10
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+354      ; element 11
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-        ld de, im_month_str_+386      ; element 12
-        ld (hl), e              ;
-        inc hl                  ;
-        ld (hl), d              ;
-        inc hl                  ;
-                                ; (VariableDeclarator) month_str_, end of...
-
-                                ; (VariableDeclarator) * input_bits_pointer_ *
-                                ; (Identifier) variable * input_bits_pointer_ *
-        ld hl, input_bits_pointer_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (input_bits_pointer_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * frame_store_pointer_ *
-                                ; (Identifier) variable * frame_store_pointer_ *
-        ld hl, frame_store_pointer_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (frame_store_pointer_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * minute_length_ *
-                                ; (Identifier) variable * minute_length_ *
-        ld hl, minute_length_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (minute_length_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 60                ; (Literal) literal int: * 60 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * i_ *
-                                ; (Identifier) variable * i_ *
-        ld hl, i_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (i_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * send_bit_ *
-                                ; (Identifier) variable * send_bit_ *
-        ld hl, send_bit_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (send_bit_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * valid_frame_ *
-                                ; (Identifier) variable * valid_frame_ *
-        ld hl, valid_frame_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (valid_frame_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 1                ; (Literal) literal int: * 1 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_hours_ *
-                                ; (Identifier) variable * dec_hours_ *
-        ld hl, dec_hours_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_hours_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_minutes_ *
-                                ; (Identifier) variable * dec_minutes_ *
-        ld hl, dec_minutes_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_minutes_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_day_ *
-                                ; (Identifier) variable * dec_day_ *
-        ld hl, dec_day_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_day_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_dow_ *
-                                ; (Identifier) variable * dec_dow_ *
-        ld hl, dec_dow_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_dow_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_month_ *
-                                ; (Identifier) variable * dec_month_ *
-        ld hl, dec_month_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_month_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * dec_year_ *
-                                ; (Identifier) variable * dec_year_ *
-        ld hl, dec_year_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (dec_year_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * parity_minutes_ *
-                                ; (Identifier) variable * parity_minutes_ *
-        ld hl, parity_minutes_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (parity_minutes_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * parity_hour_ *
-                                ; (Identifier) variable * parity_hour_ *
-        ld hl, parity_hour_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (parity_hour_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
-                                ; (VariableDeclarator) * parity_date_ *
-                                ; (Identifier) variable * parity_date_ *
-        ld hl, parity_date_            ; variable address
-        push hl                 ; >>> push variable address
-        ld hl, (parity_date_)          ; variable content
-        push hl                 ; >>> push variable content
-
-        ld de, 0                ; (Literal) literal int: * 0 *
-        push de                 ; >>> push bogus address, unused
-        push de                 ; >>> push value
-
-                                ; (VariableDeclarator) * = * (int)
-        pop de                  ; <<< pop right side value
-        pop hl                  ; <<< pop right side address, unused
-        pop hl                  ; <<< pop left side value, unused
-        pop hl                  ; <<< pop left side address
-        ld (hl), e              ; write value in destination address
-        inc hl                  ;
-        ld (hl), d              ;
-                                ; (VariableDeclarator) end of...
-
 ; (FunctionDeclaration) Function: decode_frame_
 decode_frame_                        ; (FunctionDeclaration) *** decode_frame_ ***
                                 ; save return address
@@ -5858,7 +4697,6 @@ fst_072                         ; (FunctionDeclaration) recover return address (
         dec (hl)                ; end of return address restore
 fex_021 ret                     ; (FunctionDeclaration) end of...
 
-
 ; (FunctionDeclaration) Function: receive_bit_
 receive_bit_                        ; (FunctionDeclaration) *** receive_bit_ ***
                                 ; save return address
@@ -6031,6 +4869,1175 @@ fst_078                         ; (FunctionDeclaration) recover return address (
 fex_073 ret                     ; (FunctionDeclaration) end of...
 
 mai_cod                         ; main code
+
+
+
+        ld hl, input_bits_          ; (VariableDeclarator) array/matrix assignment
+        inc hl                  ; skip dimensions
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (ArrayExpression) literal assignment
+        pop de                  ; <<< pop value
+        pop bc                  ; <<< pop address, unused
+        ld (hl), e              ; write LSB
+        inc hl                  ;
+        ld (hl), d              ; write MSB
+        inc hl                  ;
+
+                                ; (VariableDeclarator) input_bits_, end of...
+
+                                ; (VariableDeclarator) * = * string 
+        ld hl, dow_str_+2          ; * dow_str_ * strings array
+        ld de, im_dow_str_+2      ; element 0
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+34      ; element 1
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+66      ; element 2
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+98      ; element 3
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+130      ; element 4
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+162      ; element 5
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+194      ; element 6
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_dow_str_+226      ; element 7
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+                                ; (VariableDeclarator) dow_str_, end of...
+
+                                ; (VariableDeclarator) * = * string 
+        ld hl, month_str_+2          ; * month_str_ * strings array
+        ld de, im_month_str_+2      ; element 0
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+34      ; element 1
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+66      ; element 2
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+98      ; element 3
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+130      ; element 4
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+162      ; element 5
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+194      ; element 6
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+226      ; element 7
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+258      ; element 8
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+290      ; element 9
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+322      ; element 10
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+354      ; element 11
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+        ld de, im_month_str_+386      ; element 12
+        ld (hl), e              ;
+        inc hl                  ;
+        ld (hl), d              ;
+        inc hl                  ;
+                                ; (VariableDeclarator) month_str_, end of...
+
+                                ; (VariableDeclarator) * input_bits_pointer_ *
+                                ; (Identifier) variable * input_bits_pointer_ *
+        ld hl, input_bits_pointer_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (input_bits_pointer_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * frame_store_pointer_ *
+                                ; (Identifier) variable * frame_store_pointer_ *
+        ld hl, frame_store_pointer_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (frame_store_pointer_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * minute_length_ *
+                                ; (Identifier) variable * minute_length_ *
+        ld hl, minute_length_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (minute_length_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 60                ; (Literal) literal int: * 60 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * i_ *
+                                ; (Identifier) variable * i_ *
+        ld hl, i_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (i_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * send_bit_ *
+                                ; (Identifier) variable * send_bit_ *
+        ld hl, send_bit_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (send_bit_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * valid_frame_ *
+                                ; (Identifier) variable * valid_frame_ *
+        ld hl, valid_frame_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (valid_frame_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 1                ; (Literal) literal int: * 1 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_hours_ *
+                                ; (Identifier) variable * dec_hours_ *
+        ld hl, dec_hours_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_hours_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_minutes_ *
+                                ; (Identifier) variable * dec_minutes_ *
+        ld hl, dec_minutes_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_minutes_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_day_ *
+                                ; (Identifier) variable * dec_day_ *
+        ld hl, dec_day_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_day_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_dow_ *
+                                ; (Identifier) variable * dec_dow_ *
+        ld hl, dec_dow_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_dow_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_month_ *
+                                ; (Identifier) variable * dec_month_ *
+        ld hl, dec_month_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_month_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * dec_year_ *
+                                ; (Identifier) variable * dec_year_ *
+        ld hl, dec_year_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (dec_year_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * parity_minutes_ *
+                                ; (Identifier) variable * parity_minutes_ *
+        ld hl, parity_minutes_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (parity_minutes_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * parity_hour_ *
+                                ; (Identifier) variable * parity_hour_ *
+        ld hl, parity_hour_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (parity_hour_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
+                                ; (VariableDeclarator) * parity_date_ *
+                                ; (Identifier) variable * parity_date_ *
+        ld hl, parity_date_            ; variable address
+        push hl                 ; >>> push variable address
+        ld hl, (parity_date_)          ; variable content
+        push hl                 ; >>> push variable content
+
+        ld de, 0                ; (Literal) literal int: * 0 *
+        push de                 ; >>> push bogus address, unused
+        push de                 ; >>> push value
+
+                                ; (VariableDeclarator) * = * (int)
+        pop de                  ; <<< pop right side value
+        pop hl                  ; <<< pop right side address, unused
+        pop hl                  ; <<< pop left side value, unused
+        pop hl                  ; <<< pop left side address
+        ld (hl), e              ; write value in destination address
+        inc hl                  ;
+        ld (hl), d              ;
+                                ; (VariableDeclarator) end of...
+
                                 ; (Literal) * 'G-Shock Decoder (DCF77)' *
         ld hl, stn_079          ; literal string address
         ld de, 23                ; string length
@@ -6166,9 +6173,16 @@ for_083                         ; (ForStatement) 2. test --------------
         pop de                  ; <<< pop left side address, not used
                                 ; (BinaryExpression) operation: <
         ld de, 0                ; assume condition=false
-        xor a                   ;
+        ld a, h                 ; left sign
+        xor b                   ; compare signs
+        jp p, lss_087          ; same sign
+        bit 7, h                ; left negative?
+        jp z, les_086          ; positive < negative is false
+        inc e                   ; negative < positive is true
+        jp les_086              ;
+lss_087 xor a                   ;
         sbc hl, bc              ;
-        jp nc, les_086          ; if >=, false -> change
+        jp nc, les_086          ; if >=, false -> skip change
         inc e                   ; condition=true
 les_086 push de                 ; >>> push condition boolean
         push de                 ; >>> push bogus value, unused

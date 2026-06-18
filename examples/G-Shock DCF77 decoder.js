@@ -1,6 +1,5 @@
-include ("io.asc")
-include ("math.asc")
-
+﻿// jassco: include("io.asc")
+// jassco: include("math.asc")
 // Time/Date decoder for DCF77 signal
 // https://en.m.wikipedia.org/wiki/DCF77
 
@@ -193,6 +192,7 @@ for (input_bits_pointer=0; input_bits_pointer<minute_length; input_bits_pointer+
   receive_bit(send_bit)
   }
 minute_length =60
+
 
 
 

@@ -6,6 +6,16 @@ import utils as utils_module
 from utils import process_non_js, find_missing_routines
 from translator import translate_to_assembly
 
+def parse_address(value):
+    try:
+        address = int(value, 0)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("address must be a decimal or hexadecimal integer") from exc
+
+    if address < 0 or address > 0xFFFF:
+        raise argparse.ArgumentTypeError("address must be between 0 and 65535")
+    return address
+
 def reset_compiler_state():
     config.nodes_code.clear()
     config.include_filenames_list.clear()
@@ -45,8 +55,9 @@ def resolve_include(filename, input_file):
 
     raise FileNotFoundError(filename)
 
-def main(input_file, output_file, tapbas=False, quiet=False):
+def main(input_file, output_file, tapbas=False, quiet=False, org=None):
     reset_compiler_state()
+    initial_address = config.initial_address if org is None else org
     
     # variables----------------------------------------------------------------
     full_code = []
@@ -67,7 +78,7 @@ def main(input_file, output_file, tapbas=False, quiet=False):
     
     # directives ------------------------------------------------------------------------------
     full_code.append("; Directives -------------------------------------------------")
-    full_code.append(f"        org {config.initial_address}               ; initial code address")
+    full_code.append(f"        org {initial_address}               ; initial code address")
     entry_label = "start: " if tapbas else ""
     full_code.append(f"{entry_label}        jp mai_cod              ; jumps to main code")
     
@@ -160,5 +171,10 @@ if __name__ == "__main__":
         action="store_true",
         help="write the ASM file without printing the complete assembly to the console",
     )
+    parser.add_argument(
+        "--org",
+        type=parse_address,
+        help="initial Z80 code address, decimal or hexadecimal (default: 25000)",
+    )
     args = parser.parse_args()
-    main(args.input_file, args.output_file, tapbas=args.tapbas, quiet=args.quiet)
+    main(args.input_file, args.output_file, tapbas=args.tapbas, quiet=args.quiet, org=args.org)

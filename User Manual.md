@@ -107,7 +107,7 @@ the exit status and do not pass that old file to Pasmo.
 Create or replace `input.js` with:
 
 ```javascript
-include("io.asc")
+// jassco: include("io.asc")
 
 console.log("Hello from JASSCO")
 ```
@@ -118,8 +118,9 @@ Then run:
 .\run_jassco.cmd
 ```
 
-Open `output.asm` to inspect the generated Z80 code. The `include()` call adds
-the assembly support library needed by `console.log()`.
+Open `output.asm` to inspect the generated Z80 code. The `// jassco: include(...)`
+directive adds the assembly support library needed by `console.log()`. It is a
+comment so regular JavaScript interpreters can ignore it.
 
 JASSCO resolves an included `.asc` file from the current directory, beside the
 input JavaScript file, or beside `main.py`. This means the libraries supplied
@@ -176,9 +177,9 @@ Pasmo can optionally write a symbol file as its final argument:
 pasmo --tapbas output.asm output.tap output.symbols
 ```
 
-The ASM support libraries requested by `include(...)` are embedded into the
-generated ASM by JASSCO. Pasmo therefore needs only `output.asm`; it does not
-need separate copies of `io.asc`, `graph.asc`, or the other libraries.
+The ASM support libraries requested by `// jassco: include(...)` are embedded
+into the generated ASM by JASSCO. Pasmo therefore needs only `output.asm`; it
+does not need separate copies of `io.asc`, `graph.asc`, or the other libraries.
 
 ### Normal TAP
 

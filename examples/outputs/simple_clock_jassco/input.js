@@ -1,6 +1,5 @@
-include ("io.asc")
-include ("time.asc")
-
+﻿// jassco: include("io.asc")
+// jassco: include("time.asc")
 var hours=0; var minutes=0; var seconds=0 
 
 function timer_function()
@@ -19,4 +18,5 @@ function userInput () {}
 // main code
 setInterval(clock, 1000);
 document.addEventListener("keydown", userInput); // activate keyboard listening (not actually used)
+
 
