@@ -330,7 +330,17 @@ function sum(num3, num4) {
 num1= sum(num1, num2)
 console.log ("6 + 5 (11) = ", num1)
 
+function sameParamA(n) {
+    return n + 1
+}
 
+function sameParamB(n) {
+    return n + 2
+}
+
+num1 = sameParamA(4)
+num2 = sameParamB(4)
+console.log ("Same parameter names (5,6): ", num1, " ", num2)
 
 //---------------------------------------------------------
 console.log ("Graph Tests")

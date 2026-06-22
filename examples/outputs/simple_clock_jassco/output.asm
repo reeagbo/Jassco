@@ -1,7 +1,13 @@
 ; Generated with JAvaScript to ASSembly COmpiler, JASSCO v0. Boria Labs 2025.
 ; Directives -------------------------------------------------
         org 25000               ; initial code address
-        jp mai_cod              ; jumps to main code
+; File: startup.asc. Default ZX Spectrum startup code
+; startup.asc: default ZX Spectrum startup code.
+; Opens the upper screen channel, then jumps to the generated main code.
+	ld a,2					; open ZX Spectrum upper screen channel
+	call 5633				; ROM: open channel
+	jp mai_cod				; jumps to main code
+
 
 ; Variable declarations --------------------------------------
         sta_ck2 defw 24500      ; auxiliary stack address
@@ -25,9 +31,7 @@ set_env ld a,2		; upper screen
 
 ; prt_str: prints string in screen
 ; DE= string content, BC= length
-prt_str ld a,2			; upper screen
-    	call 5633     	; open channel
-    	pop ix			; <<< pop return address
+prt_str pop ix			; <<< pop return address
     	pop de			; <<< variable content address
     	pop bc			; <<< variable address
     	ld a, (de)		; get length byte 1
@@ -43,9 +47,7 @@ prt_str ld a,2			; upper screen
 
 ; prt_num: prints 16-bit number in screen	
 ; DE= string content, BC= length
-prt_num	ld a,2			; upper screen
-		call 5633		; open channel
-		pop ix			; <<< pop return address
+prt_num	pop ix			; <<< pop return address
 		pop bc			; <<< pop number value
 		pop de			; <<< pop number length
 
@@ -226,7 +228,8 @@ int_cod							; <---- interruption code jumps here!
 		dec (hl)				; 
 		jr nz, act_exi 			; if not 0, skip period actions
 		
-		ld (hl), 50				; initiate ticks for next cycle
+		ld a, (int_tik)			; reload ticks for next cycle
+		ld (hl), a				;
 		call timer_function_	; call timer actions	
 		
  		; interruption code end -----------------------------------------------

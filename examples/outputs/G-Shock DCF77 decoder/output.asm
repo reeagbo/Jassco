@@ -1,7 +1,13 @@
 ; Generated with JAvaScript to ASSembly COmpiler, JASSCO v0. Boria Labs 2025.
 ; Directives -------------------------------------------------
         org 25000               ; initial code address
-        jp mai_cod              ; jumps to main code
+; File: startup.asc. Default ZX Spectrum startup code
+; startup.asc: default ZX Spectrum startup code.
+; Opens the upper screen channel, then jumps to the generated main code.
+	ld a,2					; open ZX Spectrum upper screen channel
+	call 5633				; ROM: open channel
+	jp mai_cod				; jumps to main code
+
 
 ; Variable declarations --------------------------------------
         sta_ck2 defw 24500      ; auxiliary stack address
@@ -9,71 +15,71 @@ input_bits_   defb 61, 1               ; (VariableDeclarator) integer matrix (co
         defw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0    ; matrix declaration
 im_dow_str_   defb 8, 1            ; (VariableDeclarator) string matrix (cols, rows)
 stm_000 defb 0, 0, ""        ;
-        defs 30                 ;
+        defs 32                 ;
 stm_001 defb 6, 0, "Sunday"        ;
-        defs 24                 ;
+        defs 26                 ;
 stm_002 defb 6, 0, "Monday"        ;
-        defs 24                 ;
+        defs 26                 ;
 stm_003 defb 7, 0, "Tuesday"        ;
-        defs 23                 ;
+        defs 25                 ;
 stm_004 defb 9, 0, "Wednesday"        ;
-        defs 21                 ;
+        defs 23                 ;
 stm_005 defb 8, 0, "Thursday"        ;
-        defs 22                 ;
-stm_006 defb 6, 0, "Friday"        ;
         defs 24                 ;
+stm_006 defb 6, 0, "Friday"        ;
+        defs 26                 ;
 stm_007 defb 8, 0, "Saturday"        ;
-        defs 22                 ;
+        defs 24                 ;
 dow_str_   defb 8, 1               ; (VariableDeclarator) string matrix (cols, rows)
         defw im_dow_str_+2        ; element 0
-        defw im_dow_str_+34        ; element 1
-        defw im_dow_str_+66        ; element 2
-        defw im_dow_str_+98        ; element 3
-        defw im_dow_str_+130        ; element 4
-        defw im_dow_str_+162        ; element 5
-        defw im_dow_str_+194        ; element 6
-        defw im_dow_str_+226        ; element 7
+        defw im_dow_str_+36        ; element 1
+        defw im_dow_str_+70        ; element 2
+        defw im_dow_str_+104        ; element 3
+        defw im_dow_str_+138        ; element 4
+        defw im_dow_str_+172        ; element 5
+        defw im_dow_str_+206        ; element 6
+        defw im_dow_str_+240        ; element 7
 im_month_str_   defb 13, 1            ; (VariableDeclarator) string matrix (cols, rows)
 stm_008 defb 0, 0, ""        ;
-        defs 30                 ;
+        defs 32                 ;
 stm_009 defb 7, 0, "January"        ;
-        defs 23                 ;
+        defs 25                 ;
 stm_010 defb 8, 0, "February"        ;
-        defs 22                 ;
-stm_011 defb 5, 0, "March"        ;
-        defs 25                 ;
-stm_012 defb 5, 0, "April"        ;
-        defs 25                 ;
-stm_013 defb 3, 0, "May"        ;
-        defs 27                 ;
-stm_014 defb 4, 0, "June"        ;
-        defs 26                 ;
-stm_015 defb 4, 0, "July"        ;
-        defs 26                 ;
-stm_016 defb 6, 0, "August"        ;
         defs 24                 ;
+stm_011 defb 5, 0, "March"        ;
+        defs 27                 ;
+stm_012 defb 5, 0, "April"        ;
+        defs 27                 ;
+stm_013 defb 3, 0, "May"        ;
+        defs 29                 ;
+stm_014 defb 4, 0, "June"        ;
+        defs 28                 ;
+stm_015 defb 4, 0, "July"        ;
+        defs 28                 ;
+stm_016 defb 6, 0, "August"        ;
+        defs 26                 ;
 stm_017 defb 9, 0, "September"        ;
-        defs 21                 ;
-stm_018 defb 7, 0, "October"        ;
         defs 23                 ;
+stm_018 defb 7, 0, "October"        ;
+        defs 25                 ;
 stm_019 defb 8, 0, "November"        ;
-        defs 22                 ;
+        defs 24                 ;
 stm_020 defb 8, 0, "December"        ;
-        defs 22                 ;
+        defs 24                 ;
 month_str_   defb 13, 1               ; (VariableDeclarator) string matrix (cols, rows)
         defw im_month_str_+2        ; element 0
-        defw im_month_str_+34        ; element 1
-        defw im_month_str_+66        ; element 2
-        defw im_month_str_+98        ; element 3
-        defw im_month_str_+130        ; element 4
-        defw im_month_str_+162        ; element 5
-        defw im_month_str_+194        ; element 6
-        defw im_month_str_+226        ; element 7
-        defw im_month_str_+258        ; element 8
-        defw im_month_str_+290        ; element 9
-        defw im_month_str_+322        ; element 10
-        defw im_month_str_+354        ; element 11
-        defw im_month_str_+386        ; element 12
+        defw im_month_str_+36        ; element 1
+        defw im_month_str_+70        ; element 2
+        defw im_month_str_+104        ; element 3
+        defw im_month_str_+138        ; element 4
+        defw im_month_str_+172        ; element 5
+        defw im_month_str_+206        ; element 6
+        defw im_month_str_+240        ; element 7
+        defw im_month_str_+274        ; element 8
+        defw im_month_str_+308        ; element 9
+        defw im_month_str_+342        ; element 10
+        defw im_month_str_+376        ; element 11
+        defw im_month_str_+410        ; element 12
 current_century_   equ 2000                   ; (VariableDeclarator) constant integer
 input_bits_pointer_   defw 0                  ; (VariableDeclarator) variable int/bool
 frame_store_   defb 60, 1              ; (VariableDeclarator) empty matrix (cols, rows)
@@ -108,7 +114,7 @@ stn_064 defb 6, 0, "Date: "        ; (Literal) string
 stn_066 defb 2, 0, ", "        ; (Literal) string
 stn_070 defb 32, 0, "--------------------------------"        ; (Literal) string
 stn_071 defb 33, 0, "Invalid frame. No time available."        ; (Literal) string
-r_bit_   defw 0                ; (FunctionDeclaration) literal int/bool
+fn_receive_bit_r_bit_   defw 0                ; (FunctionDeclaration) literal int/bool
 stn_077 defb 20, 0, "Full frame received."        ; (Literal) string
 stn_079 defb 23, 0, "G-Shock Decoder (DCF77)"        ; (Literal) string
 
@@ -123,9 +129,7 @@ set_env ld a,2		; upper screen
 
 ; prt_str: prints string in screen
 ; DE= string content, BC= length
-prt_str ld a,2			; upper screen
-    	call 5633     	; open channel
-    	pop ix			; <<< pop return address
+prt_str pop ix			; <<< pop return address
     	pop de			; <<< variable content address
     	pop bc			; <<< variable address
     	ld a, (de)		; get length byte 1
@@ -141,9 +145,7 @@ prt_str ld a,2			; upper screen
 
 ; prt_num: prints 16-bit number in screen	
 ; DE= string content, BC= length
-prt_num	ld a,2			; upper screen
-		call 5633		; open channel
-		pop ix			; <<< pop return address
+prt_num	pop ix			; <<< pop return address
 		pop bc			; <<< pop number value
 		pop de			; <<< pop number length
 
@@ -4714,7 +4716,7 @@ receive_bit_                        ; (FunctionDeclaration) *** receive_bit_ ***
         inc (hl)                ; end of return address preps
 
                                 ; (FunctionDeclaration) collect arguments
-        ld hl, r_bit_            ; argument *** r_bit_ ***
+        ld hl, fn_receive_bit_r_bit_            ; argument *** fn_receive_bit_r_bit_ ***
         pop de                  ; <<< pop address
         pop bc                  ; <<< pop value
         ld (hl), e              ; store it in memory
@@ -4723,10 +4725,10 @@ receive_bit_                        ; (FunctionDeclaration) *** receive_bit_ ***
 
                                 ; (FunctionDeclaration) function body
                                 ; (AssignmentExpression) * = * value to array assignment
-                                ; (Identifier) variable * r_bit_ *
-        ld hl, r_bit_            ; variable address
+                                ; (Identifier) variable * fn_receive_bit_r_bit_ *
+        ld hl, fn_receive_bit_r_bit_            ; variable address
         push hl                 ; >>> push variable address
-        ld hl, (r_bit_)          ; variable content
+        ld hl, (fn_receive_bit_r_bit_)          ; variable content
         push hl                 ; >>> push variable content
 
                                 ; (Identifier) variable * frame_store_ *
@@ -5617,37 +5619,37 @@ mai_cod                         ; main code
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+34      ; element 1
+        ld de, im_dow_str_+36      ; element 1
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+66      ; element 2
+        ld de, im_dow_str_+70      ; element 2
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+98      ; element 3
+        ld de, im_dow_str_+104      ; element 3
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+130      ; element 4
+        ld de, im_dow_str_+138      ; element 4
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+162      ; element 5
+        ld de, im_dow_str_+172      ; element 5
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+194      ; element 6
+        ld de, im_dow_str_+206      ; element 6
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_dow_str_+226      ; element 7
+        ld de, im_dow_str_+240      ; element 7
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
@@ -5661,62 +5663,62 @@ mai_cod                         ; main code
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+34      ; element 1
+        ld de, im_month_str_+36      ; element 1
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+66      ; element 2
+        ld de, im_month_str_+70      ; element 2
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+98      ; element 3
+        ld de, im_month_str_+104      ; element 3
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+130      ; element 4
+        ld de, im_month_str_+138      ; element 4
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+162      ; element 5
+        ld de, im_month_str_+172      ; element 5
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+194      ; element 6
+        ld de, im_month_str_+206      ; element 6
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+226      ; element 7
+        ld de, im_month_str_+240      ; element 7
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+258      ; element 8
+        ld de, im_month_str_+274      ; element 8
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+290      ; element 9
+        ld de, im_month_str_+308      ; element 9
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+322      ; element 10
+        ld de, im_month_str_+342      ; element 10
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+354      ; element 11
+        ld de, im_month_str_+376      ; element 11
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
         inc hl                  ;
-        ld de, im_month_str_+386      ; element 12
+        ld de, im_month_str_+410      ; element 12
         ld (hl), e              ;
         inc hl                  ;
         ld (hl), d              ;
