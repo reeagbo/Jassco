@@ -6,10 +6,10 @@ from config import (
     function_end_tag, function_exit_tag,
     break_label_stack, update_label, update_label_stack,
     matrix_type_list, object_type_list, variable_type_list, array_type_list, string_type_list, constant_type_list,
-    constant_value_list,
-    string_max_length
+    constant_value_list
 )
 from utils import *
+import config
 import esprima
 
 def resolve_static_value(node):
@@ -74,6 +74,7 @@ def translate_to_assembly(js_code):
     ast = esprima.parseScript(js_code)
 
     current_preserved_parameters = []
+    current_function_parameter_symbols = {}
     declaration_kind_list = {}
     statement_expression = None
 
@@ -94,8 +95,29 @@ def translate_to_assembly(js_code):
             nodes_code.append(f"        inc hl                  ;")
             nodes_code.append(f"        ld (hl), d              ;")
 
+    def scoped_parameter_name(function_raw_name, parameter_raw_name):
+        return add_underscore_to_var(f"fn_{function_raw_name}_{parameter_raw_name}")
+
+    def string_record_size():
+        return config.string_max_length + 2
+
+    def validate_string_record(node_type, value):
+        if len(value) > config.string_max_length:
+            report_error(
+                f"{node_type}: string table entry is {len(value)} characters; "
+                f"maximum is string_max_length ({config.string_max_length})."
+            )
+            return False
+        return True
+
+    def resolve_identifier_name(identifier_name):
+        return current_function_parameter_symbols.get(
+            identifier_name,
+            add_underscore_to_var(identifier_name),
+        )
+
     def process_node(node):
-        nonlocal current_preserved_parameters, statement_expression
+        nonlocal current_preserved_parameters, current_function_parameter_symbols, statement_expression
         global garbage_address, discriminant_name, array_name, variable_declarations, \
             function_end_tag, function_exit_tag, \
             matrix_type_list, object_type_list, variable_type_list, array_type_list, string_type_list, constant_type_list, \
@@ -129,11 +151,11 @@ def translate_to_assembly(js_code):
                 
                 # find the structure type and its name
                 if getattr(left_node, "name", None) != None: # literals and variables
-                    variable_name= add_underscore_to_var(left_node.name)
+                    variable_name= resolve_identifier_name(left_node.name)
                 elif getattr(left_object, "name", None) != None: # arrays or dictionaries have the same structure
-                    object_name= add_underscore_to_var(left_object.name)
+                    object_name= resolve_identifier_name(left_object.name)
                 if left_nested_object and getattr(left_nested_object, "name", None) != None: # matrices
-                    matrix_name= add_underscore_to_var(left_nested_object.name)
+                    matrix_name= resolve_identifier_name(left_nested_object.name)
                 
                 # if the variable has been declared, proceed to establish content type
                 content_type="int" # pending: default to integer. rough take
@@ -150,9 +172,6 @@ def translate_to_assembly(js_code):
                 if variable_name in constant_type_list:
                     report_error(f"({node.type}) Constants cannot be altered.")
                     return
-                if object_name in constant_type_list or matrix_name in constant_type_list:
-                    report_error(f"({node.type}) Constants cannot be altered.")
-                    return
                 if (
                     getattr(node.left, "type", None) == "MemberExpression"
                     and content_type == "int"
@@ -163,7 +182,18 @@ def translate_to_assembly(js_code):
                         "Declare string arrays with a literal, for example [\"\", \"hello\"]."
                     )
                     return
-                
+
+                right_callee = getattr(node.right, "callee", None)
+                right_callee_object = getattr(right_callee, "object", None)
+                right_callee_property = getattr(right_callee, "property", None)
+                if (
+                    variable_name in variable_type_list
+                    and getattr(right_callee_object, "name", None) == "document"
+                    and getattr(right_callee_property, "name", None) == "createElement"
+                ):
+                    nodes_code.append(f"                                ; ({node.type}) document.createElement(), ignored DOM no-op")
+                    return
+                 
                 #print (f"({node.type}) AssignmentExpression: {variable_name}{object_name}: {content_type}")       
                 
                 # integers ----------------------------------------------------
@@ -364,7 +394,7 @@ def translate_to_assembly(js_code):
                 if value_type == "str":
                     pass
                 elif left_name: 
-                    parameter_left_name= add_underscore_to_var(left_name)
+                    parameter_left_name= resolve_identifier_name(left_name)
                     if parameter_left_name in variable_type_list:
                         value_type= variable_type_list[parameter_left_name]
                     elif parameter_left_name in string_type_list:
@@ -374,7 +404,7 @@ def translate_to_assembly(js_code):
                     else:
                         value_type= "int"
                 elif right_name:
-                    parameter_right_name= add_underscore_to_var(right_name)
+                    parameter_right_name= resolve_identifier_name(right_name)
                     if parameter_right_name in variable_type_list:
                         value_type= variable_type_list[parameter_right_name]
                     elif parameter_right_name in string_type_list:
@@ -399,7 +429,7 @@ def translate_to_assembly(js_code):
                     left_object = getattr(node.left, "object", None)
                     left_object_name = getattr(left_object, "name", None)
                     if left_object_name:
-                        node_object_name=add_underscore_to_var(left_object_name)
+                        node_object_name=resolve_identifier_name(left_object_name)
                         if node_object_name in array_type_list:
                             value_type= array_type_list[node_object_name]
                         elif node_object_name in string_type_list:
@@ -716,7 +746,7 @@ def translate_to_assembly(js_code):
                         if not read_argument_name:
                             report_error(f"{node.type}: read() destination must be a variable.")
                             return
-                        variable_name = add_underscore_to_var(read_argument_name)
+                        variable_name = resolve_identifier_name(read_argument_name)
                         if variable_name in string_type_list:
                             variable_type = string_type_list[variable_name]
                         elif variable_name in variable_type_list:
@@ -804,9 +834,23 @@ def translate_to_assembly(js_code):
                 #print (f" matrix list: {matrix_type_list}")
                 #print (f" string list: {string_type_list}")
                         
-                if object_name:
+                if (
+                    getattr(callee_object, "type", None) == "MemberExpression"
+                    and getattr(getattr(callee_object, "object", None), "name", None) == "document"
+                    and getattr(getattr(callee_object, "property", None), "name", None) == "body"
+                    and property_name in ("appendChild", "appendchild")
+                ):
+                    nodes_code.append(f"                                ; ({node.type}) document.body.appendChild(), ignored DOM no-op")
+
+                elif object_name:
+                    if object_name == "document" and property_name in ("createElement", "createelement"):
+                        nodes_code.append(f"                                ; ({node.type}) document.createElement(), ignored DOM no-op")
+
+                    elif object_name == "document" and property_name in ("getElementById", "getelementbyid"):
+                        nodes_code.append(f"                                ; ({node.type}) document.getElementById(), ignored DOM no-op")
+
                     # string objects methods ----------------------------------
-                    if add_underscore_to_var(object_name) in string_type_list:
+                    elif add_underscore_to_var(object_name) in string_type_list:
                         # get string and index in the stack
                         process_node (callee_object)
                         process_node (node.arguments[0])
@@ -997,7 +1041,7 @@ def translate_to_assembly(js_code):
                                 process_node(callee)
                             case _:
                                 report_error(f"{node.type}: String.{property_name} method not supported.")
-                            
+                             
                     # special case: read keyboard
                     elif property_name in ("addEventListener", "addeventlistener"):
                         if len(node.arguments) < 2:
@@ -1058,11 +1102,20 @@ def translate_to_assembly(js_code):
                     elif (object_name in object_type_list):
                         if (object_type_list[object_name]=="canvas"):
                             match property_name:
+                                case "beginPath" | "beginpath" | "closePath" | "closepath" | "stroke":
+                                    nodes_code.append(f"                                ; ({node.type}) {property_name}, ignored canvas no-op")
+
+                                case "fill":
+                                    report_error(f"{node.type}: canvas fill() is not supported.")
+
                                 case "moveTo" | "moveto":
+                                    if len(node.arguments) != 2:
+                                        report_error(f"{node.type}: canvas moveTo() requires x and y arguments.")
+                                        return
                                     for arg in node.arguments:
                                         process_node(arg)
                                                 
-                                    nodes_code.append(f"                                ; ({node.type}) {property_name}, plot a point")
+                                    nodes_code.append(f"                                ; ({node.type}) {property_name}, move current point")
                                     nodes_code.append(f"        pop bc                  ; get y-coord value")
                                     nodes_code.append(f"        pop hl                  ; get y-coord address, unused")           
                                     nodes_code.append(f"        pop de                  ; get x-coord value")
@@ -1073,12 +1126,11 @@ def translate_to_assembly(js_code):
                                     nodes_code.append(f"        ld (hl), e              ;")
                                     nodes_code.append(f"        ld hl, {object_name}_y              ;")
                                     nodes_code.append(f"        ld (hl), c              ;")
-                                    
-                                    nodes_code.append(f"        ld d, e                  ; DE has to contain (x,y)")
-                                    nodes_code.append(f"        ld e, c                  ;")
-                                    nodes_code.append(f"        call plo_poi            ; ({node.type}) call function {object_name}")
-                                    
+                                     
                                 case "lineTo" | "lineto":
+                                    if len(node.arguments) != 2:
+                                        report_error(f"{node.type}: canvas lineTo() requires x and y arguments.")
+                                        return
                                     for arg in node.arguments:
                                         process_node(arg)
                                     nodes_code.append(f"                                ; ({node.type}) {property_name}, draw a line")
@@ -1113,6 +1165,51 @@ def translate_to_assembly(js_code):
                     
                                 case "clearScreen" | "clearscreen":
                                     nodes_code.append(f"        call cle_scr            ; ({node.type}) clear screen")
+
+                                case "clearRect" | "clearrect":
+                                    if len(node.arguments) != 4:
+                                        report_error(f"{node.type}: canvas clearRect() requires x, y, width and height arguments.")
+                                        return
+
+                                    def process_clear_rect_arg(arg):
+                                        arg_object = getattr(arg, "object", None)
+                                        arg_property = getattr(arg, "property", None)
+                                        arg_property_name = getattr(arg_property, "name", None)
+                                        if (
+                                            getattr(arg, "type", None) == "MemberExpression"
+                                            and arg_property_name in ("width", "height")
+                                        ):
+                                            literal_value = 256 if arg_property_name == "width" else 192
+                                            nodes_code.append(f"        ld de, {literal_value}                ; ({arg.type}) canvas.{arg_property_name}")
+                                            nodes_code.append(f"        push de                 ; >>> push bogus address, unused")
+                                            nodes_code.append(f"        push de                 ; >>> push value")
+                                            return
+                                        process_node(arg)
+
+                                    for arg in node.arguments:
+                                        process_clear_rect_arg(arg)
+
+                                    nodes_code.append(f"                                ; ({node.type}) {property_name}, clear rectangle")
+                                    nodes_code.append(f"        pop bc                  ; get height value")
+                                    nodes_code.append(f"        pop hl                  ; get height address, unused")
+                                    nodes_code.append(f"        ld a, c                 ;")
+                                    nodes_code.append(f"        ld (clr_h), a           ;")
+                                    nodes_code.append(f"        pop bc                  ; get width value")
+                                    nodes_code.append(f"        pop hl                  ; get width address, unused")
+                                    nodes_code.append(f"        ld a, c                 ;")
+                                    nodes_code.append(f"        ld (clr_w), a           ;")
+                                    nodes_code.append(f"        pop bc                  ; get y-coord value")
+                                    nodes_code.append(f"        pop hl                  ; get y-coord address, unused")
+                                    nodes_code.append(f"        ld a, c                 ;")
+                                    nodes_code.append(f"        ld (clr_y), a           ;")
+                                    nodes_code.append(f"        pop bc                  ; get x-coord value")
+                                    nodes_code.append(f"        pop hl                  ; get x-coord address, unused")
+                                    nodes_code.append(f"        ld a, c                 ;")
+                                    nodes_code.append(f"        ld (clr_x), a           ;")
+                                    nodes_code.append(f"        call cle_rec            ; ({node.type}) call function {object_name}")
+
+                                case _:
+                                    report_error(f"{node.type}: canvas method {property_name}() is not supported.")
                     else:
                         report_error(f"{node.type}: '{object_name}' object not supported.")
                 
@@ -1238,13 +1335,28 @@ def translate_to_assembly(js_code):
                     return
                 function_name = add_underscore_to_var(function_raw_name)
                 previous_preserved_parameters = current_preserved_parameters
+                previous_function_parameter_symbols = current_function_parameter_symbols
+                current_function_parameter_symbols = {}
+                seen_parameter_names = set()
+                for param in node.params:
+                    parameter_raw_name = getattr(param, "name", None)
+                    if not parameter_raw_name:
+                        continue
+                    if parameter_raw_name in seen_parameter_names:
+                        report_error(f"{node.type}: duplicated parameter {parameter_raw_name} in {function_name}.")
+                        continue
+                    seen_parameter_names.add(parameter_raw_name)
+                    current_function_parameter_symbols[parameter_raw_name] = scoped_parameter_name(
+                        function_raw_name,
+                        parameter_raw_name,
+                    )
                 recursive_call_count = count_named_calls(node.body, function_raw_name)
                 current_preserved_parameters = []
                 if recursive_call_count > 1:
                     current_preserved_parameters = [
-                        add_underscore_to_var(param.name)
+                        current_function_parameter_symbols[param.name]
                         for param in node.params
-                        if getattr(param, "name", None)
+                        if getattr(param, "name", None) and param.name in current_function_parameter_symbols
                     ]
 
                 if function_name not in function_declarations:
@@ -1283,7 +1395,9 @@ def translate_to_assembly(js_code):
                     if not parameter_raw_name:
                         report_error(f"{node.type}: only named parameters are supported.")
                         continue
-                    parameter_name = add_underscore_to_var(parameter_raw_name)
+                    parameter_name = current_function_parameter_symbols.get(parameter_raw_name)
+                    if not parameter_name:
+                        continue
                     if parameter_name not in variable_type_list:
                         variable_type_list[parameter_name] = "int" # Pending: wrong assumption. all parameters are marked as integer
                         # variable declaration
@@ -1343,6 +1457,7 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"{function_exit_tag} ret                     ; ({node.type}) end of...\n")
                 nodes_code.append(f"{function_end_tag}")
                 current_preserved_parameters = previous_preserved_parameters
+                current_function_parameter_symbols = previous_function_parameter_symbols
              
             #------------------------------------------------------------------             
                 
@@ -1522,7 +1637,7 @@ def translate_to_assembly(js_code):
                 if not identifier_name:
                     report_error(f"{node.type}: identifier without a name is not supported.")
                     return
-                variable_name= add_underscore_to_var(identifier_name)
+                variable_name= resolve_identifier_name(identifier_name)
                 
                 # constant handling
                 if variable_name in constant_type_list:
@@ -1555,7 +1670,7 @@ def translate_to_assembly(js_code):
                 
                 # 2D matrices (notation: matrix1 [x][y])
                 if (nested_object and getattr(nested_object, "name", None)): 
-                    matrix_name=add_underscore_to_var(nested_object.name)
+                    matrix_name=resolve_identifier_name(nested_object.name)
                     if matrix_type_list.get(matrix_name) or array_type_list.get(matrix_name) :  
                         nodes_code.append(f"                                ; ({node.type}) matrix ***{matrix_name}*** ")
                         nodes_code.append(f"        ld hl, {matrix_name}            ; variable address")
@@ -1597,7 +1712,7 @@ def translate_to_assembly(js_code):
                 
                 # object, dictionary        
                 elif member_object_name:
-                    object_name=add_underscore_to_var(member_object_name)
+                    object_name=resolve_identifier_name(member_object_name)
                     if object_type_list.get(object_name):
                         process_node(member_object)
                         process_node(member_property)
@@ -1689,7 +1804,7 @@ def translate_to_assembly(js_code):
                                                
                 
                 if member_object_name:
-                    variable_name= add_underscore_to_var(member_object_name)
+                    variable_name= resolve_identifier_name(member_object_name)
                     property_name= member_property_name
                     property_type= member_property_type
                     object_name=member_object_name
@@ -1746,7 +1861,7 @@ def translate_to_assembly(js_code):
                 if not discriminant_raw_name:
                     report_error(f"{node.type}: only variable switch discriminants are supported.")
                     return
-                discriminant_name=add_underscore_to_var(discriminant_raw_name)
+                discriminant_name=resolve_identifier_name(discriminant_raw_name)
                 if discriminant_name not in variable_type_list:
                     report_error(f"{node.type}: {discriminant_name} not in variable list.")
                     return
@@ -1859,7 +1974,7 @@ def translate_to_assembly(js_code):
                     return
                 update_argument_name = getattr(update_argument, "name", None)
                 if update_argument_name:
-                    update_variable_name = add_underscore_to_var(update_argument_name)
+                    update_variable_name = resolve_identifier_name(update_argument_name)
                     if update_variable_name in constant_type_list:
                         report_error(f"{node.type}: constant {update_variable_name} cannot be altered.")
                         return
@@ -1920,6 +2035,14 @@ def translate_to_assembly(js_code):
                     init_type == "CallExpression"
                     and getattr(init_callee, "name", None) == "Array"
                 )
+                is_string_constructor = (
+                    init_type == "CallExpression"
+                    and getattr(init_callee, "name", None) == "String"
+                )
+
+                if variable_kind == "const" and is_string_constructor:
+                    report_error(f"{node.type}: const cannot use String(); use a literal const string or var String(size).")
+                    return
                 
                 variable_value = resolve_static_value(init_node)
                 if variable_value is None and init_type not in ("ArrayExpression", "CallExpression", "ObjectExpression"):
@@ -1928,16 +2051,19 @@ def translate_to_assembly(js_code):
                 # constants
                 if variable_kind== "const" and init_type != "ArrayExpression" and not is_array_constructor:
                     if isinstance(variable_value, int): # constant integer
-                        constant_type_list[variable_name]= "int" # not a variable, but for this type it works
+                        variable_value = int(variable_value)
+                        constant_type_list[variable_name]= "int"
                         constant_value_list[variable_name]= variable_value
                         variable_declarations.append(f"{variable_name}   equ {variable_value}                   ; ({node.type}) constant integer")
                         
                     if isinstance(variable_value, str): # constant string
+                        if not validate_string_record(node.type, variable_value):
+                            return
                         variable_length=len(variable_value)
-                        constant_type_list[variable_name]= "int" # not a variable, but for this type it works
+                        constant_type_list[variable_name]= "str"
                         constant_value_list[variable_name]= variable_value
                         variable_declarations.append(f'{variable_name}   defb {variable_length}, 0, "{variable_value}"       ; ({node.type}) constant string')
-                        variable_declarations.append(f'        defs {32-2-len(variable_value)}                 ;') # -2 due to length indicator
+                        variable_declarations.append(f'        defs {config.string_max_length-len(variable_value)}                 ;')
                     if variable_value is None:
                         report_error(f"{node.type}: const initializer not supported.")
                         return
@@ -1981,7 +2107,7 @@ def translate_to_assembly(js_code):
                             # empty string
                             if variable_length == 0: # if declared empty, give it a proper size
                                     variable_declarations.append(f'{immutable_name}   defb 0, 0            ; ({node.type}) empty string')
-                                    variable_declarations.append(f'        defs {string_max_length}, 0xFF           ;')
+                                    variable_declarations.append(f'        defs {config.string_max_length}, 0xFF           ;')
                             
                             # one-char string becomes an integer
                             elif variable_length == 1:
@@ -2076,7 +2202,7 @@ def translate_to_assembly(js_code):
                                     # pointers to immutable strings, initial assignment
                                     array_element_index=0
                                     for element in init_elements:
-                                        variable_declarations.append(f"        defw {immutable_name}+{2 + array_element_index*string_max_length}        ; element {array_element_index}")
+                                        variable_declarations.append(f"        defw {immutable_name}+{2 + array_element_index*string_record_size()}        ; element {array_element_index}")
                                         array_element_index+=1
 
                                     # immutable strings assignment
@@ -2086,7 +2212,7 @@ def translate_to_assembly(js_code):
                                     # pointers to immutable strings, code assignment
                                     array_element_index=0
                                     for element in init_elements:
-                                        nodes_code.append(f"        ld de, {immutable_name}+{2 + array_element_index*string_max_length}      ; element {array_element_index}")
+                                        nodes_code.append(f"        ld de, {immutable_name}+{2 + array_element_index*string_record_size()}      ; element {array_element_index}")
                                         nodes_code.append(f"        ld (hl), e              ;")
                                         nodes_code.append(f"        inc hl                  ;")
                                         nodes_code.append(f"        ld (hl), d              ;")
@@ -2107,6 +2233,9 @@ def translate_to_assembly(js_code):
                                     if callee_type_name == "String":  
                                         if len(init_arguments) < 1 or getattr(init_arguments[0], "value", None) is None:
                                             report_error(f"{node.type}: String() requires a literal size.")
+                                            return
+                                        if len(init_arguments) != 1:
+                                            report_error(f"{node.type}: String() currently supports one literal size.")
                                             return
                                         string_name= add_underscore_to_var(node.id.name)
                                         string_chars= init_arguments[0].value
@@ -2166,16 +2295,24 @@ def translate_to_assembly(js_code):
     
                 # general object methods ------------------------------------------
                                 elif getattr(getattr(init_callee, "object", None), "name", None):
+                                        init_object_name = getattr(getattr(init_callee, "object", None), "name", None)
+                                        init_property_name = getattr(getattr(init_callee, "property", None), "name", None)
                 # non-standard: used for canvas creation --------------------------                             
-                                        two_d_property=init_arguments[0].value
-                                        if two_d_property == "2d": 
+                                        if init_property_name == "getContext":
+                                            if len(init_arguments) != 1 or getattr(init_arguments[0], "value", None) != "2d":
+                                                report_error(f'{node.type}: canvas getContext() only supports literal "2d".')
+                                                return
                                             #variable_name=add_underscore_to_var(node.id.name) # pending: make sure "ctx" is "ctx_"
                                             variable_name=node.id.name
                                             object_type_list[variable_name]="canvas"
                                             #variable declaration
-                                            variable_declarations.append(f"{variable_name}           defw 0         ; ({node.type}) canvas")
+                                            variable_declarations.append(f"{variable_name}           defw 0         ; ({node.type}) canvas context")
                                             variable_declarations.append(f"{variable_name}_x         defw 128       ;")
                                             variable_declarations.append(f"{variable_name}_y         defw 96        ;")
+                # JavaScript browser compatibility placeholder --------------------
+                                        elif init_object_name == "document" and init_property_name == "getElementById":
+                                            variable_type_list[variable_name]= "int"
+                                            variable_declarations.append(f"{variable_name}   defw 0                  ; ({node.type}) DOM element placeholder")
                                             
                 # dictionaries ----------------------------------------------------
                             if init_type == "ObjectExpression": # so far, only used for dictionaries
@@ -2294,13 +2431,15 @@ def translate_to_assembly(js_code):
                     element_count=0
                     for element in elements:
                         node_value=getattr(element, "value", "")
+                        if not validate_string_record(node.type, node_value):
+                            return
                         
                         string_matrix_element_label = new_label("stm_")
                         
                         # declarations
                         # arrays are built on fixed record size, to simplify access to elements
                         variable_declarations.append(f'{string_matrix_element_label} defb {len(node_value)}, 0, "{node_value}"        ;')
-                        variable_declarations.append(f'        defs {string_max_length-2-len(node_value)}                 ;') # -2 due to length indicator
+                        variable_declarations.append(f'        defs {config.string_max_length-len(node_value)}                 ;')
                         
                         # assignment
                         #nodes_code.append(f"        ld hl, {string_matrix_element_label}              ; element {element_count}")

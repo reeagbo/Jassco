@@ -37,6 +37,41 @@ valid for regular JavaScript tools while still letting JASSCO embed the
 requested assembly support library. Plain `include("...")` calls are not part of
 the supported source format.
 
+Harmless whitespace around the include call is accepted:
+
+```javascript
+// jassco: include ("io.asc")
+// jassco: include( "io.asc" )
+// jassco: include ( "io.asc" );
+```
+
+Requested support libraries are collected during translation and emitted in the
+generated assembly support-library section before `mai_cod`. They are not
+inserted inline at the JavaScript source position. Use inline assembly blocks
+for code that must appear in the executable flow.
+
+## Startup Code
+
+Every generated ZX Spectrum assembly file starts with the configured origin,
+then inserts the compiler's `startup.asc` file before variable declarations,
+support libraries and generated program code.
+
+The default `startup.asc` opens ROM channel 2, then transfers control to the
+generated main-code label:
+
+```asm
+ld a,2
+call 5633
+jp mai_cod
+```
+
+When `--tapbas` is used, the compiler emits the `start:` label before this
+startup block and still emits `end start` at the end of the file. Startup code
+is target-level assembly, not JavaScript API surface. Custom startup variants
+can change the initial ROM channel or add target setup, but they must eventually
+transfer control to `mai_cod` unless they intentionally replace the generated
+program flow.
+
 ## Data Types
 
 JASSCO currently supports:
@@ -68,7 +103,8 @@ All variables are currently global, even if they are declared inside a function
 or block.
 
 `const` values are stored using the same practical storage model as compatible
-variables, but JASSCO rejects writes from compiled JavaScript:
+variables, but JASSCO rejects reassignment of the declared identifier from
+compiled JavaScript:
 
 ```javascript
 const wall = 1
@@ -79,8 +115,17 @@ console.log(values[1])
 console.log(rooms[2])
 ```
 
-The compiler enforces read-only use from JavaScript. Inline assembly can still
-write to memory directly; JASSCO does not try to protect constants at runtime.
+For arrays and text tables, `const` protects the base identifier, not the
+contents behind it. This follows the useful JavaScript rule for fixed buffers:
+
+```javascript
+const values = Array(10)
+values[0] = 5      // supported
+values = Array(20) // compiler error
+```
+
+Inline assembly can still write to memory directly; JASSCO does not try to
+protect constants at runtime.
 
 ## Arrays, Matrices, And Maps
 
@@ -131,14 +176,17 @@ console.log(dict[5])
 Arrays and matrices currently support dimensions from 1 to 255. Larger or zero
 dimensions are reported as compiler errors.
 
-Constant arrays can be declared and read, but not modified:
+Constant arrays keep a fixed identifier, but their elements can be modified:
 
 ```javascript
 const values = [7, 8, 9]
 console.log(values[1])
 
-// Not supported
+// Supported
 values[1] = 10
+
+// Not supported
+values = [1, 2, 3]
 ```
 
 ## Empty Data Structures
@@ -154,6 +202,18 @@ var dict = Map(5, 4)     // empty dictionary/map structure
 ```
 
 These are practical compiler extensions, not full JavaScript object support.
+
+`String(n)` is a JASSCO-specific extension. It reserves a mutable string buffer
+with room for `n` characters. It does not follow standard JavaScript
+`String(n)` semantics, where `String(20)` would produce the text `"20"`.
+Because `String(n)` reserves mutable storage, it is only supported with `var`.
+Use a string literal for `const` text:
+
+```javascript
+var text = String(20)     // supported mutable buffer
+const title = "HELLO"     // supported constant text
+const text = String(20)   // compiler error
+```
 
 ## Control Flow
 
@@ -253,6 +313,9 @@ total = sum(5, 6)
 Important details:
 
 - Function parameters are currently treated as integer-compatible values.
+- Function parameter symbols are scoped by function in generated assembly. For
+  example, `function paper(n)` and `function ink(n)` use separate generated
+  symbols such as `fn_paper_n_` and `fn_ink_n_`.
 - A function with `return` must be used where a value is expected.
 - A function without `return` must be used as a statement.
 - Recursion supports single and multiple sibling calls when parameters are
@@ -307,6 +370,10 @@ Additional console helpers:
 - `console.logchar(value)`: print a character/byte.
 - `console.clear()`: clear the screen using the ROM routine.
 
+The default ZX Spectrum startup code opens channel 2 once. The print helpers
+then use the active channel, which lets ROM control codes such as INK (`16`),
+PAPER (`17`) and AT (`22`) persist across consecutive console calls.
+
 Keyboard input helper:
 
 ```javascript
@@ -334,10 +401,42 @@ program waits for key input according to the assembly implementation.
 JASSCO supports a very small canvas-like drawing subset:
 
 - `document.getElementById(...)`
+- `document.createElement(...)`
+- `document.body.appendChild(...)`
 - `canvas.getContext("2d")`
+- `ctx.beginPath()`
+- `ctx.closePath()`
 - `ctx.moveTo(x, y)`
 - `ctx.lineTo(x, y)`
+- `ctx.stroke()`
+- `ctx.clearRect(...)`
 - `ctx.clearScreen()`
+
+`beginPath()`, `closePath()` and `stroke()` are recognized no-ops so common
+Canvas examples can compile. `moveTo()` updates the current point without
+drawing, while `lineTo()` draws immediately from the current point to the new
+one. `clearRect(...)` ignores its rectangle arguments and clears the full ZX
+Spectrum screen. `fill()` is intentionally rejected because filled shapes are
+not supported. Contexts other than `"2d"` are rejected so code that compiles
+with JASSCO also follows browser Canvas behavior.
+
+Canvas coordinates match browser behavior: `(0, 0)` is the top-left corner,
+X grows to the right and Y grows downward.
+
+For JavaScript that also runs in a browser, create the canvas if the page does
+not already provide one:
+
+```javascript
+var canvas = document.getElementById("myCanvas")
+if (canvas == null) {
+    canvas = document.createElement("canvas")
+    document.body.appendChild(canvas)
+}
+var ctx = canvas.getContext("2d")
+```
+
+JASSCO treats the DOM creation calls as no-ops and only keeps a small
+placeholder for comparisons such as `canvas == null`.
 
 Example:
 
@@ -416,6 +515,33 @@ Useful options:
 - `--org ADDRESS`: set the generated assembly origin address. Decimal and
   Python-style hexadecimal values such as `0x8000` are accepted.
 
+## Configuration Settings
+
+Some target-specific values live in `config.py`. They are not command-line
+options, and changing them changes the generated assembly layout. After any
+change, rebuild the affected programs and run the golden/Pasmo validation.
+
+Current practical settings:
+
+- `string_max_length = 32`: fixed record size used by string arrays/text tables.
+  The value is the maximum number of text characters per entry. Each generated
+  record also stores two length bytes, so the assembly record size is
+  `string_max_length + 2`. Increasing it gives text-table entries more room and
+  uses more memory. Reducing it is only safe if every string-array entry still
+  fits; otherwise compilation fails.
+- `initial_address = 25000`: default `org` address for generated code. Prefer
+  `--org` for normal builds so the source tree does not need editing.
+- `stack2_address = 24500`: auxiliary stack area used by generated function-call
+  support.
+- `garbage_address_start = 24000` and `garbage_address_end = 24200`: temporary
+  workspace used by helper operations such as input conversion, random values,
+  character extraction and short generated strings.
+- `assembly_lib_path = "./"`: default support-library lookup base used by the
+  compiler.
+
+These memory areas must not overlap the generated program, user data, BASIC
+loader area, or any custom assembly buffers used by the application.
+
 ## Known Restrictions
 
 Current major restrictions:
@@ -428,8 +554,9 @@ Current major restrictions:
 - Repeated `var` declarations are accepted for compatibility and execute their
   initializer. `let` and `const` cannot be redeclared.
 - `const` requires an initializer and cannot be assigned, incremented, or
-  decremented after declaration. These rules are enforced by the compiler;
-  constants are not protected dynamically at runtime.
+  decremented after declaration. For arrays and text tables, the identifier
+  cannot be reassigned but elements may be updated. These rules are enforced by
+  the compiler; constants are not protected dynamically at runtime.
 - Function parameters are integer-compatible.
 - Arrays created with `Array(n)` are numeric arrays. Use literal string arrays
   for text tables.

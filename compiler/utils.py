@@ -83,6 +83,8 @@ def get_content_type(node):
                 content_type= config.variable_type_list[node_name]
             if node_name in config.string_type_list:    
                 content_type= config.string_type_list[node_name]
+            if node_name in config.constant_type_list:
+                content_type= config.constant_type_list[node_name]
 
         case "MemberExpression": # infer type from variable list
             node_object = getattr(node, "object", None)

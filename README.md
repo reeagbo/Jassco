@@ -84,7 +84,7 @@ must always represent the same version.
 - `docs/TICKETS.md`: canonical backlog for unresolved work after the current release.
 - `docs/FIXES.md`: fixes applied during the current cleanup pass.
 - `docs/IMPROVEMENTS.md`: possible improvements to review later.
-- `docs/RELEASE_NOTES_26.25.md`: notes for the current release.
+- `docs/RELEASE_NOTES_26.26.md`: notes for the current release.
 
 ## Releases
 

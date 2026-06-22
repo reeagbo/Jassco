@@ -2,16 +2,18 @@
 
 ## Status
 
-- Golden ASM output is unchanged for all current reference programs.
+- Golden ASM output has been reviewed and accepted for all current reference
+  programs.
 - Compiler diagnostics now distinguish fatal errors from compatibility warnings.
 - Known restrictions and future semantic changes are tracked separately from applied fixes.
 
 ## Final Golden Test Result
 
+- `basic_assembly_jassco.js`: pass
 - `simple_clock_jassco.js`: pass
 - `squares_jassco.js`: pass
-- `sierpinski_jassco.js`: pass
-- `neural v2.0 hidden layer.js`: pass
+- `sierpinski-full.js`: pass
+- `neural-digit-reco.js`: pass
 - `G-Shock DCF77 decoder.js`: pass
 - `chesskelet_jassco.js`: pass
 - `testplan.js`: pass

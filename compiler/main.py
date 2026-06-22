@@ -55,6 +55,11 @@ def resolve_include(filename, input_file):
 
     raise FileNotFoundError(filename)
 
+def read_compiler_file(filename):
+    path = Path(__file__).resolve().parent / filename
+    with open(path, "r", encoding="utf-8") as file:
+        return file.read()
+
 def main(input_file, output_file, tapbas=False, quiet=False, org=None):
     reset_compiler_state()
     initial_address = config.initial_address if org is None else org
@@ -79,8 +84,10 @@ def main(input_file, output_file, tapbas=False, quiet=False, org=None):
     # directives ------------------------------------------------------------------------------
     full_code.append("; Directives -------------------------------------------------")
     full_code.append(f"        org {initial_address}               ; initial code address")
-    entry_label = "start: " if tapbas else ""
-    full_code.append(f"{entry_label}        jp mai_cod              ; jumps to main code")
+    if tapbas:
+        full_code.append("start:")
+    full_code.append("; File: startup.asc. Default ZX Spectrum startup code")
+    full_code.append(read_compiler_file("startup.asc"))
     
     # variable declarations -------------------------------------------------------------------
     full_code.append("\n; Variable declarations --------------------------------------")
