@@ -62,11 +62,78 @@ def count_named_calls(node, function_name):
             count += count_named_calls(value, function_name)
     return count
 
-def validate_array_dimension(node_type, dimension):
-    if not isinstance(dimension, int) or isinstance(dimension, bool) or dimension < 1 or dimension > 255:
-        report_error(f"{node_type}: Array dimensions must be between 1 and 255.")
+def infer_call_argument_type(node):
+    node_type = getattr(node, "type", None)
+    if node_type == "Literal":
+        value = getattr(node, "value", None)
+        if isinstance(value, bool):
+            return "int"
+        if isinstance(value, int):
+            return "int"
+        if isinstance(value, str) and len(value) > 1:
+            return "str"
+        if isinstance(value, str):
+            return "int"
+
+    if node_type == "CallExpression":
+        callee = getattr(node, "callee", None)
+        callee_object = getattr(callee, "object", None)
+        callee_property = getattr(callee, "property", None)
+        if (
+            getattr(callee_object, "name", None) == "String"
+            and getattr(callee_property, "name", None) in ("fromCharCode", "fromcharcode")
+        ):
+            return "str"
+
+    return None
+
+def collect_function_parameter_type_hints(ast):
+    hints = {}
+
+    def remember(function_name, argument_index, argument_type):
+        if not function_name or argument_type is None:
+            return
+        function_hints = hints.setdefault(function_name, {})
+        existing_type = function_hints.get(argument_index)
+        if existing_type is None:
+            function_hints[argument_index] = argument_type
+        elif existing_type != argument_type:
+            report_warning(
+                f"CallExpression: conflicting argument types for {function_name}() "
+                f"parameter {argument_index + 1}; keeping {existing_type}."
+            )
+
+    def walk(node):
+        if node is None:
+            return
+        if isinstance(node, (list, tuple)):
+            for item in node:
+                walk(item)
+            return
+
+        if getattr(node, "type", None) == "CallExpression":
+            callee = getattr(node, "callee", None)
+            function_name = getattr(callee, "name", None)
+            if function_name:
+                for index, argument in enumerate(getattr(node, "arguments", [])):
+                    remember(function_name, index, infer_call_argument_type(argument))
+
+        if hasattr(node, "__dict__"):
+            for value in vars(node).values():
+                if hasattr(value, "type") or isinstance(value, (list, tuple)):
+                    walk(value)
+
+    walk(ast)
+    return hints
+
+def validate_array_dimension(node_type, dimension, max_dimension=255, structure_name="Array dimensions"):
+    if not isinstance(dimension, int) or isinstance(dimension, bool) or dimension < 1 or dimension > max_dimension:
+        report_error(f"{node_type}: {structure_name} must be between 1 and {max_dimension}.")
         return False
     return True
+
+def array_header_declaration(name, length, node_type, content_type):
+    return f"{name}   defw {length}               ; ({node_type}) {content_type} array (length)"
 
 def translate_to_assembly(js_code):
     #--------------------------------------------------------------------------         
@@ -75,25 +142,81 @@ def translate_to_assembly(js_code):
 
     current_preserved_parameters = []
     current_function_parameter_symbols = {}
+    function_parameter_type_hints = collect_function_parameter_type_hints(ast)
     declaration_kind_list = {}
     statement_expression = None
 
+    def emit_asm(opcode="", operand="", comment=None, label=""):
+        line = ""
+        if label:
+            line += f"{label}\t"
+        else:
+            line += "\t"
+        if opcode:
+            line += opcode
+        if operand:
+            line += f"\t{operand}"
+        if comment is not None:
+            line += "\t;"
+            if comment:
+                line += f" {comment}"
+        nodes_code.append(line)
+
     def restore_preserved_parameters(parameter_names):
         for parameter_name in reversed(parameter_names):
-            nodes_code.append(f"        ld hl, sta_ck2          ; restore saved parameter {parameter_name}")
-            nodes_code.append(f"        ld e, (hl)              ; pick auxiliary stack pointer")
-            nodes_code.append(f"        inc hl                  ;")
-            nodes_code.append(f"        ld d, (hl)              ;")
-            nodes_code.append(f"        ex de, hl               ; HL= auxiliary stack pointer")
-            nodes_code.append(f"        dec hl                  ; saved parameter high byte")
-            nodes_code.append(f"        ld d, (hl)              ;")
-            nodes_code.append(f"        dec hl                  ; saved parameter low byte")
-            nodes_code.append(f"        ld e, (hl)              ;")
-            nodes_code.append(f"        ld (sta_ck2), hl        ; release saved parameter")
-            nodes_code.append(f"        ld hl, {parameter_name}            ; restore caller parameter")
-            nodes_code.append(f"        ld (hl), e              ;")
-            nodes_code.append(f"        inc hl                  ;")
-            nodes_code.append(f"        ld (hl), d              ;")
+            emit_asm("ld", "hl, sta_ck2", f"restore saved parameter {parameter_name}")
+            emit_asm("ld", "e, (hl)", "pick auxiliary stack pointer")
+            emit_asm("inc", "hl", "")
+            emit_asm("ld", "d, (hl)", "")
+            emit_asm("ex", "de, hl", "HL= auxiliary stack pointer")
+            emit_asm("dec", "hl", "saved parameter high byte")
+            emit_asm("ld", "d, (hl)", "")
+            emit_asm("dec", "hl", "saved parameter low byte")
+            emit_asm("ld", "e, (hl)", "")
+            emit_asm("ld", "(sta_ck2), hl", "release saved parameter")
+            emit_asm("ld", f"hl, {parameter_name}", "restore caller parameter")
+            emit_asm("ld", "(hl), e", "")
+            emit_asm("inc", "hl", "")
+            emit_asm("ld", "(hl), d", "")
+
+    def save_function_return_address(has_preserved_parameters):
+        emit_asm("ld", "hl, sta_ck2", "needed in recursion cases")
+        emit_asm("ld", "e, (hl)", "address pointed in DE")
+        emit_asm("inc", "hl", "")
+        emit_asm("ld", "d, (hl)", "")
+        emit_asm("ex", "de, hl", "de= sta_ck2, hl= stack pointer")
+        emit_asm("pop", "bc", "<<< pop return address")
+        emit_asm("ld", "(hl), c", "")
+        emit_asm("inc", "hl", "")
+        emit_asm("ld", "(hl), b", "")
+        if has_preserved_parameters:
+            emit_asm("ld", "hl, (sta_ck2)", "reserve return address")
+            emit_asm("inc", "hl", "")
+            emit_asm("inc", "hl", "")
+            emit_asm("ld", "(sta_ck2), hl", "end of return address preps")
+        else:
+            emit_asm("ld", "hl, sta_ck2", "")
+            emit_asm("inc", "(hl)", "")
+            emit_asm("inc", "(hl)", "end of return address preps")
+        nodes_code.append("")
+
+    def restore_function_return_address(has_preserved_parameters, end_comment):
+        emit_asm("ld", "hl, sta_ck2", "update stack2 pointer")
+        emit_asm("ld", "e, (hl)", "pick stack pointer")
+        emit_asm("inc", "hl", "update pointer")
+        emit_asm("ld", "d, (hl)", "pick stack pointer")
+        emit_asm("ex", "de, hl", "de= sta_ck2, hl= stack pointer")
+        emit_asm("dec", "hl", "")
+        emit_asm("ld", "b, (hl)", "get return address from stack")
+        emit_asm("dec", "hl", "")
+        emit_asm("ld", "c, (hl)", "")
+        emit_asm("push", "bc", ">>> push return address")
+        if has_preserved_parameters:
+            emit_asm("ld", "(sta_ck2), hl", end_comment)
+        else:
+            emit_asm("ld", "hl, sta_ck2", "")
+            emit_asm("dec", "(hl)", "")
+            emit_asm("dec", "(hl)", end_comment)
 
     def scoped_parameter_name(function_raw_name, parameter_raw_name):
         return add_underscore_to_var(f"fn_{function_raw_name}_{parameter_raw_name}")
@@ -206,95 +329,97 @@ def translate_to_assembly(js_code):
                         
                         # read right node (DE= address, HL= value)
                         nodes_code.append(f"                                ; ({node.type}) * {operator_name} * (int)")
-                        nodes_code.append(f"        pop bc                  ; <<< pop right side value")
-                        nodes_code.append(f"        pop de                  ; <<< pop right side address")
-                        nodes_code.append(f"        pop hl                  ; <<< pop left side value\n")
+                        emit_asm("pop", "bc", "<<< pop right side value")
+                        emit_asm("pop", "de", "<<< pop right side address")
+                        emit_asm("pop", "hl", "<<< pop left side value")
+                        nodes_code.append("")
     
                         # read left node and run operation
                         match operator_name:
                             case "=":
-                                nodes_code.append(f"        push bc                 ; >>> push right side value")
-                                nodes_code.append(f"        pop de                  ; <<< pop right side value")
+                                emit_asm("push", "bc", ">>> push right side value")
+                                emit_asm("pop", "de", "<<< pop right side value")
                     
                             case "+=":
-                                nodes_code.append(f"        add hl, bc              ; HL has the result")
-                                nodes_code.append(f"        ex de, hl               ; DE has the result")
+                                emit_asm("add", "hl, bc", "HL has the result")
+                                emit_asm("ex", "de, hl", "DE has the result")
                                                                     
                             case "-=":
-                                nodes_code.append(f"        xor a                   ; clear carry before subtraction")
-                                nodes_code.append(f"        sbc hl, bc              ; HL has the result")
-                                nodes_code.append(f"        ex de, hl               ; DE has the result")
+                                emit_asm("xor", "a", "clear carry before subtraction")
+                                emit_asm("sbc", "hl, bc", "HL has the result")
+                                emit_asm("ex", "de, hl", "DE has the result")
                                 
                             case "*=":
-                                nodes_code.append(f"        push hl                 ;")
-                                nodes_code.append(f"        push bc                 ;")
-                                nodes_code.append(f"        call mul_16b            ;")
-                                nodes_code.append(f"        pop de                  ; DE has the result")
+                                emit_asm("push", "hl", "")
+                                emit_asm("push", "bc", "")
+                                emit_asm("call", "mul_16b", "")
+                                emit_asm("pop", "de", "DE has the result")
                             
                             case "/=":
-                                nodes_code.append(f"        push hl                 ;")
-                                nodes_code.append(f"        push bc                 ;")
-                                nodes_code.append(f"        call div_16b            ;  ({node.type})")
-                                nodes_code.append(f"        pop de                  ; DE has the result")
-                                nodes_code.append(f"        pop hl                  ; remainder, not used")
+                                emit_asm("push", "hl", "")
+                                emit_asm("push", "bc", "")
+                                emit_asm("call", "div_16b", f" ({node.type})")
+                                emit_asm("pop", "de", "DE has the result")
+                                emit_asm("pop", "hl", "remainder, not used")
                                   
                             case "%=":
-                                nodes_code.append(f"        push hl                 ;")
-                                nodes_code.append(f"        push bc                 ;")
-                                nodes_code.append(f"        call div_16b            ;  ({node.type})")
-                                nodes_code.append(f"        pop hl                  ; result, not used")
-                                nodes_code.append(f"        pop de                  ; remainder, DE has the result")   
+                                emit_asm("push", "hl", "")
+                                emit_asm("push", "bc", "")
+                                emit_asm("call", "div_16b", f" ({node.type})")
+                                emit_asm("pop", "hl", "result, not used")
+                                emit_asm("pop", "de", "remainder, DE has the result")
                             
                             case "&=":
-                                nodes_code.append(f"        ld a, h                 ; MSB")
-                                nodes_code.append(f"        and b                   ;")
-                                nodes_code.append(f"        ld d, a                 ;")
-                                nodes_code.append(f"        ld a, l                 ; LSB")
-                                nodes_code.append(f"        and c                   ;")
-                                nodes_code.append(f"        ld e, a                 ; DE has the result")
+                                emit_asm("ld", "a, h", "MSB")
+                                emit_asm("and", "b", "")
+                                emit_asm("ld", "d, a", "")
+                                emit_asm("ld", "a, l", "LSB")
+                                emit_asm("and", "c", "")
+                                emit_asm("ld", "e, a", "DE has the result")
                                 
                             case "|=":
-                                nodes_code.append(f"        ld a, h                 ; MSB")
-                                nodes_code.append(f"        or b                   ;")
-                                nodes_code.append(f"        ld d, a                 ;")
-                                nodes_code.append(f"        ld a, l                 ; LSB")
-                                nodes_code.append(f"        or c                   ;")
-                                nodes_code.append(f"        ld e, a                 ; DE has the result")
+                                emit_asm("ld", "a, h", "MSB")
+                                emit_asm("or", "b", "")
+                                emit_asm("ld", "d, a", "")
+                                emit_asm("ld", "a, l", "LSB")
+                                emit_asm("or", "c", "")
+                                emit_asm("ld", "e, a", "DE has the result")
                             
                             case "^=":
-                                nodes_code.append(f"        ld a, h                 ; MSB")
-                                nodes_code.append(f"        xor b                   ;")
-                                nodes_code.append(f"        ld d, a                 ;")
-                                nodes_code.append(f"        ld a, l                 ; LSB")
-                                nodes_code.append(f"        xor c                   ;")
-                                nodes_code.append(f"        ld e, a                 ; DE has the result")
+                                emit_asm("ld", "a, h", "MSB")
+                                emit_asm("xor", "b", "")
+                                emit_asm("ld", "d, a", "")
+                                emit_asm("ld", "a, l", "LSB")
+                                emit_asm("xor", "c", "")
+                                emit_asm("ld", "e, a", "DE has the result")
                                 
                             case "<<=":
                                 asg_label = new_label("asg_")
                                 
-                                nodes_code.append(f"        ld b, c                 ; number of shifts")
-                                nodes_code.append(f"{asg_label} add hl, hl              ; shift left")
-                                nodes_code.append(f"        djnz {asg_label}            ;")                                    
+                                emit_asm("ld", "b, c", "number of shifts")
+                                emit_asm("add", "hl, hl", "shift left", label=asg_label)
+                                emit_asm("djnz", asg_label, "")
     
-                                nodes_code.append(f"        push hl                 ;")
-                                nodes_code.append(f"        pop de                  ; DE has the result")
+                                emit_asm("push", "hl", "")
+                                emit_asm("pop", "de", "DE has the result")
                                 
                             case ">>=":
                                 asg_label = new_label("asg_")
-                                nodes_code.append(f"        ld b, c                 ; number of shifts")
-                                nodes_code.append(f"{asg_label} srl h                   ; shift right 1")
-                                nodes_code.append(f"        rr l                    ; shift right 2")
-                                nodes_code.append(f"        djnz {asg_label}            ;")                                    
-                                nodes_code.append(f"        push hl                 ;")
-                                nodes_code.append(f"        pop de                  ; DE has the result")
+                                emit_asm("ld", "b, c", "number of shifts")
+                                emit_asm("srl", "h", "shift right 1", label=asg_label)
+                                emit_asm("rr", "l", "shift right 2")
+                                emit_asm("djnz", asg_label, "")
+                                emit_asm("push", "hl", "")
+                                emit_asm("pop", "de", "DE has the result")
                                            
                             case _:
                                 report_error(f"{node.type}: {operator_name} operation not supported for integers.")
                         
-                        nodes_code.append(f"\n        pop hl                  ; <<< pop left side address")
-                        nodes_code.append(f"        ld (hl), e              ; write value in destination address")
-                        nodes_code.append(f"        inc hl                  ;")
-                        nodes_code.append(f"        ld (hl), d              ;")
+                        nodes_code.append("")
+                        emit_asm("pop", "hl", "<<< pop left side address")
+                        emit_asm("ld", "(hl), e", "write value in destination address")
+                        emit_asm("inc", "hl", "")
+                        emit_asm("ld", "(hl), d", "")
                         
                         nodes_code.append(f"                                ; ({node.type}) end of...")
                 
@@ -310,15 +435,15 @@ def translate_to_assembly(js_code):
                         match operator_name:
                             case "=":
                                 # assign string address to variable
-                                nodes_code.append(f"        pop de                  ; pop right string address")
-                                nodes_code.append(f"        pop hl                  ; pop right string value, unused")
-                                nodes_code.append(f"        pop hl                  ; pop left variable value, unused")
-                                nodes_code.append(f"        pop hl                  ; pop left variable address")
+                                emit_asm("pop", "de", "pop right string address")
+                                emit_asm("pop", "hl", "pop right string value, unused")
+                                emit_asm("pop", "hl", "pop left variable value, unused")
+                                emit_asm("pop", "hl", "pop left variable address")
                                 
                                 # point left variable string at right immutable string                                
-                                nodes_code.append(f"        ld (hl), e              ; copy immutable address string LSB")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        ld (hl), d              ; copy immutable address string MSB")
+                                emit_asm("ld", "(hl), e", "copy immutable address string LSB")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("ld", "(hl), d", "copy immutable address string MSB")
                                 
                             case _:
                                 report_error(f"{node.type}: {variable_name}, operation not supported for strings.")
@@ -331,9 +456,10 @@ def translate_to_assembly(js_code):
                         right_elements = getattr(node.right, "elements", None)
                         if right_elements: # array = [x, y] assignment
                             nodes_code.append(f"                                ; ({node.type}) * {operator_name} * array to array assignment")
-                            nodes_code.append(f"        ld hl, {variable_name}          ; destination address")
-                            nodes_code.append(f"        inc hl                  ; skip dimensions")
-                            nodes_code.append(f"        inc hl                  ; 2 bytes\n")
+                            emit_asm("ld", f"hl, {variable_name}", "destination address")
+                            emit_asm("inc", "hl", "skip dimensions")
+                            emit_asm("inc", "hl", "2 bytes")
+                            nodes_code.append("")
 
                             for element in right_elements:
                                 process_node(element)
@@ -345,15 +471,16 @@ def translate_to_assembly(js_code):
                             # calculate array position
                             process_node(node.left)
                             # assign value to position
-                            nodes_code.append(f"        pop bc                  ; <<< pop right array value, unused")
-                            nodes_code.append(f"        pop hl                  ; <<< pop right array address")
-                            nodes_code.append(f"        pop de                  ; <<< pop right array value")
-                            nodes_code.append(f"        pop bc                  ; <<< pop right array address, unused")
+                            emit_asm("pop", "bc", "<<< pop right array value, unused")
+                            emit_asm("pop", "hl", "<<< pop right array address")
+                            emit_asm("pop", "de", "<<< pop right array value")
+                            emit_asm("pop", "bc", "<<< pop right array address, unused")
                             
-                            nodes_code.append(f"        ld (hl), e              ; write LSB")
-                            nodes_code.append(f"        inc hl                  ; next")
-                            nodes_code.append(f"        ld (hl), d              ; write MSB")
-                            nodes_code.append(f"        inc hl                  ; next\n")
+                            emit_asm("ld", "(hl), e", "write LSB")
+                            emit_asm("inc", "hl", "next")
+                            emit_asm("ld", "(hl), d", "write MSB")
+                            emit_asm("inc", "hl", "next")
+                            nodes_code.append("")
                                                                                 
                 nodes_code.append ("")
                 
@@ -447,205 +574,208 @@ def translate_to_assembly(js_code):
                 match value_type:
                     case "int" | "NoneType": #temporary integer and boolean operations
                         nodes_code.append(f"                                ; ({node.type}) * {operator_name} * (int)")
-                        nodes_code.append(f"        pop bc                  ; <<< pop right side value")
-                        nodes_code.append(f"        pop de                  ; <<< pop right side address, not used")
-                        nodes_code.append(f"        pop hl                  ; <<< pop left side value")
+                        emit_asm("pop", "bc", "<<< pop right side value")
+                        emit_asm("pop", "de", "<<< pop right side address, not used")
+                        emit_asm("pop", "hl", "<<< pop left side value")
                         
                         match operator_name:
                             # comparison operations
                             case "==" | "!=" | "<" | ">" |"<=" | ">=":
-                                nodes_code.append(f"        pop de                  ; <<< pop left side address, not used")
+                                emit_asm("pop", "de", "<<< pop left side address, not used")
                                 nodes_code.append(f"                                ; ({node.type}) operation: {operator_name}")
                                 match operator_name:
                                     case "==":
                                         equ_label = new_label("equ_")
-                                        nodes_code.append(f"        ld de, 1                ; assume condition=true")
-                                        nodes_code.append(f"        xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp z, {equ_label}           ; if =, true -> skip change")
-                                        nodes_code.append(f"        dec e                   ; condition=false")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 1", "assume condition=true")
+                                        emit_asm("xor", "a", "")
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"z, {equ_label}", "if =, true -> skip change")
+                                        emit_asm("dec", "e", "condition=false")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
                                         
                                     case "!=":
                                         equ_label = new_label("neq_")
-                                        nodes_code.append(f"        ld de, 1                ; assume condition=true")
-                                        nodes_code.append(f"        xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp nz, {equ_label}           ; if !=, true -> skip change")
-                                        nodes_code.append(f"        dec e                   ; condition=false")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 1", "assume condition=true")
+                                        emit_asm("xor", "a", "")
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"nz, {equ_label}", "if !=, true -> skip change")
+                                        emit_asm("dec", "e", "condition=false")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
                                         
                                     case "<":
                                         equ_label = new_label("les_")
                                         signed_same_label = new_label("lss_")
-                                        nodes_code.append(f"        ld de, 0                ; assume condition=false")
-                                        nodes_code.append(f"        ld a, h                 ; left sign")
-                                        nodes_code.append(f"        xor b                   ; compare signs")
-                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
-                                        nodes_code.append(f"        bit 7, h                ; left negative?")
-                                        nodes_code.append(f"        jp z, {equ_label}          ; positive < negative is false")
-                                        nodes_code.append(f"        inc e                   ; negative < positive is true")
-                                        nodes_code.append(f"        jp {equ_label}              ;")
-                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp nc, {equ_label}          ; if >=, false -> skip change")
-                                        nodes_code.append(f"        inc e                   ; condition=true")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 0", "assume condition=false")
+                                        emit_asm("ld", "a, h", "left sign")
+                                        emit_asm("xor", "b", "compare signs")
+                                        emit_asm("jp", f"p, {signed_same_label}", "same sign")
+                                        emit_asm("bit", "7, h", "left negative?")
+                                        emit_asm("jp", f"z, {equ_label}", "positive < negative is false")
+                                        emit_asm("inc", "e", "negative < positive is true")
+                                        emit_asm("jp", equ_label, "")
+                                        emit_asm("xor", "a", "", label=signed_same_label)
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"nc, {equ_label}", "if >=, false -> skip change")
+                                        emit_asm("inc", "e", "condition=true")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
 
                                     case ">":
                                         equ_label = new_label("mor_")
                                         signed_same_label = new_label("mss_")
-                                        nodes_code.append(f"        ld de, 0                ; assume condition=false")
-                                        nodes_code.append(f"        ld a, h                 ; left sign")
-                                        nodes_code.append(f"        xor b                   ; compare signs")
-                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
-                                        nodes_code.append(f"        bit 7, h                ; left negative?")
-                                        nodes_code.append(f"        jp nz, {equ_label}          ; negative > positive is false")
-                                        nodes_code.append(f"        inc e                   ; positive > negative is true")
-                                        nodes_code.append(f"        jp {equ_label}              ;")
-                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp c, {equ_label}           ; if <, false -> skip change")
-                                        nodes_code.append(f"        jp z, {equ_label}           ; if =, false -> skip change")
-                                        nodes_code.append(f"        inc e                   ; condition=true")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 0", "assume condition=false")
+                                        emit_asm("ld", "a, h", "left sign")
+                                        emit_asm("xor", "b", "compare signs")
+                                        emit_asm("jp", f"p, {signed_same_label}", "same sign")
+                                        emit_asm("bit", "7, h", "left negative?")
+                                        emit_asm("jp", f"nz, {equ_label}", "negative > positive is false")
+                                        emit_asm("inc", "e", "positive > negative is true")
+                                        emit_asm("jp", equ_label, "")
+                                        emit_asm("xor", "a", "", label=signed_same_label)
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"c, {equ_label}", "if <, false -> skip change")
+                                        emit_asm("jp", f"z, {equ_label}", "if =, false -> skip change")
+                                        emit_asm("inc", "e", "condition=true")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
 
                                     case ">=":
                                         equ_label = new_label("meq_")
                                         signed_same_label = new_label("ges_")
-                                        nodes_code.append(f"        ld de, 1                ; assume condition=true")
-                                        nodes_code.append(f"        ld a, h                 ; left sign")
-                                        nodes_code.append(f"        xor b                   ; compare signs")
-                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
-                                        nodes_code.append(f"        bit 7, h                ; left negative?")
-                                        nodes_code.append(f"        jp z, {equ_label}          ; positive >= negative is true")
-                                        nodes_code.append(f"        dec e                   ; negative >= positive is false")
-                                        nodes_code.append(f"        jp {equ_label}              ;")
-                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp nc, {equ_label}          ; if >=, true -> skip change")
-                                        nodes_code.append(f"        dec e                   ; condition=false")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 1", "assume condition=true")
+                                        emit_asm("ld", "a, h", "left sign")
+                                        emit_asm("xor", "b", "compare signs")
+                                        emit_asm("jp", f"p, {signed_same_label}", "same sign")
+                                        emit_asm("bit", "7, h", "left negative?")
+                                        emit_asm("jp", f"z, {equ_label}", "positive >= negative is true")
+                                        emit_asm("dec", "e", "negative >= positive is false")
+                                        emit_asm("jp", equ_label, "")
+                                        emit_asm("xor", "a", "", label=signed_same_label)
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"nc, {equ_label}", "if >=, true -> skip change")
+                                        emit_asm("dec", "e", "condition=false")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
 
                                     case "<=":
                                         equ_label = new_label("leq_")
                                         signed_same_label = new_label("les_")
-                                        nodes_code.append(f"        ld de, 1                ; assume condition=true")
-                                        nodes_code.append(f"        ld a, h                 ; left sign")
-                                        nodes_code.append(f"        xor b                   ; compare signs")
-                                        nodes_code.append(f"        jp p, {signed_same_label}          ; same sign")
-                                        nodes_code.append(f"        bit 7, h                ; left negative?")
-                                        nodes_code.append(f"        jp nz, {equ_label}          ; negative <= positive is true")
-                                        nodes_code.append(f"        dec e                   ; positive <= negative is false")
-                                        nodes_code.append(f"        jp {equ_label}              ;")
-                                        nodes_code.append(f"{signed_same_label} xor a                   ;")
-                                        nodes_code.append(f"        xor a                   ;")
-                                        nodes_code.append(f"        sbc hl, bc              ;")
-                                        nodes_code.append(f"        jp c, {equ_label}           ; if <, true -> skip change")
-                                        nodes_code.append(f"        jp z, {equ_label}           ; if =, true -> skip change")
-                                        nodes_code.append(f"        dec e                   ; condition=false")
-                                        nodes_code.append(f"{equ_label} push de                 ; >>> push condition boolean")
+                                        emit_asm("ld", "de, 1", "assume condition=true")
+                                        emit_asm("ld", "a, h", "left sign")
+                                        emit_asm("xor", "b", "compare signs")
+                                        emit_asm("jp", f"p, {signed_same_label}", "same sign")
+                                        emit_asm("bit", "7, h", "left negative?")
+                                        emit_asm("jp", f"nz, {equ_label}", "negative <= positive is true")
+                                        emit_asm("dec", "e", "positive <= negative is false")
+                                        emit_asm("jp", equ_label, "")
+                                        emit_asm("xor", "a", "", label=signed_same_label)
+                                        emit_asm("xor", "a", "")
+                                        emit_asm("sbc", "hl, bc", "")
+                                        emit_asm("jp", f"c, {equ_label}", "if <, true -> skip change")
+                                        emit_asm("jp", f"z, {equ_label}", "if =, true -> skip change")
+                                        emit_asm("dec", "e", "condition=false")
+                                        emit_asm("push", "de", ">>> push condition boolean", label=equ_label)
                                 
                                 # align to 2 values pushed
-                                nodes_code.append(f"        push de                 ; >>> push bogus value, unused")
+                                emit_asm("push", "de", ">>> push bogus value, unused")
                                         
                             # arithmetical operations
                             case "+" | "-" | "*" | "/" | "%":
-                                nodes_code.append(f"        pop de                  ; <<< pop left side address, not used\n")
+                                emit_asm("pop", "de", "<<< pop left side address, not used")
+                                nodes_code.append("")
                                 match operator_name:
                                     case "+":
-                                        nodes_code.append(f"        add hl, bc              ; ({node.type}) 16-bit addition")
+                                        emit_asm("add", "hl, bc", f"({node.type}) 16-bit addition")
                                         
                                     case "-":
-                                        nodes_code.append(f"        xor a                    ;")
-                                        nodes_code.append(f"        sbc hl, bc              ; ({node.type}) 16-bit subtraction")
+                                        emit_asm("xor", "a", "")
+                                        emit_asm("sbc", "hl, bc", f"({node.type}) 16-bit subtraction")
                                         
                                     case "*":
-                                        nodes_code.append(f"        push hl                 ; >>> operand left")
-                                        nodes_code.append(f"        push bc                 ; >>> operand right")
-                                        nodes_code.append(f"        call mul_16b            ; ({node.type}) 16-bit multiplication")
-                                        nodes_code.append(f"        pop hl                  ; <<< pop result")
+                                        emit_asm("push", "hl", ">>> operand left")
+                                        emit_asm("push", "bc", ">>> operand right")
+                                        emit_asm("call", "mul_16b", f"({node.type}) 16-bit multiplication")
+                                        emit_asm("pop", "hl", "<<< pop result")
                                         
                                     case "/":
-                                        nodes_code.append(f"        push hl                 ; >>> operand left")
-                                        nodes_code.append(f"        push bc                 ; >>> operand right")
-                                        nodes_code.append(f"        call div_16b            ; ({node.type}) 16-bit division")
-                                        nodes_code.append(f"        pop hl                  ; <<< pop result")
-                                        nodes_code.append(f"        pop de                  ; <<< pop remainder, not used")
+                                        emit_asm("push", "hl", ">>> operand left")
+                                        emit_asm("push", "bc", ">>> operand right")
+                                        emit_asm("call", "div_16b", f"({node.type}) 16-bit division")
+                                        emit_asm("pop", "hl", "<<< pop result")
+                                        emit_asm("pop", "de", "<<< pop remainder, not used")
                                         
                                     case "%":
-                                        nodes_code.append(f"        push hl                 ; >>> operand left")
-                                        nodes_code.append(f"        push bc                 ; >>> operand right")
-                                        nodes_code.append(f"        call div_16b            ; ({node.type}) 16-bit division")
-                                        nodes_code.append(f"        pop de                  ; <<< pop result, not used")
-                                        nodes_code.append(f"        pop hl                  ; <<< pop remainder")
+                                        emit_asm("push", "hl", ">>> operand left")
+                                        emit_asm("push", "bc", ">>> operand right")
+                                        emit_asm("call", "div_16b", f"({node.type}) 16-bit division")
+                                        emit_asm("pop", "de", "<<< pop result, not used")
+                                        emit_asm("pop", "hl", "<<< pop remainder")
                             
                                 # common code                               
-                                nodes_code.append(f"        push hl                 ; >>> bogus record address, unused")
-                                nodes_code.append(f"        push hl                 ; >>> record value") 
+                                emit_asm("push", "hl", ">>> bogus record address, unused")
+                                emit_asm("push", "hl", ">>> record value")
                                  
                             # logical operations
                             case "&" | "|" | "^":
-                                nodes_code.append(f"        pop de                  ; <<< pop left side address, not used\n")
+                                emit_asm("pop", "de", "<<< pop left side address, not used")
+                                nodes_code.append("")
                                 match operator_name:
                                     case "&":
-                                        nodes_code.append(f"        ld a, h                 ; MSB")
-                                        nodes_code.append(f"        and b                   ;")
-                                        nodes_code.append(f"        ld d, a                 ;")
-                                        nodes_code.append(f"        ld a, l                 ; LSB")
-                                        nodes_code.append(f"        and c                   ;")
-                                        nodes_code.append(f"        ld e, a                 ;")
+                                        emit_asm("ld", "a, h", "MSB")
+                                        emit_asm("and", "b", "")
+                                        emit_asm("ld", "d, a", "")
+                                        emit_asm("ld", "a, l", "LSB")
+                                        emit_asm("and", "c", "")
+                                        emit_asm("ld", "e, a", "")
                                         
                                     case "|":
-                                        nodes_code.append(f"        ld a, h                 ; MSB")
-                                        nodes_code.append(f"        or b                    ;")
-                                        nodes_code.append(f"        ld d, a                 ;")
-                                        nodes_code.append(f"        ld a, l                 ; LSB")
-                                        nodes_code.append(f"        or c                    ;")
-                                        nodes_code.append(f"        ld e, a                 ;")
+                                        emit_asm("ld", "a, h", "MSB")
+                                        emit_asm("or", "b", "")
+                                        emit_asm("ld", "d, a", "")
+                                        emit_asm("ld", "a, l", "LSB")
+                                        emit_asm("or", "c", "")
+                                        emit_asm("ld", "e, a", "")
                                         
                                     case "^":
-                                        nodes_code.append(f"        ld a, h                 ; MSB")
-                                        nodes_code.append(f"        xor b                   ;")
-                                        nodes_code.append(f"        ld d, a                 ;")
-                                        nodes_code.append(f"        ld a, l                 ; LSB")
-                                        nodes_code.append(f"        xor c                   ;")
-                                        nodes_code.append(f"        ld e, a                 ;")
+                                        emit_asm("ld", "a, h", "MSB")
+                                        emit_asm("xor", "b", "")
+                                        emit_asm("ld", "d, a", "")
+                                        emit_asm("ld", "a, l", "LSB")
+                                        emit_asm("xor", "c", "")
+                                        emit_asm("ld", "e, a", "")
                                            
                                 # common code                               
-                                nodes_code.append(f"        push de                 ; >>> bogus record address, unused")
-                                nodes_code.append(f"        push de                 ; >>> record value") 
+                                emit_asm("push", "de", ">>> bogus record address, unused")
+                                emit_asm("push", "de", ">>> record value")
                             
                             # bitwise operations
                             case "<<" | ">>" | ">>>":
-                                nodes_code.append(f"        pop de                  ; <<< pop left side address, not used\n")
+                                emit_asm("pop", "de", "<<< pop left side address, not used")
+                                nodes_code.append("")
                                 match operator_name:
                                     case "<<":
                                         bsh_label = new_label("bsh_")
                                     
-                                        nodes_code.append(f"        ld b, c                 ; number of shifts")
-                                        nodes_code.append(f"{bsh_label} add hl, hl              ; shift left")
-                                        nodes_code.append(f"        djnz {bsh_label}            ;")                                    
+                                        emit_asm("ld", "b, c", "number of shifts")
+                                        emit_asm("add", "hl, hl", "shift left", label=bsh_label)
+                                        emit_asm("djnz", bsh_label, "")
     
                                     case ">>": # pending: missing 
                                         bsh_label = new_label("bsh_")
                                         
-                                        nodes_code.append(f"        ld b, c                 ; number of shifts")
-                                        nodes_code.append(f"{bsh_label} sra h                   ; shift right 1")
-                                        nodes_code.append(f"        rr l                    ; shift right 2")
-                                        nodes_code.append(f"        djnz {bsh_label}            ;")                                    
+                                        emit_asm("ld", "b, c", "number of shifts")
+                                        emit_asm("sra", "h", "shift right 1", label=bsh_label)
+                                        emit_asm("rr", "l", "shift right 2")
+                                        emit_asm("djnz", bsh_label, "")
 
                                     case ">>>":
                                         bsh_label = new_label("bsh_")
                                         
-                                        nodes_code.append(f"        ld b, c                 ; number of shifts")
-                                        nodes_code.append(f"{bsh_label} srl h                   ; shift right 1")
-                                        nodes_code.append(f"        rr l                    ; shift right 2")
-                                        nodes_code.append(f"        djnz {bsh_label}            ;")                                    
+                                        emit_asm("ld", "b, c", "number of shifts")
+                                        emit_asm("srl", "h", "shift right 1", label=bsh_label)
+                                        emit_asm("rr", "l", "shift right 2")
+                                        emit_asm("djnz", bsh_label, "")
                                 
                                 # common code                               
-                                nodes_code.append(f"        push hl                 ; >>> bogus record address, unused")
-                                nodes_code.append(f"        push hl                 ; >>> record value") 
+                                emit_asm("push", "hl", ">>> bogus record address, unused")
+                                emit_asm("push", "hl", ">>> record value")
                             
                             case _:
                                 report_error(f"{node.type}: Operation {node.operator} not supported for integers.")
@@ -660,24 +790,27 @@ def translate_to_assembly(js_code):
                                 compare_label= new_label ("com_")
                                 compare_exit_label= new_label ("cox_")
                                 # assign string address to variable
-                                nodes_code.append(f"        pop de                  ; pop right string length")
-                                nodes_code.append(f"        pop bc                  ; pop right string address")
-                                nodes_code.append(f"        pop hl                  ; pop left variable length, unused")
-                                nodes_code.append(f"        pop bc                  ; pop left variable address")
-                                nodes_code.append(f"        ld b, (hl)              ; prepare countdown")
-                                nodes_code.append(f"        inc b                   ; include length in byte count")
-                                nodes_code.append(f"        inc b                   ;\n")
+                                emit_asm("pop", "de", "pop right string length")
+                                emit_asm("pop", "bc", "pop right string address")
+                                emit_asm("pop", "hl", "pop left variable length, unused")
+                                emit_asm("pop", "bc", "pop left variable address")
+                                emit_asm("ld", "b, (hl)", "prepare countdown")
+                                emit_asm("inc", "b", "include length in byte count")
+                                emit_asm("inc", "b", "")
+                                nodes_code.append("")
 
-                                nodes_code.append(f"        ld c, 0                 ; C=0, assume the strings are different")
-                                nodes_code.append(f"{compare_label} ld a, (de)              ; ({node.type}) {operator_name} string")
-                                nodes_code.append(f"        sub (hl)                ;")
-                                nodes_code.append(f"        jr nz, {compare_exit_label}          ; if one character is different, exit")
-                                nodes_code.append(f"        inc de                  ; next character")
-                                nodes_code.append(f"        inc hl                  ; next character")
-                                nodes_code.append(f"        djnz {compare_label}            ; countdown until B=0\n")
-                                nodes_code.append(f"        inc c                   ; ")
-                                nodes_code.append(f"{compare_exit_label}        push bc                 ; >>> bogus record address, unused")
-                                nodes_code.append(f"        push bc                 ; >>> comparison result\n")
+                                emit_asm("ld", "c, 0", "C=0, assume the strings are different")
+                                emit_asm("ld", "a, (de)", f"({node.type}) {operator_name} string", label=compare_label)
+                                emit_asm("sub", "(hl)", "")
+                                emit_asm("jr", f"nz, {compare_exit_label}", "if one character is different, exit")
+                                emit_asm("inc", "de", "next character")
+                                emit_asm("inc", "hl", "next character")
+                                emit_asm("djnz", compare_label, "countdown until B=0")
+                                nodes_code.append("")
+                                emit_asm("inc", "c", " ")
+                                emit_asm("push", "bc", ">>> bogus record address, unused", label=compare_exit_label)
+                                emit_asm("push", "bc", ">>> comparison result")
+                                nodes_code.append("")
                             
                             case "+":
                                 report_error(f"{node.type}: string concatenation with + is not supported. Print strings separately or use console.log() arguments.")
@@ -739,7 +872,7 @@ def translate_to_assembly(js_code):
                             report_error(f"{node.type}: read() accepts zero or one destination variable.")
                             return
                         if len(node.arguments) == 0:
-                            nodes_code.append(f"        call rea_pau            ; ({node.type}) wait for a key")
+                            emit_asm("call", "rea_pau", f"({node.type}) wait for a key")
                             return
                         # process argument
                         read_argument_name = getattr(node.arguments[0], "name", None)
@@ -758,19 +891,21 @@ def translate_to_assembly(js_code):
                                     # Keep the existing integer-input path unchanged for compatibility.
                                     garbage_address=get_garbage_address(2)
                                     nodes_code.append(f"                                ; ({node.type}) read integer")
-                                    nodes_code.append(f"        ld hl, {garbage_address}          ; garbage zone")
-                                    nodes_code.append(f"        push hl                 ; push garbage zone address")
-                                    nodes_code.append(f"        call rea_kbd            ; read integer\n")
-                                    nodes_code.append(f"        call str2int            ; ({node.type}) string to integer")
+                                    emit_asm("ld", f"hl, {garbage_address}", "garbage zone")
+                                    emit_asm("push", "hl", "push garbage zone address")
+                                    emit_asm("call", "rea_kbd", "read integer")
+                                    nodes_code.append("")
+                                    emit_asm("call", "str2int", f"({node.type}) string to integer")
                                     nodes_code.append(f"                                ; save value to variable")                    
-                                    nodes_code.append(f"        pop hl                  ; pop decimal value")
-                                    nodes_code.append(f"        ld ({variable_name}), hl      ; ")
+                                    emit_asm("pop", "hl", "pop decimal value")
+                                    emit_asm("ld", f"({variable_name}), hl", " ")
                                     
                                 case "str":
                                     # variable processing
                                     process_node(node.arguments[0]) # needed to create the variable
                                     # assembly code
-                                    nodes_code.append(f"        call rea_kbd            ; ({node.type}) read string\n")
+                                    emit_asm("call", "rea_kbd", f"({node.type}) read string")
+                                    nodes_code.append("")
                                     
                         else: # variable does not exist
                             report_error(f"{node.type}: Undefined {variable_name}")
@@ -794,14 +929,14 @@ def translate_to_assembly(js_code):
                         variable_declarations.append(f"interrupt_activation defw 0                 ; seconds count")
                         
                         # assembly code
-                        nodes_code.append(f"        call set_int            ; calls the interruptions routine")
+                        emit_asm("call", "set_int", "calls the interruptions routine")
                
                     # clearInterval(): stop timer
                     case "clearinterval":
                         # configure 
                         #nodes_code.append(f"        di                      ; stops the interruptions routine")
-                        nodes_code.append(f"        ld hl, interrupt_activation    ; interrupts state")
-                        nodes_code.append(f"        ld (hl), 0                 ; active now")
+                        emit_asm("ld", "hl, interrupt_activation", "interrupts state")
+                        emit_asm("ld", "(hl), 0", "active now")
                     
                     # regular calls
                     case _:
@@ -821,7 +956,7 @@ def translate_to_assembly(js_code):
                                 process_node(arg)
                             
                             # call function    
-                            nodes_code.append(f"        call {function_name}            ; ({node.type}): call ***{function_name}***")
+                            emit_asm("call", function_name, f"({node.type}): call ***{function_name}***")
                                                     
                 # Objects -----------------------------------------------------   
 
@@ -861,39 +996,40 @@ def translate_to_assembly(js_code):
                         match property_name:
                             case "charAt" | "charat":
                                 char_address = get_garbage_address(3)
-                                nodes_code.append(f"        pop de                  ; <<< pop index value")
-                                nodes_code.append(f"        pop hl                  ; <<< pop index address, unused")
-                                nodes_code.append(f"        pop hl                  ; <<< pop string content pointer")
-                                nodes_code.append(f"        pop bc                  ; <<< pop string variable address, unused")
-                                nodes_code.append(f"        inc hl                  ; skip length")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        add hl, de              ; string character address")
-                                nodes_code.append(f"        ld a, (hl)              ; character")
-                                nodes_code.append(f"        ld hl, {char_address}          ; one-character string buffer")
-                                nodes_code.append(f"        ld (hl), 1              ; string length LSB")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        ld (hl), 0              ; string length MSB")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        ld (hl), a              ; string character")
-                                nodes_code.append(f"        ld de, {char_address}          ; string content pointer")
-                                nodes_code.append(f"        push de                 ; >>> bogus string variable address")
-                                nodes_code.append(f"        push de                 ; >>> string content pointer")
+                                emit_asm("pop", "de", "<<< pop index value")
+                                emit_asm("pop", "hl", "<<< pop index address, unused")
+                                emit_asm("pop", "hl", "<<< pop string content pointer")
+                                emit_asm("pop", "bc", "<<< pop string variable address, unused")
+                                emit_asm("inc", "hl", "skip length")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("add", "hl, de", "string character address")
+                                emit_asm("ld", "a, (hl)", "character")
+                                emit_asm("ld", f"hl, {char_address}", "one-character string buffer")
+                                emit_asm("ld", "(hl), 1", "string length LSB")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("ld", "(hl), 0", "string length MSB")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("ld", "(hl), a", "string character")
+                                emit_asm("ld", f"de, {char_address}", "string content pointer")
+                                emit_asm("push", "de", ">>> bogus string variable address")
+                                emit_asm("push", "de", ">>> string content pointer")
 
                             case "charCodeAt" | "charcodeat":
-                                nodes_code.append(f"        pop de                  ; <<< pop index value")
-                                nodes_code.append(f"        pop hl                  ; <<< pop index address, unused")
-                                nodes_code.append(f"        pop hl                  ; <<< pop string content pointer")
-                                nodes_code.append(f"        pop bc                  ; <<< pop string variable address, unused\n")
+                                emit_asm("pop", "de", "<<< pop index value")
+                                emit_asm("pop", "hl", "<<< pop index address, unused")
+                                emit_asm("pop", "hl", "<<< pop string content pointer")
+                                emit_asm("pop", "bc", "<<< pop string variable address, unused")
+                                nodes_code.append("")
                                         
                                 nodes_code.append(f"                                ; get char and put it garbage zone") 
-                                nodes_code.append(f"        inc hl                  ; skip length")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        add hl, de              ; string record")
-                                nodes_code.append(f"        ld d, 0                 ; get char")
-                                nodes_code.append(f"        ld e, (hl)              ; get char")
+                                emit_asm("inc", "hl", "skip length")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("add", "hl, de", "string record")
+                                emit_asm("ld", "d, 0", "get char")
+                                emit_asm("ld", "e, (hl)", "get char")
                                 
-                                nodes_code.append(f"        push de                 ; >>> bogus record address, unused")
-                                nodes_code.append(f"        push de                 ; >>> record value")
+                                emit_asm("push", "de", ">>> bogus record address, unused")
+                                emit_asm("push", "de", ">>> record value")
                     
                     # string objects methods ----------------------------------
                     elif add_underscore_to_var(object_name) in array_type_list:
@@ -915,17 +1051,18 @@ def translate_to_assembly(js_code):
                                 fill_value_lsb = fill_value_16b & 0xFF
                                 fill_value_msb = fill_value_16b >> 8
                                 fill_loop_label= new_label ("flo_")
-                                nodes_code.append(f"        pop hl                  ; <<< pop array content, unused")
-                                nodes_code.append(f"        pop hl                  ; <<< pop array address\n")
+                                emit_asm("pop", "hl", "<<< pop array content, unused")
+                                emit_asm("pop", "hl", "<<< pop array address")
+                                nodes_code.append("")
                                 
-                                nodes_code.append(f"        ld b, (hl)              ; prepare counter")
-                                nodes_code.append(f"        inc hl                  ; skip header")
-                                nodes_code.append(f"        inc hl                  ; skip header")
-                                nodes_code.append(f"{fill_loop_label} ld (hl), {fill_value_lsb}              ; fill value LSB")
-                                nodes_code.append(f"        inc hl                  ; next byte")
-                                nodes_code.append(f"        ld (hl), {fill_value_msb}              ; fill value MSB")
-                                nodes_code.append(f"        inc hl                  ; next element")
-                                nodes_code.append(f"        djnz {fill_loop_label}            ; loop ")
+                                emit_asm("ld", "b, (hl)", "prepare counter")
+                                emit_asm("inc", "hl", "skip header")
+                                emit_asm("inc", "hl", "skip header")
+                                emit_asm("ld", f"(hl), {fill_value_lsb}", "fill value LSB", label=fill_loop_label)
+                                emit_asm("inc", "hl", "next byte")
+                                emit_asm("ld", f"(hl), {fill_value_msb}", "fill value MSB")
+                                emit_asm("inc", "hl", "next element")
+                                emit_asm("djnz", fill_loop_label, "loop ")
                                 
                                    
                     # special case: console.log() call to print text
@@ -945,19 +1082,22 @@ def translate_to_assembly(js_code):
                                         match variable_content_type:
                                             # integer
                                             case "int":
-                                                nodes_code.append(f"        call prt_num            ; ({node.type}) print literal number\n")
+                                                emit_asm("call", "prt_num", f"({node.type}) print literal number")
+                                                nodes_code.append("")
                                             # string    
                                             case "str":
                                                 argument_value = getattr(argument, "value", None)
                                                 if argument_value and len(argument_value)==1:
-                                                    nodes_code.append(f"        call prt_chr            ; ({node.type}) print literal char\n")
+                                                    emit_asm("call", "prt_chr", f"({node.type}) print literal char")
+                                                    nodes_code.append("")
                                                 else:
-                                                    nodes_code.append(f"        call prt_str            ; ({node.type}) print literal string\n")
+                                                    emit_asm("call", "prt_str", f"({node.type}) print literal string")
+                                                    nodes_code.append("")
                                             case _:
                                                 report_error(f"{node.type}: Console.log, content type not supported.")
                                     # add new line after all arguments
-                                    nodes_code.append(f"        ld a, 0x0d              ; ({node.type}) <cr> after prints") 
-                                    nodes_code.append(f"        rst 16                  ;")
+                                    emit_asm("ld", "a, 0x0d", f"({node.type}) <cr> after prints")
+                                    emit_asm("rst", "16", "")
                                     nodes_code.append ("")                           
     
                             # print string
@@ -965,7 +1105,7 @@ def translate_to_assembly(js_code):
                                 if node.arguments:
                                     for argument in node.arguments: # for every parameter in the call
                                         process_node(argument)
-                                        nodes_code.append(f"        call prt_str            ; ({node.type}) print string")
+                                        emit_asm("call", "prt_str", f"({node.type}) print string")
                                         nodes_code.append ("") 
      
                             # print numbers
@@ -973,7 +1113,7 @@ def translate_to_assembly(js_code):
                                 if node.arguments:
                                     for argument in node.arguments: # for every parameter in the call
                                         process_node(argument)
-                                        nodes_code.append(f"        call prt_num            ; ({node.type}) print number")
+                                        emit_asm("call", "prt_num", f"({node.type}) print number")
                                         nodes_code.append ("")   
                           
                             # print single chars   
@@ -981,11 +1121,11 @@ def translate_to_assembly(js_code):
                                 if node.arguments:
                                     for argument in node.arguments: # for every parameter in the call
                                         process_node(argument)
-                                        nodes_code.append(f"        call prt_chr            ; ({node.type}) print char")
+                                        emit_asm("call", "prt_chr", f"({node.type}) print char")
                                         nodes_code.append ("")   
                                                    
                             case "clear":
-                                    nodes_code.append(f"        call cls_rom            ; ({node.type}) clear screen")
+                                    emit_asm("call", "cls_rom", f"({node.type}) clear screen")
                             case _:
                                     report_error(f"{node.type}: {object_name}, {property_name} property not supported.")  
                                                                        
@@ -999,7 +1139,7 @@ def translate_to_assembly(js_code):
                                     return
                                 for argument in node.arguments:
                                     process_node(argument)
-                                nodes_code.append(f"        call mem_rea            ; ({node.type}) print string")
+                                emit_asm("call", "mem_rea", f"({node.type}) print string")
                                 nodes_code.append ("")
 
                             case "write":
@@ -1008,7 +1148,7 @@ def translate_to_assembly(js_code):
                                     return
                                 for argument in node.arguments:
                                     process_node(argument)
-                                nodes_code.append(f"        call mem_wri            ; ({node.type}) print string")
+                                emit_asm("call", "mem_wri", f"({node.type}) print string")
                                 nodes_code.append ("")
 
                             case "copy" | "move":
@@ -1017,7 +1157,7 @@ def translate_to_assembly(js_code):
                                     return
                                 for argument in node.arguments:
                                     process_node(argument)
-                                nodes_code.append(f"        call mem_cop            ; ({node.type}) copy memory block")
+                                emit_asm("call", "mem_cop", f"({node.type}) copy memory block")
                                 nodes_code.append ("")
 
                             case _:
@@ -1027,7 +1167,7 @@ def translate_to_assembly(js_code):
                         match property_name:
                             case "random":
                                 garbage_address=get_garbage_address(2)
-                                nodes_code.append(f"        call rnd_16b            ; ({node.type}) get 16-bit random number")
+                                emit_asm("call", "rnd_16b", f"({node.type}) get 16-bit random number")
                             case _:
                                 report_error(f"{node.type}: {object_name}.{property_name} method not supported.")
 
@@ -1060,24 +1200,25 @@ def translate_to_assembly(js_code):
                             # pending: to be moved to io.asc
                             variable_declarations.append(f'{keypressed_event_name}_activation defw 1               ; ({node.type}) add/remove flag')
                             # add a read keyboard routine
-                            nodes_code.append(f"        ld hl, {keypressed_event_name}_activation           ; ({node.type}) {event_name} activate feature")
-                            nodes_code.append(f"        ld (hl), 1              ; A=0")
+                            emit_asm("ld", f"hl, {keypressed_event_name}_activation", f"({node.type}) {event_name} activate feature")
+                            emit_asm("ld", "(hl), 1", "A=0")
                             nodes_code.append(f"rea_key                         ; ({node.type}) read key from keyboard")
-                            nodes_code.append(f"        ld hl, 0x5C08           ; LASTKEY system variable")
-                            nodes_code.append(f"        xor a                   ; A=0")
-                            nodes_code.append(f"        ld (hl), a              ; reset LASTKEY")
-                            nodes_code.append(f"key_loo add a, (hl)             ; load latest value of LASTKEY.")
-                            nodes_code.append(f"        jr z, key_loo           ; loop until a key is pressed")
-                            nodes_code.append(f"        ld e, a                 ;")
-                            nodes_code.append(f"        ld d, 0                 ;")
-                            nodes_code.append(f"        push de                 ; push key address (dummy), unused")
-                            nodes_code.append(f"        push de                 ; push key value")
-                            nodes_code.append(f"        call {keypressed_function}          ; if key pressed")
-                            nodes_code.append(f"        ld hl, {keypressed_event_name}_activation           ;")
-                            nodes_code.append(f"        ld a, (hl)              ; get LSB")
-                            nodes_code.append(f"        or a                    ; check activation bit")
-                            nodes_code.append(f"        jr nz, rea_key          ; loop while eventListener is active")
-                            nodes_code.append(f"        ret                     ;\n")
+                            emit_asm("ld", "hl, 0x5C08", "LASTKEY system variable")
+                            emit_asm("xor", "a", "A=0")
+                            emit_asm("ld", "(hl), a", "reset LASTKEY")
+                            emit_asm("add", "a, (hl)", "load latest value of LASTKEY.", label="key_loo")
+                            emit_asm("jr", "z, key_loo", "loop until a key is pressed")
+                            emit_asm("ld", "e, a", "")
+                            emit_asm("ld", "d, 0", "")
+                            emit_asm("push", "de", "push key address (dummy), unused")
+                            emit_asm("push", "de", "push key value")
+                            emit_asm("call", keypressed_function, "if key pressed")
+                            emit_asm("ld", f"hl, {keypressed_event_name}_activation", "")
+                            emit_asm("ld", "a, (hl)", "get LSB")
+                            emit_asm("or", "a", "check activation bit")
+                            emit_asm("jr", "nz, rea_key", "loop while eventListener is active")
+                            emit_asm("ret", "", "")
+                            nodes_code.append("")
     
                     elif property_name== "removeEventListener":
                         if len(node.arguments) < 2:
@@ -1091,8 +1232,9 @@ def translate_to_assembly(js_code):
                         if event_name== "keydown":
                             keypressed_event_name= event_name
                             keypressed_function= add_underscore_to_var(keypressed_raw_name)
-                            nodes_code.append(f"        ld hl, {keypressed_event_name}_activation           ; ({node.type}) {event_name} deactivate feature")
-                            nodes_code.append(f"        ld (hl), 0              ; A=0\n")
+                            emit_asm("ld", f"hl, {keypressed_event_name}_activation", f"({node.type}) {event_name} deactivate feature")
+                            emit_asm("ld", "(hl), 0", "A=0")
+                            nodes_code.append("")
                             nodes_code.append("")
                                 
                         else:
@@ -1116,16 +1258,16 @@ def translate_to_assembly(js_code):
                                         process_node(arg)
                                                 
                                     nodes_code.append(f"                                ; ({node.type}) {property_name}, move current point")
-                                    nodes_code.append(f"        pop bc                  ; get y-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get y-coord address, unused")           
-                                    nodes_code.append(f"        pop de                  ; get x-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get x-coord address, unused")          
+                                    emit_asm("pop", "bc", "get y-coord value")
+                                    emit_asm("pop", "hl", "get y-coord address, unused")
+                                    emit_asm("pop", "de", "get x-coord value")
+                                    emit_asm("pop", "hl", "get x-coord address, unused")
                                     
                                     # save value in canvas
-                                    nodes_code.append(f"        ld hl, {object_name}_x              ; save values in canvas object")
-                                    nodes_code.append(f"        ld (hl), e              ;")
-                                    nodes_code.append(f"        ld hl, {object_name}_y              ;")
-                                    nodes_code.append(f"        ld (hl), c              ;")
+                                    emit_asm("ld", f"hl, {object_name}_x", "save values in canvas object")
+                                    emit_asm("ld", "(hl), e", "")
+                                    emit_asm("ld", f"hl, {object_name}_y", "")
+                                    emit_asm("ld", "(hl), c", "")
                                      
                                 case "lineTo" | "lineto":
                                     if len(node.arguments) != 2:
@@ -1136,35 +1278,35 @@ def translate_to_assembly(js_code):
                                     nodes_code.append(f"                                ; ({node.type}) {property_name}, draw a line")
                                     
                                     # 2) origin is in the object, to be loaded in DE
-                                    nodes_code.append(f"        ld hl, {object_name}_x              ;")
-                                    nodes_code.append(f"        ld d, (hl)              ;")
-                                    nodes_code.append(f"        ld hl, {object_name}_y              ;")
-                                    nodes_code.append(f"        ld e, (hl)              ;")
+                                    emit_asm("ld", f"hl, {object_name}_x", "")
+                                    emit_asm("ld", "d, (hl)", "")
+                                    emit_asm("ld", f"hl, {object_name}_y", "")
+                                    emit_asm("ld", "e, (hl)", "")
                                     
                                     # 2) target is in the stack, to be loaded in HL
-                                    nodes_code.append(f"        pop bc                  ; get y-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get y-coord address, unused")
+                                    emit_asm("pop", "bc", "get y-coord value")
+                                    emit_asm("pop", "hl", "get y-coord address, unused")
                                     # save new origin y in canvas
-                                    nodes_code.append(f"        ld hl, {object_name}_y            ; save new y")
-                                    nodes_code.append(f"        ld (hl), c              ;")
-                                    nodes_code.append(f"        ld a, c                 ; save target y-coord, later use")
+                                    emit_asm("ld", f"hl, {object_name}_y", "save new y")
+                                    emit_asm("ld", "(hl), c", "")
+                                    emit_asm("ld", "a, c", "save target y-coord, later use")
     
-                                    nodes_code.append(f"        pop bc                  ; get x-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get x-coord address, unused")
+                                    emit_asm("pop", "bc", "get x-coord value")
+                                    emit_asm("pop", "hl", "get x-coord address, unused")
                                     # save new origin x in canvas
-                                    nodes_code.append(f"        ld hl, {object_name}_x            ; save new x")
-                                    nodes_code.append(f"        ld (hl), c              ;")
+                                    emit_asm("ld", f"hl, {object_name}_x", "save new x")
+                                    emit_asm("ld", "(hl), c", "")
                                     
                                     # prepare registers before call
                                     # from de = end1 (d = x-axis, e = y-axis)
                                     # to   hl = end2 (h = x-axis, l = y-axis)
-                                    nodes_code.append(f"        ld h, c                  ; HL has to contain target (x,y)")
-                                    nodes_code.append(f"        ld l, a                  ;")
+                                    emit_asm("ld", "h, c", "HL has to contain target (x,y)")
+                                    emit_asm("ld", "l, a", "")
                                     
-                                    nodes_code.append(f"        call dra_lin            ; ({node.type}) call function {object_name}")
+                                    emit_asm("call", "dra_lin", f"({node.type}) call function {object_name}")
                     
                                 case "clearScreen" | "clearscreen":
-                                    nodes_code.append(f"        call cle_scr            ; ({node.type}) clear screen")
+                                    emit_asm("call", "cle_scr", f"({node.type}) clear screen")
 
                                 case "clearRect" | "clearrect":
                                     if len(node.arguments) != 4:
@@ -1180,9 +1322,9 @@ def translate_to_assembly(js_code):
                                             and arg_property_name in ("width", "height")
                                         ):
                                             literal_value = 256 if arg_property_name == "width" else 192
-                                            nodes_code.append(f"        ld de, {literal_value}                ; ({arg.type}) canvas.{arg_property_name}")
-                                            nodes_code.append(f"        push de                 ; >>> push bogus address, unused")
-                                            nodes_code.append(f"        push de                 ; >>> push value")
+                                            emit_asm("ld", f"de, {literal_value}", f"({arg.type}) canvas.{arg_property_name}")
+                                            emit_asm("push", "de", ">>> push bogus address, unused")
+                                            emit_asm("push", "de", ">>> push value")
                                             return
                                         process_node(arg)
 
@@ -1190,23 +1332,23 @@ def translate_to_assembly(js_code):
                                         process_clear_rect_arg(arg)
 
                                     nodes_code.append(f"                                ; ({node.type}) {property_name}, clear rectangle")
-                                    nodes_code.append(f"        pop bc                  ; get height value")
-                                    nodes_code.append(f"        pop hl                  ; get height address, unused")
-                                    nodes_code.append(f"        ld a, c                 ;")
-                                    nodes_code.append(f"        ld (clr_h), a           ;")
-                                    nodes_code.append(f"        pop bc                  ; get width value")
-                                    nodes_code.append(f"        pop hl                  ; get width address, unused")
-                                    nodes_code.append(f"        ld a, c                 ;")
-                                    nodes_code.append(f"        ld (clr_w), a           ;")
-                                    nodes_code.append(f"        pop bc                  ; get y-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get y-coord address, unused")
-                                    nodes_code.append(f"        ld a, c                 ;")
-                                    nodes_code.append(f"        ld (clr_y), a           ;")
-                                    nodes_code.append(f"        pop bc                  ; get x-coord value")
-                                    nodes_code.append(f"        pop hl                  ; get x-coord address, unused")
-                                    nodes_code.append(f"        ld a, c                 ;")
-                                    nodes_code.append(f"        ld (clr_x), a           ;")
-                                    nodes_code.append(f"        call cle_rec            ; ({node.type}) call function {object_name}")
+                                    emit_asm("pop", "bc", "get height value")
+                                    emit_asm("pop", "hl", "get height address, unused")
+                                    emit_asm("ld", "a, c", "")
+                                    emit_asm("ld", "(clr_h), a", "")
+                                    emit_asm("pop", "bc", "get width value")
+                                    emit_asm("pop", "hl", "get width address, unused")
+                                    emit_asm("ld", "a, c", "")
+                                    emit_asm("ld", "(clr_w), a", "")
+                                    emit_asm("pop", "bc", "get y-coord value")
+                                    emit_asm("pop", "hl", "get y-coord address, unused")
+                                    emit_asm("ld", "a, c", "")
+                                    emit_asm("ld", "(clr_y), a", "")
+                                    emit_asm("pop", "bc", "get x-coord value")
+                                    emit_asm("pop", "hl", "get x-coord address, unused")
+                                    emit_asm("ld", "a, c", "")
+                                    emit_asm("ld", "(clr_x), a", "")
+                                    emit_asm("call", "cle_rec", f"({node.type}) call function {object_name}")
 
                                 case _:
                                     report_error(f"{node.type}: canvas method {property_name}() is not supported.")
@@ -1233,16 +1375,16 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"                                ; ({node.type}) 1. test")
                 process_node(node.test)
                 
-                nodes_code.append(f"        pop de                  ; ({node.type}) <<< pop condition value")
-                nodes_code.append(f"        pop hl                  ; <<< pop address, unused")
-                nodes_code.append(f"        xor a                   ; A=0")
-                nodes_code.append(f"        cp e                    ; if E=0, condition not fulfiled")
-                nodes_code.append(f"        jr z, {conditional_alternate_label}           ;")
+                emit_asm("pop", "de", f"({node.type}) <<< pop condition value")
+                emit_asm("pop", "hl", "<<< pop address, unused")
+                emit_asm("xor", "a", "A=0")
+                emit_asm("cp", "e", "if E=0, condition not fulfiled")
+                emit_asm("jr", f"z, {conditional_alternate_label}", "")
                 
                 # depending on the result: if true -> consequent, if false -> alternate
                 nodes_code.append(f"                                ; ({node.type}) 2. consequent")
                 process_node(node.consequent)
-                nodes_code.append(f"        jr {conditional_exit_label}              ;")
+                emit_asm("jr", conditional_exit_label, "")
                 
                 nodes_code.append(f"{conditional_alternate_label}                         ; ({node.type}) 3. alternate")
                 process_node(node.alternate)
@@ -1267,13 +1409,13 @@ def translate_to_assembly(js_code):
                 if node.test:
                     nodes_code.append(f"                                ; ({node.type}) 2. test")
                     process_node(node.test)
-                    nodes_code.append(f"        pop de                  ; ({node.type}) <<< pop condition value")
-                    nodes_code.append(f"        pop hl                  ; <<< pop address, unused")                    
-                    nodes_code.append(f"        xor a                   ; A=0")
-                    nodes_code.append(f"        cp e                    ; if E=0, condition not fulfiled")
-                    nodes_code.append(f"        jp z, {break_label_stack[-1]}           ;")
+                    emit_asm("pop", "de", f"({node.type}) <<< pop condition value")
+                    emit_asm("pop", "hl", "<<< pop address, unused")
+                    emit_asm("xor", "a", "A=0")
+                    emit_asm("cp", "e", "if E=0, condition not fulfiled")
+                    emit_asm("jp", f"z, {break_label_stack[-1]}", "")
                         
-                nodes_code.append(f"        jp {do_while_label}              ;")                
+                emit_asm("jp", do_while_label, "")
                 nodes_code.append(f"{break_label_stack.pop()}                         ; ({node.type}) end of...")
                 nodes_code.append("")
             
@@ -1295,11 +1437,11 @@ def translate_to_assembly(js_code):
                 if node.test:
                     nodes_code.append(f"{for_label}                         ; ({node.type}) 2. test --------------")
                     process_node(node.test)
-                    nodes_code.append(f"        pop de                  ; ({node.type}) <<< pop condition value")
-                    nodes_code.append(f"        pop hl                  ; <<< pop address, unused")
-                    nodes_code.append(f"        xor a                   ; A=0")
-                    nodes_code.append(f"        cp e                    ; if E=0, condition not fulfiled")
-                    nodes_code.append(f"        jp z, {break_label_stack[-1]}           ;")
+                    emit_asm("pop", "de", f"({node.type}) <<< pop condition value")
+                    emit_asm("pop", "hl", "<<< pop address, unused")
+                    emit_asm("xor", "a", "A=0")
+                    emit_asm("cp", "e", "if E=0, condition not fulfiled")
+                    emit_asm("jp", f"z, {break_label_stack[-1]}", "")
                         
                     nodes_code.append("")
                 if node.body:
@@ -1310,7 +1452,7 @@ def translate_to_assembly(js_code):
                     nodes_code.append(f"{update_label_stack.pop()}                         ; ({node.type}) 4. update ---------")
                     process_node(node.update)
             
-                nodes_code.append(f"        jp {for_label}")
+                emit_asm("jp", for_label)
             
                 # Safely pop the exit label and use it
                 nodes_code.append(f"{break_label_stack.pop()}                         ; ({node.type}) end of...")
@@ -1322,7 +1464,7 @@ def translate_to_assembly(js_code):
                 if not update_label_stack:
                     report_error(f"{node.type}: continue used outside a loop.")
                     return
-                nodes_code.append(f"        jp {update_label_stack[-1]}              ; ({node.type})")
+                emit_asm("jp", update_label_stack[-1], f"({node.type})")
                 nodes_code.append("")
 
             #------------------------------------------------------------------
@@ -1350,14 +1492,11 @@ def translate_to_assembly(js_code):
                         function_raw_name,
                         parameter_raw_name,
                     )
-                recursive_call_count = count_named_calls(node.body, function_raw_name)
-                current_preserved_parameters = []
-                if recursive_call_count > 1:
-                    current_preserved_parameters = [
-                        current_function_parameter_symbols[param.name]
-                        for param in node.params
-                        if getattr(param, "name", None) and param.name in current_function_parameter_symbols
-                    ]
+                current_preserved_parameters = [
+                    current_function_parameter_symbols[param.name]
+                    for param in node.params
+                    if getattr(param, "name", None) and param.name in current_function_parameter_symbols
+                ]
 
                 if function_name not in function_declarations:
                     function_declarations.append(function_name)
@@ -1368,29 +1507,12 @@ def translate_to_assembly(js_code):
 
                 # 2) return address
                 nodes_code.append(f"                                ; save return address")
-                nodes_code.append(f"        ld hl, sta_ck2          ; needed in recursion cases")
-                nodes_code.append(f"        ld e, (hl)              ; address pointed in DE")
-                nodes_code.append(f"        inc hl                  ;")
-                nodes_code.append(f"        ld d, (hl)              ;")
-                nodes_code.append(f"        ex de, hl               ; de= sta_ck2, hl= stack pointer")
-                nodes_code.append(f"        pop bc                  ; <<< pop return address")
-                nodes_code.append(f"        ld (hl), c              ;")
-                nodes_code.append(f"        inc hl                  ;")
-                nodes_code.append(f"        ld (hl), b              ;")
-                if current_preserved_parameters:
-                    nodes_code.append(f"        ld hl, (sta_ck2)        ; reserve return address")
-                    nodes_code.append(f"        inc hl                  ;")
-                    nodes_code.append(f"        inc hl                  ;")
-                    nodes_code.append(f"        ld (sta_ck2), hl        ; end of return address preps\n")
-                else:
-                    nodes_code.append(f"        ld hl, sta_ck2          ;")
-                    nodes_code.append(f"        inc (hl)                ;")
-                    nodes_code.append(f"        inc (hl)                ; end of return address preps\n")
+                save_function_return_address(bool(current_preserved_parameters))
               
                 # 3.2) collect arguments   
                 nodes_code.append(f"                                ; ({node.type}) collect arguments")
                 #for param in reversed(node.params): # Handle parameters (if any) for the function
-                for param in (node.params):
+                for parameter_index, param in enumerate(node.params):
                     parameter_raw_name = getattr(param, "name", None)
                     if not parameter_raw_name:
                         report_error(f"{node.type}: only named parameters are supported.")
@@ -1398,32 +1520,37 @@ def translate_to_assembly(js_code):
                     parameter_name = current_function_parameter_symbols.get(parameter_raw_name)
                     if not parameter_name:
                         continue
-                    if parameter_name not in variable_type_list:
-                        variable_type_list[parameter_name] = "int" # Pending: wrong assumption. all parameters are marked as integer
-                        # variable declaration
-                        variable_declarations.append(f'{parameter_name}   defw 0                ; ({node.type}) literal int/bool')
+                    parameter_type = function_parameter_type_hints.get(function_raw_name, {}).get(parameter_index, "int")
+                    if parameter_name not in variable_type_list and parameter_name not in string_type_list:
+                        if parameter_type == "str":
+                            string_type_list[parameter_name] = "str"
+                            variable_declarations.append(f'{parameter_name}   defw 0                ; ({node.type}) string parameter pointer')
+                        else:
+                            variable_type_list[parameter_name] = "int"
+                            variable_declarations.append(f'{parameter_name}   defw 0                ; ({node.type}) int/bool parameter')
                         if parameter_name in current_preserved_parameters:
-                            nodes_code.append(f"        ld hl, sta_ck2          ; save caller parameter {parameter_name}")
-                            nodes_code.append(f"        ld e, (hl)              ; pick auxiliary stack pointer")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld d, (hl)              ;")
-                            nodes_code.append(f"        ex de, hl               ; HL= auxiliary stack pointer")
-                            nodes_code.append(f"        ld de, ({parameter_name})       ; caller parameter value")
-                            nodes_code.append(f"        ld (hl), e              ;")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (hl), d              ;")
-                            nodes_code.append(f"        ld hl, (sta_ck2)        ; reserve saved parameter")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (sta_ck2), hl        ;")
+                            emit_asm("ld", "hl, sta_ck2", f"save caller parameter {parameter_name}")
+                            emit_asm("ld", "e, (hl)", "pick auxiliary stack pointer")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "d, (hl)", "")
+                            emit_asm("ex", "de, hl", "HL= auxiliary stack pointer")
+                            emit_asm("ld", f"de, ({parameter_name})", "caller parameter value")
+                            emit_asm("ld", "(hl), e", "")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(hl), d", "")
+                            emit_asm("ld", "hl, (sta_ck2)", "reserve saved parameter")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(sta_ck2), hl", "")
                         # assembly code: load variable with values in stack in reverse order
-                        nodes_code.append(f"        ld hl, {parameter_name}            ; argument *** {parameter_name} ***")
-                        nodes_code.append(f"        pop de                  ; <<< pop address")
-                        nodes_code.append(f"        pop bc                  ; <<< pop value")
+                        emit_asm("ld", f"hl, {parameter_name}", f"argument *** {parameter_name} ***")
+                        emit_asm("pop", "de", "<<< pop address")
+                        emit_asm("pop", "bc", "<<< pop value")
                         # stack frame! when using the argument reversed copy
-                        nodes_code.append(f"        ld (hl), e              ; store it in memory")
-                        nodes_code.append(f"        inc hl                  ;")
-                        nodes_code.append(f"        ld (hl), d              ;\n")
+                        emit_asm("ld", "(hl), e", "store it in memory")
+                        emit_asm("inc", "hl", "")
+                        emit_asm("ld", "(hl), d", "")
+                        nodes_code.append("")
 
                     else:
                         report_error(f"{node.type}: duplicated {parameter_name}")
@@ -1436,22 +1563,10 @@ def translate_to_assembly(js_code):
                 function_stack_tag=new_label("fst_")
                 nodes_code.append(f"{function_stack_tag}                         ; ({node.type}) recover return address (general)")
                 restore_preserved_parameters(current_preserved_parameters)
-                nodes_code.append(f"        ld hl, sta_ck2          ; update stack2 pointer")
-                nodes_code.append(f"        ld e, (hl)              ; pick stack pointer")
-                nodes_code.append(f"        inc hl                  ; update pointer")
-                nodes_code.append(f"        ld d, (hl)              ; pick stack pointer")
-                nodes_code.append(f"        ex de, hl               ; de= sta_ck2, hl= stack pointer")
-                nodes_code.append(f"        dec hl                  ;")
-                nodes_code.append(f"        ld b, (hl)              ; get return address from stack")
-                nodes_code.append(f"        dec hl                  ;")
-                nodes_code.append(f"        ld c, (hl)              ;")
-                nodes_code.append(f"        push bc                 ; >>> push return address")
-                if current_preserved_parameters:
-                    nodes_code.append(f"        ld (sta_ck2), hl        ; end of return address restore")
-                else:
-                    nodes_code.append(f"        ld hl, sta_ck2          ;")
-                    nodes_code.append(f"        dec (hl)                ;")
-                    nodes_code.append(f"        dec (hl)                ; end of return address restore")
+                restore_function_return_address(
+                    bool(current_preserved_parameters),
+                    "end of return address restore",
+                )
                 
                 # 6) exit
                 nodes_code.append(f"{function_exit_tag} ret                     ; ({node.type}) end of...\n")
@@ -1474,24 +1589,11 @@ def translate_to_assembly(js_code):
                 nodes_code.append(f"                                ; ({node.type}) restore return address")
 
                 restore_preserved_parameters(current_preserved_parameters)
-                nodes_code.append(f"        ld hl, sta_ck2          ; update stack2 pointer")
-                nodes_code.append(f"        ld e, (hl)              ; pick stack pointer")
-                nodes_code.append(f"        inc hl                  ; update pointer")
-                nodes_code.append(f"        ld d, (hl)              ; pick stack pointer")
-                nodes_code.append(f"        ex de, hl               ; de= sta_ck2, hl= stack pointer")
-                
-                nodes_code.append(f"        dec hl                  ;")
-                nodes_code.append(f"        ld b, (hl)              ; get return address from stack")
-                nodes_code.append(f"        dec hl                  ;")
-                nodes_code.append(f"        ld c, (hl)              ;")
-                nodes_code.append(f"        push bc                 ; >>> push return address")
-                if current_preserved_parameters:
-                    nodes_code.append(f"        ld (sta_ck2), hl        ; release return address")
-                else:
-                    nodes_code.append(f"        ld hl, sta_ck2          ;")
-                    nodes_code.append(f"        dec (hl)                ;")
-                    nodes_code.append(f"        dec (hl)                ;")
-                nodes_code.append(f"        ret                     ; return from function")
+                restore_function_return_address(
+                    bool(current_preserved_parameters),
+                    "release return address" if current_preserved_parameters else "",
+                )
+                emit_asm("ret", "", "return from function")
                 nodes_code.append("")
                                 
             #------------------------------------------------------------------
@@ -1505,15 +1607,15 @@ def translate_to_assembly(js_code):
                 # assembly code
                 nodes_code.append(f"                                ; ({node.type}) ***{expression}*** test")
                 process_node(node.test)
-                nodes_code.append(f"        pop de                  ; ({node.type}) <<< pop condition value")
-                nodes_code.append(f"        pop hl                  ; <<< pop address, unused")                        
-                nodes_code.append(f"        xor a                   ; A=0")
-                nodes_code.append(f"        cp e                    ; if E=0, condition not fulfiled")
-                nodes_code.append(f"        jp z, {else_label}           ;")
+                emit_asm("pop", "de", f"({node.type}) <<< pop condition value")
+                emit_asm("pop", "hl", "<<< pop address, unused")
+                emit_asm("xor", "a", "A=0")
+                emit_asm("cp", "e", "if E=0, condition not fulfiled")
+                emit_asm("jp", f"z, {else_label}", "")
                                                     
                 # if
                 process_node(node.consequent)
-                nodes_code.append(f"        jp {end_label}              ; ({node.type}) ***{expression}*** skips else")
+                emit_asm("jp", end_label, f"({node.type}) ***{expression}*** skips else")
                 nodes_code.append(f"{else_label}                         ; else\n")
                 # else
                 if node.alternate:
@@ -1532,9 +1634,9 @@ def translate_to_assembly(js_code):
                         
                 if isinstance(literal_value, int): # this works for both integer and boolean
                     # assembly code
-                    nodes_code.append(f"        ld de, {literal_value}                ; ({node.type}) literal int: * {literal_value} *")
-                    nodes_code.append(f"        push de                 ; >>> push bogus address, unused")
-                    nodes_code.append(f"        push de                 ; >>> push value")     
+                    emit_asm("ld", f"de, {literal_value}", f"({node.type}) literal int: * {literal_value} *")
+                    emit_asm("push", "de", ">>> push bogus address, unused")
+                    emit_asm("push", "de", ">>> push value")
                                                     
                 # string literals
                 if isinstance(node.value, str):
@@ -1545,9 +1647,9 @@ def translate_to_assembly(js_code):
                     # one-char literal becomes an integer...
                     if literal_length == 1:
                         ascii_value = ord(literal_value)  # Convert character to ASCII
-                        nodes_code.append(f'        ld de, "{literal_value}"              ; ({node.type}) literal char: * "{literal_value}" * (ascii: {ascii_value}d)')
-                        nodes_code.append(f"        push de                 ; >>> push bogus address, unused")
-                        nodes_code.append(f"        push de                 ; >>> push value")  
+                        emit_asm("ld", f'de, "{literal_value}"', f'({node.type}) literal char: * "{literal_value}" * (ascii: {ascii_value}d)')
+                        emit_asm("push", "de", ">>> push bogus address, unused")
+                        emit_asm("push", "de", ">>> push value")
                     
                     # regular strings
                     else:
@@ -1555,10 +1657,10 @@ def translate_to_assembly(js_code):
                         variable_declarations.append(f'{literal_name} defb {literal_length}, 0, "{literal_value}"        ; ({node.type}) string')
                         # assembly code
                         nodes_code.append(f"                                ; ({node.type}) * '{literal_value}' *")
-                        nodes_code.append(f"        ld hl, {literal_name}          ; literal string address")
-                        nodes_code.append(f"        ld de, {len(literal_value)}                ; string length")
-                        nodes_code.append(f"        push de                 ; >>> push dummy content")  
-                        nodes_code.append(f"        push hl                 ; >>> push literal address")
+                        emit_asm("ld", f"hl, {literal_name}", "literal string address")
+                        emit_asm("ld", f"de, {len(literal_value)}", "string length")
+                        emit_asm("push", "de", ">>> push dummy content")
+                        emit_asm("push", "hl", ">>> push literal address")
                         
                 nodes_code.append("")
 
@@ -1576,54 +1678,57 @@ def translate_to_assembly(js_code):
 
                 match operator_name:
                     case "&&":
-                        nodes_code.append(f"        pop hl                  ; <<< pop left evaluation")
-                        nodes_code.append(f"        pop de                  ; <<< pop left address, unused")
-                        nodes_code.append(f"        pop bc                  ; <<< pop right evaluation")
-                        nodes_code.append(f"        pop de                  ; <<< pop right address, unused")
+                        emit_asm("pop", "hl", "<<< pop left evaluation")
+                        emit_asm("pop", "de", "<<< pop left address, unused")
+                        emit_asm("pop", "bc", "<<< pop right evaluation")
+                        emit_asm("pop", "de", "<<< pop right address, unused")
                         
-                        nodes_code.append(f"        ld de, 0                ; ({node.type}) assume condition is false")
-                        nodes_code.append(f"        ld a, h                 ; test 16-bit register = 0")
-                        nodes_code.append(f"        or l                    ;")
-                        nodes_code.append(f"        jr z, {lex_exit_label}           ; MSB not fulfiling")
-                        nodes_code.append(f"        ld a, b                 ; test 16-bit register = 0")
-                        nodes_code.append(f"        or c                    ;")
-                        nodes_code.append(f"        jr z, {lex_exit_label}           ; LSB not fulfiling")
+                        emit_asm("ld", "de, 0", f"({node.type}) assume condition is false")
+                        emit_asm("ld", "a, h", "test 16-bit register = 0")
+                        emit_asm("or", "l", "")
+                        emit_asm("jr", f"z, {lex_exit_label}", "MSB not fulfiling")
+                        emit_asm("ld", "a, b", "test 16-bit register = 0")
+                        emit_asm("or", "c", "")
+                        emit_asm("jr", f"z, {lex_exit_label}", "LSB not fulfiling")
                         
-                        nodes_code.append(f"        inc de                  ; condition is true")
-                        nodes_code.append(f"{lex_exit_label} push de                 ; >>> push result")
-                        nodes_code.append(f"        push de                 ; >>> push result\n")
+                        emit_asm("inc", "de", "condition is true")
+                        emit_asm("push", "de", ">>> push result", label=lex_exit_label)
+                        emit_asm("push", "de", ">>> push result")
+                        nodes_code.append("")
                         nodes_code.append("")
 
                     case "||":
-                        nodes_code.append(f"        pop hl                  ; <<< pop left value")
-                        nodes_code.append(f"        pop de                  ; <<< pop left address, unused")
-                        nodes_code.append(f"        pop bc                  ; <<< pop right value")
-                        nodes_code.append(f"        pop de                  ; <<< pop right address, unused")
+                        emit_asm("pop", "hl", "<<< pop left value")
+                        emit_asm("pop", "de", "<<< pop left address, unused")
+                        emit_asm("pop", "bc", "<<< pop right value")
+                        emit_asm("pop", "de", "<<< pop right address, unused")
                         
-                        nodes_code.append(f"        ld de, 0                ; ({node.type}) assume condition is false")
-                        nodes_code.append(f"        ld a, h                 ; test both 16-bit registers are 0")
-                        nodes_code.append(f"        or l                    ;")
-                        nodes_code.append(f"        or b                    ;")
-                        nodes_code.append(f"        or c                    ;")
-                        nodes_code.append(f"        jr z, {lex_exit_label}           ; assume condition is false")
+                        emit_asm("ld", "de, 0", f"({node.type}) assume condition is false")
+                        emit_asm("ld", "a, h", "test both 16-bit registers are 0")
+                        emit_asm("or", "l", "")
+                        emit_asm("or", "b", "")
+                        emit_asm("or", "c", "")
+                        emit_asm("jr", f"z, {lex_exit_label}", "assume condition is false")
                         
-                        nodes_code.append(f"        inc de                  ; condition is true")
-                        nodes_code.append(f"{lex_exit_label} push de                 ; >>> push result")
-                        nodes_code.append(f"        push de                 ; >>> push result\n")
+                        emit_asm("inc", "de", "condition is true")
+                        emit_asm("push", "de", ">>> push result", label=lex_exit_label)
+                        emit_asm("push", "de", ">>> push result")
+                        nodes_code.append("")
                         nodes_code.append("")
                     
                     case "!":
-                        nodes_code.append(f"        pop hl                  ; <<< pop left value")
-                        nodes_code.append(f"        pop de                  ; <<< pop left address, unused")
+                        emit_asm("pop", "hl", "<<< pop left value")
+                        emit_asm("pop", "de", "<<< pop left address, unused")
 
-                        nodes_code.append(f"        ld de, 1                ; ({node.type}) assume condition is false")
-                        nodes_code.append(f"        ld a, h                 ; test 16-bit register is 0")
-                        nodes_code.append(f"        or l                    ;")
-                        nodes_code.append(f"        jr z, {lex_exit_label}           ; fulfiling")
+                        emit_asm("ld", "de, 1", f"({node.type}) assume condition is false")
+                        emit_asm("ld", "a, h", "test 16-bit register is 0")
+                        emit_asm("or", "l", "")
+                        emit_asm("jr", f"z, {lex_exit_label}", "fulfiling")
                         
-                        nodes_code.append(f"        inc de                  ; condition is true")
-                        nodes_code.append(f"{lex_exit_label} push de                 ; >>> push result\n")
-                        nodes_code.append(f"        push de                 ; >>> push result\n")
+                        emit_asm("inc", "de", "condition is true")
+                        emit_asm("push", "de", ">>> push result", label=lex_exit_label)
+                        emit_asm("push", "de", ">>> push result")
+                        nodes_code.append("")
                         nodes_code.append("")
 
                     case _:
@@ -1642,15 +1747,15 @@ def translate_to_assembly(js_code):
                 # constant handling
                 if variable_name in constant_type_list:
                     nodes_code.append(f"                                ; ({node.type}) constant * {variable_name} *")
-                    nodes_code.append(f"        ld hl, {variable_name}            ; variable content")
-                    nodes_code.append(f"        push hl                 ; >>> push variable address (bogus)")
-                    nodes_code.append(f"        push hl                 ; >>> push variable content")
+                    emit_asm("ld", f"hl, {variable_name}", "variable content")
+                    emit_asm("push", "hl", ">>> push variable address (bogus)")
+                    emit_asm("push", "hl", ">>> push variable content")
                 else: # other, not constants
                     nodes_code.append(f"                                ; ({node.type}) variable * {variable_name} *")
-                    nodes_code.append(f"        ld hl, {variable_name}            ; variable address")
-                    nodes_code.append(f"        push hl                 ; >>> push variable address")
-                    nodes_code.append(f"        ld hl, ({variable_name})          ; variable content")
-                    nodes_code.append(f"        push hl                 ; >>> push variable content")
+                    emit_asm("ld", f"hl, {variable_name}", "variable address")
+                    emit_asm("push", "hl", ">>> push variable address")
+                    emit_asm("ld", f"hl, ({variable_name})", "variable content")
+                    emit_asm("push", "hl", ">>> push variable content")
                 
                 nodes_code.append("")
                 
@@ -1673,10 +1778,11 @@ def translate_to_assembly(js_code):
                     matrix_name=resolve_identifier_name(nested_object.name)
                     if matrix_type_list.get(matrix_name) or array_type_list.get(matrix_name) :  
                         nodes_code.append(f"                                ; ({node.type}) matrix ***{matrix_name}*** ")
-                        nodes_code.append(f"        ld hl, {matrix_name}            ; variable address")
-                        nodes_code.append(f"        push hl                 ; >>>")
-                        nodes_code.append(f"        ld hl, ({matrix_name})          ; variable content")
-                        nodes_code.append(f"        push hl                 ; >>>\n")
+                        emit_asm("ld", f"hl, {matrix_name}", "variable address")
+                        emit_asm("push", "hl", ">>>")
+                        emit_asm("ld", f"hl, ({matrix_name})", "variable content")
+                        emit_asm("push", "hl", ">>>")
+                        nodes_code.append("")
                         
                         nodes_code.append(f"                                ; ({node.type}) matrix column")
                         process_node(member_object.property)
@@ -1684,31 +1790,32 @@ def translate_to_assembly(js_code):
                         process_node(member_property)
                         
                         nodes_code.append(f"                                ; ({node.type}) matrix access")                 
-                        nodes_code.append(f"        pop ix                  ; <<< pop column content")
-                        nodes_code.append(f"        pop de                  ; <<< pop column address, unused")
-                        nodes_code.append(f"        pop de                  ; <<< pop row content")
-                        nodes_code.append(f"        pop bc                  ; <<< pop row address, unused")
-                        nodes_code.append(f"        pop bc                  ; <<< pop matrix size (cols, rows)")
+                        emit_asm("pop", "ix", "<<< pop column content")
+                        emit_asm("pop", "de", "<<< pop column address, unused")
+                        emit_asm("pop", "de", "<<< pop row content")
+                        emit_asm("pop", "bc", "<<< pop row address, unused")
+                        emit_asm("pop", "bc", "<<< pop matrix size (cols, rows)")
                         # record address: matrix@ + 2 * ((row# * row_size) + column#) + 2 <- matrix header
-                        nodes_code.append(f"        ld b, 0                 ; leave rows only")
-                        nodes_code.append(f"        push ix                 ; >>> push row size")
-                        nodes_code.append(f"        push bc                 ; >>> push row size")
-                        nodes_code.append(f"        push de                 ; >>> push row number")
-                        nodes_code.append(f"        call mul_16b            ;")
-                        nodes_code.append(f"        pop hl                  ; <<< pop row index") # HL= (row# * row_size)
-                        nodes_code.append(f"        pop de                  ; <<< pop column content")
-                        nodes_code.append(f"        add hl, de              ; record position") # HL= (row# * row_size) + column#
-                        nodes_code.append(f"        add hl, hl              ; record position") # HL= 2 * ((row# * row_size) + column#)
-                        nodes_code.append(f"        ld de, 2                ; header size")
-                        nodes_code.append(f"        add hl, de              ; record position + header") # HL= 2 * ((row# * row_size) + column#) + 2
-                        nodes_code.append(f"        pop de                  ; <<< pop matrix address")
-                        nodes_code.append(f"        add hl, de              ; exact position!") # matrix@ + 2 * ((row# * row_size) + column#) + 2
+                        emit_asm("ld", "b, 0", "leave rows only")
+                        emit_asm("push", "ix", ">>> push row size")
+                        emit_asm("push", "bc", ">>> push row size")
+                        emit_asm("push", "de", ">>> push row number")
+                        emit_asm("call", "mul_16b", "")
+                        emit_asm("pop", "hl", "<<< pop row index")
+                        emit_asm("pop", "de", "<<< pop column content")
+                        emit_asm("add", "hl, de", "record position")
+                        emit_asm("add", "hl, hl", "record position")
+                        emit_asm("ld", "de, 2", "header size")
+                        emit_asm("add", "hl, de", "record position + header")
+                        emit_asm("pop", "de", "<<< pop matrix address")
+                        emit_asm("add", "hl, de", "exact position!")
                         
-                        nodes_code.append(f"        push hl                 ; >>> push address")
-                        nodes_code.append(f"        ld e, (hl)              ; position content!")
-                        nodes_code.append(f"        inc hl                  ;")
-                        nodes_code.append(f"        ld d, (hl)              ;")
-                        nodes_code.append(f"        push de                 ; >>> push value\n") 
+                        emit_asm("push", "hl", ">>> push address")
+                        emit_asm("ld", "e, (hl)", "position content!")
+                        emit_asm("inc", "hl", "")
+                        emit_asm("ld", "d, (hl)", "")
+                        emit_asm("push", "de", ">>> push value")
+                        nodes_code.append("")
                 
                 # object, dictionary        
                 elif member_object_name:
@@ -1722,37 +1829,40 @@ def translate_to_assembly(js_code):
                         
                         #assembly 
                         nodes_code.append(f"                                ; ({node.type}) dictionary access")                 
-                        nodes_code.append(f"        pop hl                  ; <<< pop value to search")
-                        nodes_code.append(f"        pop de                  ; <<< pop value address, unused")
-                        nodes_code.append(f"        pop de                  ; <<< pop dictionary size")
-                        nodes_code.append(f"        ld b, e                 ; count through the dictionary, DE is free")
-                        nodes_code.append(f"        pop ix                  ; <<< pop dictionary address\n")
+                        emit_asm("pop", "hl", "<<< pop value to search")
+                        emit_asm("pop", "de", "<<< pop value address, unused")
+                        emit_asm("pop", "de", "<<< pop dictionary size")
+                        emit_asm("ld", "b, e", "count through the dictionary, DE is free")
+                        emit_asm("pop", "ix", "<<< pop dictionary address")
+                        nodes_code.append("")
                         
                         # loop through the dictionary
-                        nodes_code.append(f"{dict_label} inc ix                  ; skip size")         
-                        nodes_code.append(f"        inc ix                  ;")
-                        nodes_code.append(f"        ld e, (ix+0)            ; read key, byte 1, from dictionary")
-                        nodes_code.append(f"        ld d, (ix+1)            ; read key, byte 2")
-                        nodes_code.append(f"        inc ix                  ; skip key, byte 2")
-                        nodes_code.append(f"        inc ix                  ; skip value")             
-                        nodes_code.append(f"        xor a                   ;")
-                        nodes_code.append(f"        push hl                 ; >>> value to search")
-                        nodes_code.append(f"        sbc hl, de              ; compare search value with key")
-                        nodes_code.append(f"        pop hl                  ; <<< pop value to search")
-                        nodes_code.append(f"        jr z, {dict_found_label}           ;")
-                        nodes_code.append(f"        djnz {dict_label}            ;\n")
+                        emit_asm("inc", "ix", "skip size", label=dict_label)
+                        emit_asm("inc", "ix", "")
+                        emit_asm("ld", "e, (ix+0)", "read key, byte 1, from dictionary")
+                        emit_asm("ld", "d, (ix+1)", "read key, byte 2")
+                        emit_asm("inc", "ix", "skip key, byte 2")
+                        emit_asm("inc", "ix", "skip value")
+                        emit_asm("xor", "a", "")
+                        emit_asm("push", "hl", ">>> value to search")
+                        emit_asm("sbc", "hl, de", "compare search value with key")
+                        emit_asm("pop", "hl", "<<< pop value to search")
+                        emit_asm("jr", f"z, {dict_found_label}", "")
+                        emit_asm("djnz", dict_label, "")
+                        nodes_code.append("")
                         
-                        nodes_code.append(f"        ld de, 0                ; if not found, value= 0")
-                        nodes_code.append(f"        ld bc, 0                ; if not found, address= 0")
-                        nodes_code.append(f"        push bc                 ; >>> push value address")
-                        nodes_code.append(f"        push de                 ; >>> push value")
-                        nodes_code.append(f"        jr {dict_exit_label}              ; skip match\n")
+                        emit_asm("ld", "de, 0", "if not found, value= 0")
+                        emit_asm("ld", "bc, 0", "if not found, address= 0")
+                        emit_asm("push", "bc", ">>> push value address")
+                        emit_asm("push", "de", ">>> push value")
+                        emit_asm("jr", dict_exit_label, "skip match")
+                        nodes_code.append("")
                         
                         # return result, if any
-                        nodes_code.append(f"{dict_found_label} ld e, (ix+0)            ; read value, byte 1, from dictionary")
-                        nodes_code.append(f"        ld d, (ix+1)            ; read value, byte 2")
-                        nodes_code.append(f"        push ix                 ; >>> push value address")
-                        nodes_code.append(f"        push de                 ; >>> push value ")
+                        emit_asm("ld", "e, (ix+0)", "read value, byte 1, from dictionary", label=dict_found_label)
+                        emit_asm("ld", "d, (ix+1)", "read value, byte 2")
+                        emit_asm("push", "ix", ">>> push value address")
+                        emit_asm("push", "de", ">>> push value ")
 
                         nodes_code.append(f"{dict_exit_label}                         ; ({node.type}) exit dictionary access\n")
                         
@@ -1763,21 +1873,22 @@ def translate_to_assembly(js_code):
                             process_node(member_property)
                             
                             nodes_code.append(f"                                ; ({node.type}) integer array access")                 
-                            nodes_code.append(f"        pop hl                  ; <<< pop record index")
-                            nodes_code.append(f"        pop de                  ; <<< pop record index address, unused")
-                            nodes_code.append(f"        pop de                  ; <<< pop array content, unused")
-                            nodes_code.append(f"        pop de                  ; <<< pop array address")
+                            emit_asm("pop", "hl", "<<< pop record index")
+                            emit_asm("pop", "de", "<<< pop record index address, unused")
+                            emit_asm("pop", "de", "<<< pop array content, unused")
+                            emit_asm("pop", "de", "<<< pop array address")
     
                             # record address: array@ + 2 * (record# + 1)
-                            nodes_code.append(f"        inc hl                  ;") # HL= (record# + 1)
-                            nodes_code.append(f"        add hl, hl              ; record position") # HL= 2 * (record# + 1)
-                            nodes_code.append(f"        add hl, de              ; array address + record position") # HL= 2 * ((row# * row_size) + column#) + 2
+                            emit_asm("inc", "hl", "")
+                            emit_asm("add", "hl, hl", "record position")
+                            emit_asm("add", "hl, de", "array address + record position")
                             
-                            nodes_code.append(f"        push hl                 ; >>> push address")
-                            nodes_code.append(f"        ld e, (hl)              ; position content!")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld d, (hl)              ;")
-                            nodes_code.append(f"        push de                 ; >>> push content\n")
+                            emit_asm("push", "hl", ">>> push address")
+                            emit_asm("ld", "e, (hl)", "position content!")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "d, (hl)", "")
+                            emit_asm("push", "de", ">>> push content")
+                            nodes_code.append("")
                             
                         if array_type_list[object_name]=="str":
                             string_array_label= new_label("sar_")
@@ -1786,21 +1897,22 @@ def translate_to_assembly(js_code):
                             process_node(member_property)        
                             
                             nodes_code.append(f"                                ; ({node.type}) string array access")
-                            nodes_code.append(f"        pop hl                  ; <<< pop record index")
-                            nodes_code.append(f"        pop de                  ; <<< pop record index address, unused")
-                            nodes_code.append(f"        pop de                  ; <<< pop array content, unused")
-                            nodes_code.append(f"        pop de                  ; <<< pop array address")
+                            emit_asm("pop", "hl", "<<< pop record index")
+                            emit_asm("pop", "de", "<<< pop record index address, unused")
+                            emit_asm("pop", "de", "<<< pop array content, unused")
+                            emit_asm("pop", "de", "<<< pop array address")
                             
                             nodes_code.append(f"                                ; find record address")
-                            nodes_code.append(f"        add hl, hl              ; position within array variable")
-                            nodes_code.append(f"        add hl, de              ; add array initial address")
-                            nodes_code.append(f"        ld de, 2                ; skip array sizes")
-                            nodes_code.append(f"        add hl, de              ; ")
-                            nodes_code.append(f"        ld e, (hl)              ; position content!")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld d, (hl)              ;")
-                            nodes_code.append(f"        push de                 ; >>> push array address")
-                            nodes_code.append(f"        push de                 ; >>> push array address\n")
+                            emit_asm("add", "hl, hl", "position within array variable")
+                            emit_asm("add", "hl, de", "add array initial address")
+                            emit_asm("ld", "de, 2", "skip array sizes")
+                            emit_asm("add", "hl, de", " ")
+                            emit_asm("ld", "e, (hl)", "position content!")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "d, (hl)", "")
+                            emit_asm("push", "de", ">>> push array address")
+                            emit_asm("push", "de", ">>> push array address")
+                            nodes_code.append("")
                                                
                 
                 if member_object_name:
@@ -1815,32 +1927,34 @@ def translate_to_assembly(js_code):
                             # pending: only one character supported
                             garbage_address=get_garbage_address(4)
                             nodes_code.append(f"                                ; ({node.type}) Ascii to Char")
-                            nodes_code.append(f"        pop de                  ; <<< pop char value")
-                            nodes_code.append(f"        pop bc                  ; <<< pop char address")
-                            nodes_code.append(f"        ld hl, {garbage_address}            ; save value in garbage zone")
-                            nodes_code.append(f"        ld (hl), 1              ; string length")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (hl), 0              ; string length")
-                            nodes_code.append(f"        ld bc, 1                ; string length")
-                            nodes_code.append(f"        push bc                 ; >>> push dummy content")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (hl), e              ; string value")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (hl), d              ;\n")
-                            nodes_code.append(f"        ld hl, {garbage_address}            ; string address")
-                            nodes_code.append(f"        push hl                 ; >>> push string address")
+                            emit_asm("pop", "de", "<<< pop char value")
+                            emit_asm("pop", "bc", "<<< pop char address")
+                            emit_asm("ld", f"hl, {garbage_address}", "save value in garbage zone")
+                            emit_asm("ld", "(hl), 1", "string length")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(hl), 0", "string length")
+                            emit_asm("ld", "bc, 1", "string length")
+                            emit_asm("push", "bc", ">>> push dummy content")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(hl), e", "string value")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(hl), d", "")
+                            nodes_code.append("")
+                            emit_asm("ld", f"hl, {garbage_address}", "string address")
+                            emit_asm("push", "hl", ">>> push string address")
                     
                     if variable_name in string_type_list:
                         # string length
                         # pending: i don´t like how it's done. no stack consumption
                         if property_name == "length":
                             nodes_code.append(f"                                ; ({node.type}) string length")
-                            nodes_code.append(f"        ld hl, {variable_name}            ; variable address")
-                            nodes_code.append(f"        push hl                 ; >>> push string address")
-                            nodes_code.append(f"        ld e, (hl)              ; get length")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld d, (hl)              ; variable content")
-                            nodes_code.append(f"        push de                 ; >>> push length\n")
+                            emit_asm("ld", f"hl, {variable_name}", "variable address")
+                            emit_asm("push", "hl", ">>> push string address")
+                            emit_asm("ld", "e, (hl)", "get length")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "d, (hl)", "variable content")
+                            emit_asm("push", "de", ">>> push length")
+                            nodes_code.append("")
                     
                         # string character
                         elif property_type== "Literal":
@@ -1883,19 +1997,19 @@ def translate_to_assembly(js_code):
 
                 nodes_code.append(f"                                ; ({node.type}) dispatch")
                 process_node(node.discriminant)
-                nodes_code.append(f"        pop hl                  ; <<< discriminant value")
-                nodes_code.append(f"        pop de                  ; <<< discriminant address, unused")
+                emit_asm("pop", "hl", "<<< discriminant value")
+                emit_asm("pop", "de", "<<< discriminant address, unused")
 
                 for _, case_label, case_value in case_entries:
                     if case_value is None:
                         continue
-                    nodes_code.append(f"        ld bc, {case_value}             ; case value")
-                    nodes_code.append(f"        xor a                   ; clear carry")
-                    nodes_code.append(f"        sbc hl, bc              ; compare")
-                    nodes_code.append(f"        jp z, {case_label}              ; matching case")
-                    nodes_code.append(f"        add hl, bc              ; restore discriminant")
+                    emit_asm("ld", f"bc, {case_value}", "case value")
+                    emit_asm("xor", "a", "clear carry")
+                    emit_asm("sbc", "hl, bc", "compare")
+                    emit_asm("jp", f"z, {case_label}", "matching case")
+                    emit_asm("add", "hl, bc", "restore discriminant")
 
-                nodes_code.append(f"        jp {default_label}              ; default or switch exit")
+                emit_asm("jp", default_label, "default or switch exit")
                 nodes_code.append("")
 
                 break_label_stack.append(switch_exit_label)
@@ -1919,7 +2033,7 @@ def translate_to_assembly(js_code):
                 if not break_label_stack:
                     report_error(f"{node.type}: break used outside a loop or switch.")
                     return
-                nodes_code.append(f"        jp {break_label_stack[-1]}              ; ({node.type})")
+                emit_asm("jp", break_label_stack[-1], f"({node.type})")
                 nodes_code.append("")
             
             #-------------------------------------------------------------------
@@ -1932,37 +2046,37 @@ def translate_to_assembly(js_code):
                         # evaluate expression
                         process_node(unary_argument)
                         # apply not
-                        nodes_code.append(f"        pop de                  ; pop value")
-                        nodes_code.append(f"        pop hl                  ; pop address, unused")
-                        nodes_code.append(f"        ld a, e                 ;")
-                        nodes_code.append(f"        cpl                     ; negate LSB")
-                        nodes_code.append(f"        ld e, a                 ;")
-                        nodes_code.append(f"        ld a, d                 ;")
-                        nodes_code.append(f"        cpl                     ; negate MSB")
-                        nodes_code.append(f"        ld d, a                 ;")
+                        emit_asm("pop", "de", "pop value")
+                        emit_asm("pop", "hl", "pop address, unused")
+                        emit_asm("ld", "a, e", "")
+                        emit_asm("cpl", "", "negate LSB")
+                        emit_asm("ld", "e, a", "")
+                        emit_asm("ld", "a, d", "")
+                        emit_asm("cpl", "", "negate MSB")
+                        emit_asm("ld", "d, a", "")
                         nodes_code.append(f"                                ;")
                                               
                     case "-":
                         if getattr(unary_argument, "type", None)=="Literal": # short way for literals
                             literal_value = getattr(unary_argument, "value", 0)
-                            nodes_code.append(f"        ld de, {-literal_value}               ; ({node.type}) literal unary: * {-literal_value} *")
+                            emit_asm("ld", f"de, {-literal_value}", f"({node.type}) literal unary: * {-literal_value} *")
                         else: # standard for non-literals
                             # evaluate expression
                             process_node(unary_argument)
                             # apply -
-                            nodes_code.append(f"        pop de                  ; pop value")
-                            nodes_code.append(f"        pop hl                  ; pop address, unused")
-                            nodes_code.append(f"        xor a                    ;")
-                            nodes_code.append(f"        ld hl, 0                ;")
-                            nodes_code.append(f"        sbc hl, de              ; HL = -BC")
-                            nodes_code.append(f"        ex de, hl               ; DE = HL")
+                            emit_asm("pop", "de", "pop value")
+                            emit_asm("pop", "hl", "pop address, unused")
+                            emit_asm("xor", "a", "")
+                            emit_asm("ld", "hl, 0", "")
+                            emit_asm("sbc", "hl, de", "HL = -BC")
+                            emit_asm("ex", "de, hl", "DE = HL")
                     case _:
                         report_error(f"{node.type}: Unsupported unary operator: {node.operator}")
                         return
                         
                 
-                nodes_code.append(f"        push de                 ; >>> push value, unused")
-                nodes_code.append(f"        push de                 ; >>> push record value")
+                emit_asm("push", "de", ">>> push value, unused")
+                emit_asm("push", "de", ">>> push record value")
                 nodes_code.append("")
                                                 
             #-------------------------------------------------------------------
@@ -1980,16 +2094,16 @@ def translate_to_assembly(js_code):
                         return
                 process_node(update_argument)
                 nodes_code.append(f"                                ; ({node.type}) *** {node.operator} ***")
-                nodes_code.append(f"        pop hl                  ; <<< pop left side value, not used")
-                nodes_code.append(f"        pop hl                  ; <<< pop left side address")
+                emit_asm("pop", "hl", "<<< pop left side value, not used")
+                emit_asm("pop", "hl", "<<< pop left side address")
     
                 # pending: likely incomplete. only applied to the low 8 bits
                 match node.operator:
                     case "++":  # Handle increment (++) operator
-                        nodes_code.append(f"        inc (hl)                ; ({node.type}) increment")
+                        emit_asm("inc", "(hl)", f"({node.type}) increment")
                         
                     case "--":  # Handle decrement (--) operator
-                        nodes_code.append(f"        dec (hl)                ; ({node.type}) decrement")
+                        emit_asm("dec", "(hl)", f"({node.type}) decrement")
                         
                     case _:
                         report_error(f"{node.type}: Unsupported operator: {node.operator}")
@@ -2084,13 +2198,13 @@ def translate_to_assembly(js_code):
                         process_node(init_node)
 
                         nodes_code.append(f"                                ; ({node.type}) * = * (int)")
-                        nodes_code.append(f"        pop de                  ; <<< pop right side value")
-                        nodes_code.append(f"        pop hl                  ; <<< pop right side address, unused")
-                        nodes_code.append(f"        pop hl                  ; <<< pop left side value, unused")
-                        nodes_code.append(f"        pop hl                  ; <<< pop left side address")
-                        nodes_code.append(f"        ld (hl), e              ; write value in destination address")
-                        nodes_code.append(f"        inc hl                  ;")
-                        nodes_code.append(f"        ld (hl), d              ;")
+                        emit_asm("pop", "de", "<<< pop right side value")
+                        emit_asm("pop", "hl", "<<< pop right side address, unused")
+                        emit_asm("pop", "hl", "<<< pop left side value, unused")
+                        emit_asm("pop", "hl", "<<< pop left side address")
+                        emit_asm("ld", "(hl), e", "write value in destination address")
+                        emit_asm("inc", "hl", "")
+                        emit_asm("ld", "(hl), d", "")
                         nodes_code.append(f"                                ; ({node.type}) end of...\n")
                     
                 # strings ---------------------------------------------------------                        
@@ -2122,11 +2236,11 @@ def translate_to_assembly(js_code):
                             
                             # immutable strings assignment
                             nodes_code.append(f"                                ; ({node.type}) * = * string array")
-                            nodes_code.append(f"        ld de, {immutable_name}         ; * {variable_name} *")
-                            nodes_code.append(f"        ld hl, {variable_name}            ;")
-                            nodes_code.append(f"        ld (hl), e              ; immutable address to pointer variable")
-                            nodes_code.append(f"        inc hl                  ;")
-                            nodes_code.append(f"        ld (hl), d              ;")
+                            emit_asm("ld", f"de, {immutable_name}", f"* {variable_name} *")
+                            emit_asm("ld", f"hl, {variable_name}", "")
+                            emit_asm("ld", "(hl), e", "immutable address to pointer variable")
+                            emit_asm("inc", "hl", "")
+                            emit_asm("ld", "(hl), d", "")
                             nodes_code.append("")
                         
                         else:
@@ -2146,7 +2260,8 @@ def translate_to_assembly(js_code):
                                 # pending: check matrix duplicity                        
                             
                                 # Check if all elements are ArrayExpression (to confirm it's a 2D matrix)
-                                if all(e.type == "ArrayExpression" for e in init_elements):
+                                is_matrix_literal = all(e.type == "ArrayExpression" for e in init_elements)
+                                if is_matrix_literal:
                                     # in not a constant, add it to variable list
                                     matrix_type_list[variable_name]= "int" # pending: all matrices and arrays are treated as integers.
                                         
@@ -2160,7 +2275,10 @@ def translate_to_assembly(js_code):
                                     matrix_cols = matrix_rows
                                     matrix_rows = 1
 
-                                if not validate_array_dimension(node.type, matrix_cols) or not validate_array_dimension(node.type, matrix_rows):
+                                if is_matrix_literal:
+                                    if not validate_array_dimension(node.type, matrix_cols) or not validate_array_dimension(node.type, matrix_rows):
+                                        return
+                                elif not validate_array_dimension(node.type, matrix_cols, 32767, "Array length"):
                                     return
                                     
                                 content_sample = first_array_static_value(init_elements)
@@ -2171,13 +2289,17 @@ def translate_to_assembly(js_code):
                                         constant_type_list[variable_name] = "int"
 
                                     # array/matrix declaration
-                                    variable_declarations.append(f"{matrix_name}   defb {matrix_cols}, {matrix_rows}               ; ({node.type}) integer matrix (cols, rows)")
+                                    if is_matrix_literal:
+                                        variable_declarations.append(f"{matrix_name}   defb {matrix_cols}, {matrix_rows}               ; ({node.type}) integer matrix (cols, rows)")
+                                    else:
+                                        variable_declarations.append(array_header_declaration(matrix_name, matrix_cols, node.type, "integer"))
         
                                     # array/matrix assignment
                                     array_name=node.id.name
-                                    nodes_code.append(f"        ld hl, {matrix_name}          ; ({node.type}) array/matrix assignment")
-                                    nodes_code.append(f"        inc hl                  ; skip dimensions")
-                                    nodes_code.append(f"        inc hl                  ;\n")
+                                    emit_asm("ld", f"hl, {matrix_name}", f"({node.type}) array/matrix assignment")
+                                    emit_asm("inc", "hl", "skip dimensions")
+                                    emit_asm("inc", "hl", "")
+                                    nodes_code.append("")
                                     
                                     # create array/matrix elements
                                     process_node(init_node) # creates the matrix elements
@@ -2191,13 +2313,19 @@ def translate_to_assembly(js_code):
                                     immutable_name="im_" + matrix_name
                                     
                                     # array/matrix declaration
-                                    variable_declarations.append(f'{immutable_name}   defb {matrix_cols}, {matrix_rows}            ; ({node.type}) string matrix (cols, rows)')
+                                    if is_matrix_literal:
+                                        variable_declarations.append(f'{immutable_name}   defb {matrix_cols}, {matrix_rows}            ; ({node.type}) string matrix (cols, rows)')
+                                    else:
+                                        variable_declarations.append(array_header_declaration(immutable_name, matrix_cols, node.type, "string"))
 
                                     # create array/matrix elements
                                     process_node(init_node) # creates the matrix elements
                                     
                                     # array/matrix declaration
-                                    variable_declarations.append(f'{matrix_name}   defb {matrix_cols}, {matrix_rows}               ; ({node.type}) string matrix (cols, rows)')
+                                    if is_matrix_literal:
+                                        variable_declarations.append(f'{matrix_name}   defb {matrix_cols}, {matrix_rows}               ; ({node.type}) string matrix (cols, rows)')
+                                    else:
+                                        variable_declarations.append(array_header_declaration(matrix_name, matrix_cols, node.type, "string"))
 
                                     # pointers to immutable strings, initial assignment
                                     array_element_index=0
@@ -2207,16 +2335,16 @@ def translate_to_assembly(js_code):
 
                                     # immutable strings assignment
                                     nodes_code.append(f"                                ; ({node.type}) * = * string ")
-                                    nodes_code.append(f"        ld hl, {matrix_name}+2          ; * {variable_name} * strings array")
+                                    emit_asm("ld", f"hl, {matrix_name}+2", f"* {variable_name} * strings array")
 
                                     # pointers to immutable strings, code assignment
                                     array_element_index=0
                                     for element in init_elements:
-                                        nodes_code.append(f"        ld de, {immutable_name}+{2 + array_element_index*string_record_size()}      ; element {array_element_index}")
-                                        nodes_code.append(f"        ld (hl), e              ;")
-                                        nodes_code.append(f"        inc hl                  ;")
-                                        nodes_code.append(f"        ld (hl), d              ;")
-                                        nodes_code.append(f"        inc hl                  ;")
+                                        emit_asm("ld", f"de, {immutable_name}+{2 + array_element_index*string_record_size()}", f"element {array_element_index}")
+                                        emit_asm("ld", "(hl), e", "")
+                                        emit_asm("inc", "hl", "")
+                                        emit_asm("ld", "(hl), d", "")
+                                        emit_asm("inc", "hl", "")
 
                                         array_element_index+=1
                                 
@@ -2257,7 +2385,7 @@ def translate_to_assembly(js_code):
                                                     return
                                                 matrix_rows = 1
                                                 matrix_cols = init_arguments[0].value
-                                                if not validate_array_dimension(node.type, matrix_cols):
+                                                if not validate_array_dimension(node.type, matrix_cols, 32767, "Array length"):
                                                     return
                                                 array_type_list[matrix_name]= "int" # pending: all matrices and arrays are treated as integers.
                                                 if variable_kind == "const":
@@ -2276,7 +2404,10 @@ def translate_to_assembly(js_code):
                                             case _: # higher dimensions
                                                 report_error(f"{node.type}: {matrix_name}, number of dimensions not supported.")
                                         
-                                        variable_declarations.append(f"{matrix_name}   defb {matrix_cols}, {matrix_rows}              ; ({node.type}) empty matrix (cols, rows)")
+                                        if matrix_rows == 1:
+                                            variable_declarations.append(array_header_declaration(matrix_name, matrix_cols, node.type, "empty"))
+                                        else:
+                                            variable_declarations.append(f"{matrix_name}   defb {matrix_cols}, {matrix_rows}              ; ({node.type}) empty matrix (cols, rows)")
                                         variable_declarations.append(f"        defs {matrix_cols * matrix_rows * 2}                 ; space reserved for the array/matrix")
                                     
                 # non-standard: empty dictionaries creation (dict=Map(5,2))--------      
@@ -2373,12 +2504,13 @@ def translate_to_assembly(js_code):
                                 # assignment
                                 process_node(element)
                                 nodes_code.append(f"                                ; ({node.type}) literal assignment")
-                                nodes_code.append(f"        pop de                  ; <<< pop value")
-                                nodes_code.append(f"        pop bc                  ; <<< pop address, unused")
-                                nodes_code.append(f"        ld (hl), e              ; write LSB")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        ld (hl), d              ; write MSB")
-                                nodes_code.append(f"        inc hl                  ;\n")
+                                emit_asm("pop", "de", "<<< pop value")
+                                emit_asm("pop", "bc", "<<< pop address, unused")
+                                emit_asm("ld", "(hl), e", "write LSB")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("ld", "(hl), d", "write MSB")
+                                emit_asm("inc", "hl", "")
+                                nodes_code.append("")
                             
                             case "UnaryExpression": # unaries come with negative numbers, "-" sign separated
                                 # declaration
@@ -2394,12 +2526,13 @@ def translate_to_assembly(js_code):
                                 # assignment
                                 process_node(element)
                                 nodes_code.append(f"                                ; ({node.type}) unary assignment")
-                                nodes_code.append(f"        pop de                  ; <<< pop value")
-                                nodes_code.append(f"        pop bc                  ; <<< pop address, unused")
-                                nodes_code.append(f"        ld (hl), e              ; write LSB")
-                                nodes_code.append(f"        inc hl                  ;")
-                                nodes_code.append(f"        ld (hl), d              ; write MSB")
-                                nodes_code.append(f"        inc hl                  ;\n")                         
+                                emit_asm("pop", "de", "<<< pop value")
+                                emit_asm("pop", "bc", "<<< pop address, unused")
+                                emit_asm("ld", "(hl), e", "write LSB")
+                                emit_asm("inc", "hl", "")
+                                emit_asm("ld", "(hl), d", "write MSB")
+                                emit_asm("inc", "hl", "")
+                                nodes_code.append("")
                                 
                             case "Identifier":
                                 node_value = resolve_static_value(element)
@@ -2408,12 +2541,13 @@ def translate_to_assembly(js_code):
 
                                     process_node(element)
                                     nodes_code.append(f"                                ; ({node.type}) constant assignment")
-                                    nodes_code.append(f"        pop de                  ; <<< pop value")
-                                    nodes_code.append(f"        pop bc                  ; <<< pop address, unused")
-                                    nodes_code.append(f"        ld (hl), e              ; write LSB")
-                                    nodes_code.append(f"        inc hl                  ;")
-                                    nodes_code.append(f"        ld (hl), d              ; write MSB")
-                                    nodes_code.append(f"        inc hl                  ;\n")
+                                    emit_asm("pop", "de", "<<< pop value")
+                                    emit_asm("pop", "bc", "<<< pop address, unused")
+                                    emit_asm("ld", "(hl), e", "write LSB")
+                                    emit_asm("inc", "hl", "")
+                                    emit_asm("ld", "(hl), d", "write MSB")
+                                    emit_asm("inc", "hl", "")
+                                    nodes_code.append("")
                                 else:
                                     report_error(f"{node.type}: {element.name}, variables not allowed during declaration.")
                             
@@ -2461,11 +2595,12 @@ def translate_to_assembly(js_code):
                 if node.test:
                     nodes_code.append(f"{while_label}                         ; ({node.type}) 1. test")
                     process_node(node.test)
-                    nodes_code.append(f"        pop de                  ; ({node.type}) <<< pop condition value")
-                    nodes_code.append(f"        pop hl                  ; <<< pop address, unused")
-                    nodes_code.append(f"        xor a                   ; A=0")
-                    nodes_code.append(f"        cp e                    ; if E=0, condition not true")
-                    nodes_code.append(f"        jp z, {break_label_stack[-1]}           ; exit while\n")
+                    emit_asm("pop", "de", f"({node.type}) <<< pop condition value")
+                    emit_asm("pop", "hl", "<<< pop address, unused")
+                    emit_asm("xor", "a", "A=0")
+                    emit_asm("cp", "e", "if E=0, condition not true")
+                    emit_asm("jp", f"z, {break_label_stack[-1]}", "exit while")
+                    nodes_code.append("")
 
                 # loop body
                 if node.body:
@@ -2473,7 +2608,7 @@ def translate_to_assembly(js_code):
                     process_node(node.body)
                 
                 # node exit
-                nodes_code.append(f"{update_label_stack.pop()} jp {while_label}              ; ({node.type})")                
+                emit_asm("jp", while_label, f"({node.type})", label=update_label_stack.pop())
                 nodes_code.append(f"{break_label_stack.pop()}                         ; while end")
                 nodes_code.append("")
             

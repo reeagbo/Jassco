@@ -16,9 +16,10 @@ send_bit = input_bits[input_bits_pointer]
 receive_bit(send_bit)
 ```
 
-- Function parameters are currently treated as integer-compatible values.
-- Multiple sibling recursive calls preserve integer-compatible parameters.
-  Function-local variables still use shared storage and are not yet reentrant.
+- Function parameters support simple inferred integer-compatible and string
+  slots for regular calls.
+- Multiple sibling recursive calls preserve parameter slots. Function-local
+  variables still use shared storage and are not yet reentrant.
 - Repeated `var` declarations are tolerated as compatibility warnings. `let`
   and `const` redeclarations are compiler errors.
 - Block scope is not implemented: declarations still use JASSCO's global

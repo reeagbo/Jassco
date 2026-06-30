@@ -65,7 +65,7 @@ call 5633
 jp mai_cod
 ```
 
-When `--tapbas` is used, the compiler emits the `start:` label before this
+When `--tapbas` is used, the compiler emits the `start` label before this
 startup block and still emits `end start` at the end of the file. Startup code
 is target-level assembly, not JavaScript API surface. Custom startup variants
 can change the initial ROM channel or add target setup, but they must eventually
@@ -173,8 +173,9 @@ dict[5] = 99
 console.log(dict[5])
 ```
 
-Arrays and matrices currently support dimensions from 1 to 255. Larger or zero
-dimensions are reported as compiler errors.
+One-dimensional arrays use a 16-bit length header and currently support lengths
+from 1 to 32767. Matrices use byte-sized dimensions and support dimensions from
+1 to 255. Zero or oversized dimensions are reported as compiler errors.
 
 Constant arrays keep a fixed identifier, but their elements can be modified:
 
@@ -312,7 +313,12 @@ total = sum(5, 6)
 
 Important details:
 
-- Function parameters are currently treated as integer-compatible values.
+- Function parameters are stored in generated function-scoped slots.
+- Regular calls infer simple parameter types from literal arguments. Integer,
+  boolean and one-character arguments remain integer-compatible; multi-character
+  string literals and supported string-producing calls are treated as strings.
+- Before a regular call overwrites a parameter slot, the generated code saves
+  the caller's slot in the auxiliary stack area and restores it on return.
 - Function parameter symbols are scoped by function in generated assembly. For
   example, `function paper(n)` and `function ink(n)` use separate generated
   symbols such as `fn_paper_n_` and `fn_ink_n_`.
@@ -355,6 +361,11 @@ assembly {
 The content is inserted into the generated assembly output without semantic
 analysis. Use this for low-level operations, ports, interrupts, or target-
 specific code.
+
+Generated assembly is formatted before it is written. Labels are emitted
+without trailing colons, and labels, opcodes, operands and comments are aligned
+in stable columns. Raw assembly content should still be written in the style
+the target assembler accepts.
 
 `eval` is reserved internally by the compiler and should not be used as normal
 JavaScript.
@@ -557,14 +568,15 @@ Current major restrictions:
   decremented after declaration. For arrays and text tables, the identifier
   cannot be reassigned but elements may be updated. These rules are enforced by
   the compiler; constants are not protected dynamically at runtime.
-- Function parameters are integer-compatible.
+- Function parameters support simple inferred integer-compatible and string
+  slots for regular calls.
 - Arrays created with `Array(n)` are numeric arrays. Use literal string arrays
   for text tables.
 - String support is limited.
 - Objects are not generally supported, except for documented compiler patterns.
 - Complex function-call arguments should be replaced with intermediate
   variables.
-- Recursive calls preserve integer-compatible parameters. Function-local
+- Recursive calls preserve parameter slots for regular calls. Function-local
   variables still use shared storage and are not reentrant.
 
 See `docs/RESTRICTIONS.md` for the current working list of restrictions and

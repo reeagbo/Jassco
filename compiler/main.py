@@ -1,10 +1,125 @@
 import argparse
 from pathlib import Path
+import re
 import config
 import translator as translator_module
 import utils as utils_module
 from utils import process_non_js, find_missing_routines
 from translator import translate_to_assembly
+
+LABEL_COLUMN = 0
+OPCODE_COLUMN = 14
+OPERAND_COLUMN = 22
+COMMENT_COLUMN = 44
+
+ASM_OPCODES = {
+    "adc", "add", "and", "bit", "call", "ccf", "cp", "cpd", "cpdr", "cpi", "cpir",
+    "cpl", "daa", "dec", "di", "djnz", "ei", "ex", "exx", "halt", "im", "in",
+    "inc", "ind", "indr", "ini", "inir", "jp", "jr", "ld", "ldd", "lddr", "ldi",
+    "ldir", "neg", "nop", "or", "otdr", "otir", "out", "outd", "outi", "pop",
+    "push", "res", "ret", "reti", "retn", "rl", "rla", "rlc", "rlca", "rld", "rr",
+    "rra", "rrc", "rrca", "rrd", "rst", "sbc", "scf", "set", "sla", "sll", "sli",
+    "sra", "srl", "sub", "xor",
+}
+
+ASM_DIRECTIVES = {
+    "org", "end", "defb", "defm", "defs", "defw", "equ", "include",
+}
+
+ASM_KEYWORDS = ASM_OPCODES | ASM_DIRECTIVES
+
+LABEL_PATTERN = re.compile(r"^[A-Za-z_.$][A-Za-z0-9_.$]*:?$")
+
+
+def append_column(parts, text, column):
+    if not text:
+        return
+    current_length = sum(len(part) for part in parts)
+    spacing = max(1, column - current_length)
+    parts.append(" " * spacing)
+    parts.append(text)
+
+
+def split_asm_comment(line):
+    in_string = False
+    quote_char = ""
+
+    for index, char in enumerate(line):
+        if char in ("'", '"'):
+            if not in_string:
+                in_string = True
+                quote_char = char
+            elif quote_char == char:
+                in_string = False
+            continue
+
+        if char == ";" and not in_string:
+            code = line[:index].rstrip()
+            comment = line[index + 1 :].strip()
+            return code, comment
+
+    return line.rstrip(), None
+
+
+def parse_asm_code(code):
+    stripped = code.strip()
+    if not stripped:
+        return "", "", ""
+
+    parts = stripped.split(None, 2)
+    first = parts[0]
+    first_without_colon = first[:-1] if first.endswith(":") else first
+    first_lower = first_without_colon.lower()
+
+    if first_lower in ASM_KEYWORDS:
+        operand = stripped[len(first) :].strip()
+        return "", first_without_colon, operand
+
+    if len(parts) == 1 and LABEL_PATTERN.match(first):
+        return first_without_colon, "", ""
+
+    if len(parts) >= 2 and LABEL_PATTERN.match(first):
+        second = parts[1]
+        second_lower = second.lower()
+        if second_lower in ASM_KEYWORDS:
+            operand = parts[2].strip() if len(parts) > 2 else ""
+            return first_without_colon, second, operand
+
+    return "", "", stripped
+
+
+def format_asm_line(line):
+    if not line.strip():
+        return ""
+
+    code, comment = split_asm_comment(line)
+
+    if not code.strip():
+        return (" " * OPCODE_COLUMN) + f"; {comment}" if comment else ""
+
+    label, opcode, operand = parse_asm_code(code)
+    if not label and not opcode and operand == code.strip():
+        suffix = f" ; {comment}" if comment else ""
+        return code.rstrip() + suffix
+
+    parts = []
+    if label:
+        parts.append(label)
+    if opcode:
+        append_column(parts, opcode, OPCODE_COLUMN)
+    if operand:
+        append_column(parts, operand, OPERAND_COLUMN)
+    if comment is not None:
+        append_column(parts, f"; {comment}" if comment else ";", COMMENT_COLUMN)
+
+    return "".join(parts).rstrip()
+
+
+def format_assembly_lines(chunks):
+    formatted_lines = []
+    for chunk in chunks:
+        formatted_lines.extend(format_asm_line(line) for line in str(chunk).splitlines())
+    return formatted_lines
 
 def parse_address(value):
     try:
@@ -143,6 +258,8 @@ def main(input_file, output_file, tapbas=False, quiet=False, org=None):
     full_code.append ("        ret                     ; end of code")
     if tapbas:
         full_code.append("\n        end start")
+
+    full_code = format_assembly_lines(full_code)
     
     # -----------------------------------------------------------------------------------------
     # check all calls in assembly and spot missing libraries
